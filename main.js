@@ -7,9 +7,7 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
-
-// Load your modules here, e.g.:
-// const fs = require("fs");
+const WSS = require(__dirname + '/lib/wolfsmartset');
 
 class WolfSmartset extends utils.Adapter {
 
