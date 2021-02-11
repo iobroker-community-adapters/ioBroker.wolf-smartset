@@ -7,7 +7,7 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
-const WSS = require(__dirname + '/lib/wolfsmartset');
+const wolfsmartset = require(__dirname + '/lib/wolfsmartset');
 
 class WolfSmartset extends utils.Adapter {
 
@@ -36,6 +36,8 @@ class WolfSmartset extends utils.Adapter {
 		// this.config:
 		this.log.info('config option1: ' + this.config.option1);
 		this.log.info('config option2: ' + this.config.option2);
+
+		this.wss = new wolfsmartset('','',this);
 
 		/*
 		For every state in the system there has to be also an object of type state
@@ -139,17 +141,26 @@ class WolfSmartset extends utils.Adapter {
 	//  * Using this method requires "common.messagebox" property to be set to true in io-package.json
 	//  * @param {ioBroker.Message} obj
 	//  */
-	// onMessage(obj) {
-	// 	if (typeof obj === 'object' && obj.message) {
-	// 		if (obj.command === 'send') {
-	// 			// e.g. send email or pushover or whatever
-	// 			this.log.info('send command');
+	onMessage(obj) {
+	 	if (typeof obj === 'object' && obj.message) {
+	 		if (obj.command === 'send') {
+	 			// e.g. send email or pushover or whatever
+	 			this.log.info('send command');
 
-	// 			// Send response in callback if required
-	// 			if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-	// 		}
-	// 	}
-	// }
+	 			// Send response in callback if required
+	 			if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
+			 }
+			 if (obj.command === 'getDeviceList') {
+				
+				this.log.info('getDeviceList');
+
+				this.wss.adminGetDevicelist(obj.message.username,obj.message.password)
+
+				// Send response in callback if required
+				if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
+			}
+	 	}
+	 }
 
 }
 
