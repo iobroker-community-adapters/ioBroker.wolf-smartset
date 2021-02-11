@@ -11,7 +11,7 @@
       "name": "MeisterTR"
     }
   ],
-  "homepage": "https://github.com/MeisterTR/ioBroker.wolf-smartset",
+  "homepage": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset",
   "license": "MIT",
   "keywords": [
     "wolf",
@@ -20,10 +20,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/MeisterTR/ioBroker.wolf-smartset"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.4.0"
+    "@iobroker/adapter-core": "^2.4.0",
+    "axios": "0.21.1"
   },
   "devDependencies": {
     "@iobroker/testing": "^2.4.2",
@@ -57,7 +58,7 @@
     "lint": "eslint"
   },
   "bugs": {
-    "url": "https://github.com/MeisterTR/ioBroker.wolf-smartset/issues"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset/issues"
   },
   "readmeFilename": "README.md"
 }
