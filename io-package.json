@@ -1,0 +1,78 @@
+{
+	"common": {
+		"name": "wolf-smartset",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "Wolf SmartSet",
+		"titleLang": {
+			"en": "Wolf SmartSet",
+			"de": "Wolf SmartSet",
+			"ru": "Wolf SmartSet",
+			"pt": "Wolf SmartSet",
+			"nl": "Wolf SmartSet",
+			"fr": "Wolf SmartSet",
+			"it": "Wolf SmartSet",
+			"es": "Wolf SmartSet",
+			"pl": "Wolf SmartSet",
+			"zh-cn": "狼SmartSet"
+		},
+		"desc": {
+			"en": "Connect Wolf cloud to IoBroker",
+			"de": "Verbinden Sie die Wolf Cloud mit IoBroker",
+			"ru": "Подключите облако Wolf к IoBroker",
+			"pt": "Conecte a nuvem Wolf ao IoBroker",
+			"nl": "Verbind Wolf-cloud met IoBroker",
+			"fr": "Connectez Wolf Cloud à IoBroker",
+			"it": "Connetti il ​​cloud Wolf a IoBroker",
+			"es": "Conecte la nube Wolf a IoBroker",
+			"pl": "Połącz chmurę Wolfa z IoBrokerem",
+			"zh-cn": "将Wolf云连接到IoBroker"
+		},
+		"authors": [
+			"MeisterTR <meistertr.smarthome@gmail.com>"
+		],
+		"keywords": [
+			"wolf",
+			"heating",
+			"cloud"
+		],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "main.js",
+		"icon": "wolf-smartset.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/MeisterTR/ioBroker.wolf-smartset/master/admin/wolf-smartset.png",
+		"readme": "https://github.com/MeisterTR/ioBroker.wolf-smartset/blob/master/README.md",
+		"loglevel": "info",
+		"mode": "daemon",
+		"type": "climate-control",
+		"compact": true,
+		"connectionType": "cloud",
+		"dataSource": "poll",
+		"materialize": true,
+		"dependencies": [
+			{
+				"js-controller": ">=2.0.0"
+			}
+		]
+	},
+	"native": {
+		"option1": true,
+		"option2": "42"
+	},
+	"objects": [],
+	"instanceObjects": []
+}
