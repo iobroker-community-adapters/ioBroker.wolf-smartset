@@ -22,7 +22,7 @@ class WolfSmartset extends utils.Adapter {
 		this.on('ready', this.onReady.bind(this));
 		this.on('stateChange', this.onStateChange.bind(this));
 		// this.on('objectChange', this.onObjectChange.bind(this));
-		// this.on('message', this.onMessage.bind(this));
+		this.on('message', this.onMessage.bind(this));
 		this.on('unload', this.onUnload.bind(this));
 	}
 
@@ -141,7 +141,7 @@ class WolfSmartset extends utils.Adapter {
 	//  * Using this method requires "common.messagebox" property to be set to true in io-package.json
 	//  * @param {ioBroker.Message} obj
 	//  */
-	onMessage(obj) {
+	async onMessage(obj) {
 	 	if (typeof obj === 'object' && obj.message) {
 	 		if (obj.command === 'send') {
 	 			// e.g. send email or pushover or whatever
@@ -153,11 +153,17 @@ class WolfSmartset extends utils.Adapter {
 			 if (obj.command === 'getDeviceList') {
 				
 				this.log.info('getDeviceList');
+				let devicelist
+				try {
+					devicelist = await this.wss.adminGetDevicelist(obj.message.username,obj.message.password)
 
-				this.wss.adminGetDevicelist(obj.message.username,obj.message.password)
+					if (obj.callback) this.sendTo(obj.from, obj.command, devicelist , obj.callback);
 
-				// Send response in callback if required
-				if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
+				} catch (error) {
+					if (obj.callback) this.sendTo(obj.from, obj.command, {
+						error: error
+					} , obj.callback);
+				}				
 			}
 	 	}
 	 }
