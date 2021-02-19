@@ -1,6 +1,6 @@
 {
   "name": "iobroker.wolf-smartset",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Connect Wolf cloud to IoBroker",
   "author": {
     "name": "MeisterTR",

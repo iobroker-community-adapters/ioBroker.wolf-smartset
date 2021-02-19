@@ -110,6 +110,7 @@
 						//check if in config
 					});
 					$devicelist.html(text).select();
+					showToast(_(arr.length +'Device(s) found'));
 				});
 
 			});
@@ -201,7 +202,7 @@
 			</div>
 
 			<div class="col s12 m3 l2">
-				<a id="getDevices" class=" btn-small translate">get devices<span></span></a>
+				<a id="getDevices" class=" btn-small translate" for= "getDevices">get devices<span></span></a>
 			</div>
 			<div class="col s2 ">
 				<div class="loader seenot" id="loader1"> </div>

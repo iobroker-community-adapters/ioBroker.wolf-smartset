@@ -20,8 +20,8 @@ Connect Wolf cloud to IoBroker
 
 ## Changelog
 
-### 0.0.1
-* (MeisterTR) initial release
+### 0.1.0
+* (MeisterTR) First running Version, Poll Param Only
 
 ## License
 MIT License

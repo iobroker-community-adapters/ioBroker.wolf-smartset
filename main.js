@@ -1,13 +1,17 @@
 'use strict';
 
-/*
- * Created with @iobroker/create-adapter v1.31.0
- */
-
-// The adapter-core module gives you access to the core ioBroker functions
-// you need to create an adapter
 const utils = require('@iobroker/adapter-core');
+const {
+	DH_UNABLE_TO_CHECK_GENERATOR
+} = require('constants');
 const wolfsmartset = require(__dirname + '/lib/wolfsmartset');
+
+const pollIntervall = 15000; //10 Sekunden
+let pollTimeout = null;
+let device;
+let ValList = [];
+let objects = {};
+
 
 class WolfSmartset extends utils.Adapter {
 
@@ -30,59 +34,130 @@ class WolfSmartset extends utils.Adapter {
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
-		// Initialize your adapter here
+		try {
+			device = JSON.parse(this.config.devices)
 
-		// The adapters config (in the instance object everything under the attribute "native") is accessible via
-		// this.config:
-		this.log.info('config option1: ' + this.config.option1);
-		this.log.info('config option2: ' + this.config.option2);
+			if (this.config.user && this.config.password && this.config.user != '' && this.config.password != '') {
+				this.wss = new wolfsmartset(this.config.user, this.config.password, this);
 
-		this.wss = new wolfsmartset('','',this);
+				//start main after timeout
+				setTimeout(() => {
+					this.main()
+				}, 1000);
+			} else {
+				this.wss = new wolfsmartset('', '', this);
+				this.log.warn('Please configure user, password and device in config')
+			}
 
-		/*
-		For every state in the system there has to be also an object of type state
-		Here a simple template for a boolean variable named "testVariable"
-		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
-		*/
-		await this.setObjectNotExistsAsync('testVariable', {
-			type: 'state',
-			common: {
-				name: 'testVariable',
-				type: 'boolean',
-				role: 'indicator',
+		} catch (error) {
+			this.log.error('could not sart' + error)
+		}
+
+	}
+	async main() {
+		let GUIdesk = await this.wss.getGUIDescription(device.GatewayId, device.Id);
+		let paramList = await getParams(GUIdesk);
+		await this.CreateParams(paramList)
+
+		// save objects
+		this.objects = await this.getForeignObjectsAsync(this.namespace + '.*')
+		this.log.debug(JSON.stringify(this.objects))
+
+		this.PollValueList()
+
+
+		async function getParams(guiData) {
+			let param = [];
+
+			guiData.MenuItems.forEach(MenuItems => {
+				MenuItems.TabViews.forEach(TabViews => {
+					TabViews.ParameterDescriptors.forEach(ParameterDescriptors => {
+						param.push(ParameterDescriptors)
+					});
+				});
+			});
+			return param;
+		}
+	}
+
+	async PollValueList(){
+		this.log.debug("start Poll")
+		clearTimeout(pollTimeout)
+		try {
+			let recValList = await this.wss.getValList(device.GatewayId, device.Id, ValList);
+			recValList.Values.forEach(recVal =>{
+				//this.log.debug("search:" + JSON.stringify(recVal));
+
+				for (let key in this.objects) {
+					if(this.objects[key].native.ValueId === recVal.ValueId) {
+
+						if (typeof (recVal.Value) != 'undefined') this.setStateAsync(key, {
+							val: recVal.Value,
+							ack: true
+						});
+					}
+
+				  }
+			})
+
+
+		} catch (error) {
+			this.log.warn(error)
+		}
+		setTimeout(()=>{ this.PollValueList()},pollIntervall)
+	}
+
+
+	async CreateParams(paramArry) {
+		let that = this
+
+		paramArry.forEach(Value => {
+
+			that.log.debug('Create State for' + Value.Name)
+			let group = ''
+
+			if (Value.Group) group = Value.Group.replace(' ', '_') + '.'
+
+			let common = {
+				name: Value.Name,
+				type: 'number',
+				role: 'value',
 				read: true,
-				write: true,
+				write: Value.IsReadOnly ? false : true,
+			}
+			if (typeof (Value.Unit) != 'undefined') common.unit = Value.Unit
+			if (typeof (Value.MinValue) != 'undefined') common.min = Value.MinValue
+			if (typeof (Value.MaxValue) != 'undefined') common.max = Value.MaxValue
+			if (typeof (Value.StepWidth) != 'undefined') common.step = Value.StepWidth
+			if (typeof (Value.ListItems) != 'undefined') {
+				let states = {};
+				Value.ListItems.forEach(ListItems => {
+					states[ListItems.Value] = ListItems.DisplayText
+				})
+				common.states = states;
+			}
+
+			// gereate ValueList for Polling
+			ValList.push(Value.ValueId)
+			this.genAndSetState(group + Value.ValueId, Value.ValueId, common, typeof (Value.Value) != 'undefined' ? Value.Value : null)
+
+		})
+	}
+	async genAndSetState(name, id, common, value) {
+
+		await this.setObjectNotExistsAsync(name, {
+			type: 'state',
+			common: common,
+			native: {
+				ValueId : id
 			},
-			native: {},
+		})
+
+		if (typeof (value) != 'undefined') this.setStateAsync(name, {
+			val: value,
+			ack: true
 		});
 
-		// In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-		this.subscribeStates('testVariable');
-		// You can also add a subscription for multiple states. The following line watches all states starting with "lights."
-		// this.subscribeStates('lights.*');
-		// Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
-		// this.subscribeStates('*');
-
-		/*
-			setState examples
-			you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
-		*/
-		// the variable testVariable is set to true as command (ack=false)
-		await this.setStateAsync('testVariable', true);
-
-		// same thing, but the value is flagged "ack"
-		// ack should be always set to true if the value is received from or acknowledged from the target system
-		await this.setStateAsync('testVariable', { val: true, ack: true });
-
-		// same thing, but the state is deleted after 30s (getState will return null afterwards)
-		await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
-
-		// examples for the checkPassword/checkGroup functions
-		let result = await this.checkPasswordAsync('admin', 'iobroker');
-		this.log.info('check user admin pw iobroker: ' + result);
-
-		result = await this.checkGroupAsync('admin', 'admin');
-		this.log.info('check group user admin group admin: ' + result);
 	}
 
 	/**
@@ -91,11 +166,8 @@ class WolfSmartset extends utils.Adapter {
 	 */
 	onUnload(callback) {
 		try {
-			// Here you must clear all timeouts or intervals that may still be active
-			// clearTimeout(timeout1);
-			// clearTimeout(timeout2);
-			// ...
-			// clearInterval(interval1);
+			clearTimeout(pollTimeout);
+			this.wss.stop();
 
 			callback();
 		} catch (e) {
@@ -103,22 +175,6 @@ class WolfSmartset extends utils.Adapter {
 		}
 	}
 
-	// If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-	// You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-	// /**
-	//  * Is called if a subscribed object changes
-	//  * @param {string} id
-	//  * @param {ioBroker.Object | null | undefined} obj
-	//  */
-	// onObjectChange(id, obj) {
-	// 	if (obj) {
-	// 		// The object was changed
-	// 		this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-	// 	} else {
-	// 		// The object was deleted
-	// 		this.log.info(`object ${id} deleted`);
-	// 	}
-	// }
 
 	/**
 	 * Is called if a subscribed state changes
@@ -142,31 +198,31 @@ class WolfSmartset extends utils.Adapter {
 	//  * @param {ioBroker.Message} obj
 	//  */
 	async onMessage(obj) {
-	 	if (typeof obj === 'object' && obj.message) {
-	 		if (obj.command === 'send') {
-	 			// e.g. send email or pushover or whatever
-	 			this.log.info('send command');
+		if (typeof obj === 'object' && obj.message) {
+			if (obj.command === 'send') {
+				// e.g. send email or pushover or whatever
+				this.log.info('send command');
 
-	 			// Send response in callback if required
-	 			if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-			 }
-			 if (obj.command === 'getDeviceList') {
-				
+				// Send response in callback if required
+				if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
+			}
+			if (obj.command === 'getDeviceList') {
+
 				this.log.info('getDeviceList');
 				let devicelist
 				try {
-					devicelist = await this.wss.adminGetDevicelist(obj.message.username,obj.message.password)
+					devicelist = await this.wss.adminGetDevicelist(obj.message.username, obj.message.password)
 
-					if (obj.callback) this.sendTo(obj.from, obj.command, devicelist , obj.callback);
+					if (obj.callback) this.sendTo(obj.from, obj.command, devicelist, obj.callback);
 
 				} catch (error) {
 					if (obj.callback) this.sendTo(obj.from, obj.command, {
 						error: error
-					} , obj.callback);
-				}				
+					}, obj.callback);
+				}
 			}
-	 	}
-	 }
+		}
+	}
 
 }
 
