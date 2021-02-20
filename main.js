@@ -1,17 +1,13 @@
 'use strict';
 
 const utils = require('@iobroker/adapter-core');
-const {
-	DH_UNABLE_TO_CHECK_GENERATOR
-} = require('constants');
-const wolfsmartset = require(__dirname + '/lib/wolfsmartset');
+const wolfsmartset = require(__dirname + '/lib/wss');
 
 const pollIntervall = 15000; //10 Sekunden
 let pollTimeout = null;
 let device;
 let ValList = [];
 let objects = {};
-
 
 class WolfSmartset extends utils.Adapter {
 
@@ -34,6 +30,7 @@ class WolfSmartset extends utils.Adapter {
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
+		this.subscribeStates('*');
 		try {
 			device = JSON.parse(this.config.devices)
 
@@ -139,6 +136,8 @@ class WolfSmartset extends utils.Adapter {
 
 			// gereate ValueList for Polling
 			ValList.push(Value.ValueId)
+
+
 			this.genAndSetState(group + Value.ValueId, Value.ValueId, common, typeof (Value.Value) != 'undefined' ? Value.Value : null)
 
 		})
@@ -181,13 +180,29 @@ class WolfSmartset extends utils.Adapter {
 	 * @param {string} id
 	 * @param {ioBroker.State | null | undefined} state
 	 */
-	onStateChange(id, state) {
-		if (state) {
-			// The state was changed
-			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-		} else {
-			// The state was deleted
-			this.log.info(`state ${id} deleted`);
+	async onStateChange(id, state) {
+        if (state && !state.ack) {
+            let ValId = id.split('.').pop();
+            let obj =   await this.getObjectAsync(id)
+			let stateName = obj.common.name
+			this.log.warn('Change value for: '+ stateName)
+			try {
+				let answer = await this.wss.setParameter(device.GatewayId, device.Id, [{
+					ValueId: ValId,
+					Value: state.val,
+					ParameterName: stateName
+				}]);
+				if(typeof(answer.Dummy) !== 'undefined'){
+					this.setStateAsync(id, {
+						val: state.val,
+						ack: true
+					});
+				}
+			}
+			catch(err){
+				this.log.error(err)
+			}
+
 		}
 	}
 
