@@ -19,8 +19,9 @@ Connect Wolf cloud to IoBroker
 ## WIP
 
 ## Changelog
-### 0.1.1
+### 0.1.2
 * (MeisterTR) Poll and set Values
+* (MeisterTR) Fix error at start
 
 ### 0.1.0
 * (MeisterTR) First running Version, Poll Param Only

@@ -34,7 +34,7 @@ class WolfSmartset extends utils.Adapter {
 		try {
 			device = JSON.parse(this.config.devices)
 
-			if (this.config.user && this.config.password && this.config.user != '' && this.config.password != '') {
+			if (this.config.user && this.config.password && this.config.user != '' && this.config.password != ''  && typeof(device.GatewayId) !== 'undefined' && typeof(device.Id) !== 'undefined') {
 				this.wss = new wolfsmartset(this.config.user, this.config.password, this);
 
 				//start main after timeout
