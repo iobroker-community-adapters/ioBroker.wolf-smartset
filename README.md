@@ -5,8 +5,8 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.wolf-smartset.svg)](https://www.npmjs.com/package/iobroker.wolf-smartset)
 ![Number of Installations (latest)](http://iobroker.live/badges/wolf-smartset-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/wolf-smartset-stable.svg)
-[![Dependency Status](https://img.shields.io/david/MeisterTR/iobroker.wolf-smartset.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.wolf-smartset)
-[![Known Vulnerabilities](https://snyk.io/test/github/MeisterTR/ioBroker.wolf-smartset/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wolf-smartset)
+[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.wolf-smartset.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.wolf-smartset)
+[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wolf-smartset/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wolf-smartset)
 
 [![NPM](https://nodei.co/npm/iobroker.wolf-smartset.png?downloads=true)](https://nodei.co/npm/iobroker.wolf-smartset/)
 
