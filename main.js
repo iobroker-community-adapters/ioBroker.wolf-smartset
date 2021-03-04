@@ -5,7 +5,7 @@ const wolfsmartset = require(__dirname + '/lib/wss');
 
 const pollIntervall = 15000; //10 Sekunden
 let pollTimeout = null;
-let device;
+let device = {};
 let ValList = [];
 let objects = {};
 
@@ -47,7 +47,8 @@ class WolfSmartset extends utils.Adapter {
 			}
 
 		} catch (error) {
-			this.log.error('could not sart' + error)
+			this.wss = new wolfsmartset('', '', this);
+			this.log.warn('Please configure user, password and device in config')
 		}
 
 	}
