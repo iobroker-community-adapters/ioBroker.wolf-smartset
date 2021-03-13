@@ -1,12 +1,14 @@
 'use strict';
 
 const utils = require('@iobroker/adapter-core');
+const { runInThisContext } = require('vm');
 const wolfsmartset = require(__dirname + '/lib/wss');
 
 const pollIntervall = 15000; //10 Sekunden
 let pollTimeout = null;
 let device = {};
 let ValList = [];
+let ParamObjList = [];
 let objects = {};
 
 class WolfSmartset extends utils.Adapter {
@@ -31,10 +33,17 @@ class WolfSmartset extends utils.Adapter {
 	 */
 	async onReady() {
 		this.subscribeStates('*');
+		this.onlinePoll = 0;
+
 		try {
 			device = JSON.parse(this.config.devices)
 
-			if (this.config.user && this.config.password && this.config.user != '' && this.config.password != ''  && typeof(device.GatewayId) !== 'undefined' && typeof(device.Id) !== 'undefined') {
+			//parseWebFormat
+			if(typeof (device.Id) !== 'undefined'){
+				device.SystemId = device.Id
+			}
+
+			if (this.config.user && this.config.password && this.config.user != '' && this.config.password != '' && typeof (device.GatewayId) !== 'undefined' && typeof (device.SystemId) !== 'undefined') {
 				this.wss = new wolfsmartset(this.config.user, this.config.password, this);
 
 				//start main after timeout
@@ -48,61 +57,95 @@ class WolfSmartset extends utils.Adapter {
 
 		} catch (error) {
 			this.wss = new wolfsmartset('', '', this);
-			this.log.warn('Please configure user, password and device in config')
+			this.log.error('Please configure user, password and device in config')
 		}
 
 	}
 	async main() {
-		let GUIdesk = await this.wss.getGUIDescription(device.GatewayId, device.Id);
-		let paramList = await getParams(GUIdesk);
-		await this.CreateParams(paramList)
+		let GUIdesk = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
+		ParamObjList = await getParams(GUIdesk);
+		await this.CreateParams(ParamObjList)
 
-		// save objects
-		this.objects = await this.getForeignObjectsAsync(this.namespace + '.*')
-		this.log.debug(JSON.stringify(this.objects))
+		setTimeout(async () => {
+			this.objects = await this.getForeignObjectsAsync(this.namespace + '.*')
+			this.log.debug(JSON.stringify(this.objects))
 
-		this.PollValueList()
-
+			this.PollValueList()
+		}, 2000)
 
 		async function getParams(guiData) {
 			let param = [];
 
-			guiData.MenuItems.forEach(MenuItems => {
-				MenuItems.TabViews.forEach(TabViews => {
-					TabViews.ParameterDescriptors.forEach(ParameterDescriptors => {
-						param.push(ParameterDescriptors)
-					});
+			guiData.UserSystemOverviewData.forEach(UserSystemOverviewData => {
+				const tabName = UserSystemOverviewData.TabName
+
+				UserSystemOverviewData.ParameterDescriptors.forEach(ParameterDescriptors => {
+					let paramInfo = ParameterDescriptors
+
+					//search duplicate
+					const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
+
+					if (find) {
+						//this.log.debug('find double: ' + paramInfo.Name)
+					} else {
+						paramInfo.TabName = tabName
+						param.push(paramInfo)
+					}
+
 				});
 			});
 			return param;
 		}
 	}
 
-	async PollValueList(){
-		this.log.debug("start Poll")
+	async PollValueList() {
+		this.onlinePoll ++
+
 		clearTimeout(pollTimeout)
 		try {
-			let recValList = await this.wss.getValList(device.GatewayId, device.Id, ValList);
-			recValList.Values.forEach(recVal =>{
-				//this.log.debug("search:" + JSON.stringify(recVal));
+			let recValList = await this.wss.getValList(device.GatewayId, device.SystemId, ValList);
+			await this.SetStatesArray(recValList);
 
+			if(this.onlinePoll > 4){
+				this.onlinePoll = 0;
+
+				let systemStatus = await this.wss.getSystemState(device.SystemId);
+
+				if(typeof(systemStatus.IsOnline)!== 'undefined'){
+					this.setStateAsync('info.connection', {
+						val: systemStatus.IsOnline,
+						ack: true
+					});
+				}
+			}
+
+		} catch (error) {
+			this.log.warn(error)
+		}
+		setTimeout(() => {
+			this.PollValueList()
+		}, pollIntervall)
+	}
+
+	async SetStatesArray(array) {
+		array.Values.forEach(recVal => {
+			//this.log.debug("search:" + JSON.stringify(recVal));
+
+			//find ParamId for ValueId
+			const findParamObj = ParamObjList.find(element => element.ValueId === recVal.ValueId);
+
+			if (findParamObj) {
 				for (let key in this.objects) {
-					if(this.objects[key].native.ValueId === recVal.ValueId) {
+					if (this.objects[key].native.ParameterId === findParamObj.ParameterId) {
 
 						if (typeof (recVal.Value) != 'undefined') this.setStateAsync(key, {
 							val: recVal.Value,
 							ack: true
 						});
 					}
-
-				  }
-			})
-
-
-		} catch (error) {
-			this.log.warn(error)
-		}
-		setTimeout(()=>{ this.PollValueList()},pollIntervall)
+				}
+			}
+		})
 	}
 
 
@@ -111,7 +154,6 @@ class WolfSmartset extends utils.Adapter {
 
 		paramArry.forEach(Value => {
 
-			that.log.debug('Create State for' + Value.Name)
 			let group = ''
 
 			if (Value.Group) group = Value.Group.replace(' ', '_') + '.'
@@ -139,19 +181,22 @@ class WolfSmartset extends utils.Adapter {
 			ValList.push(Value.ValueId)
 
 
-			this.genAndSetState(group + Value.ValueId, Value.ValueId, common, typeof (Value.Value) != 'undefined' ? Value.Value : null)
+			this.genAndSetState(Value.TabName + '.' + group + Value.ParameterId, Value, common)
 
 		})
 	}
-	async genAndSetState(name, id, common, value) {
+	async genAndSetState(name, paramObj, common) {
 
 		await this.setObjectNotExistsAsync(name, {
 			type: 'state',
 			common: common,
 			native: {
-				ValueId : id
+				ValueId: paramObj.ValueId,
+				ParameterId: paramObj.ParameterId
 			},
 		})
+
+		let value = typeof (paramObj.Value) != 'undefined' ? paramObj.Value : null;
 
 		if (typeof (value) != 'undefined') this.setStateAsync(name, {
 			val: value,
@@ -182,25 +227,30 @@ class WolfSmartset extends utils.Adapter {
 	 * @param {ioBroker.State | null | undefined} state
 	 */
 	async onStateChange(id, state) {
-        if (state && !state.ack) {
-            let ValId = id.split('.').pop();
-            let obj =   await this.getObjectAsync(id)
-			let stateName = obj.common.name
-			this.log.warn('Change value for: '+ stateName)
+		if (state && !state.ack) {
+			let ParamId = id.split('.').pop();
+			let obj = await this.getObjectAsync(id)
+
+			const findParamObj = ParamObjList.find(element => element.ParameterId === obj.native.ParameterId);
+			
+
+			this.log.warn('Change value for: ' + obj.common.name)
+
 			try {
-				let answer = await this.wss.setParameter(device.GatewayId, device.Id, [{
-					ValueId: ValId,
-					Value: state.val,
-					ParameterName: stateName
+				let answer = await this.wss.setParameter(device.GatewayId, device.SystemId, [{
+					ValueId: findParamObj.ValueId,
+					ParameterId: obj.native.ParameterId,
+					Value: String(state.val),
+					ParameterName: obj.common.name
 				}]);
-				if(typeof(answer.Dummy) !== 'undefined'){
+				if (typeof (answer.Values) !== 'undefined') {
 					this.setStateAsync(id, {
 						val: state.val,
 						ack: true
 					});
+					this.SetStatesArray(answer);
 				}
-			}
-			catch(err){
+			} catch (err) {
 				this.log.error(err)
 			}
 

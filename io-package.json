@@ -1,9 +1,9 @@
 {
 	"common": {
 		"name": "wolf-smartset",
-		"version": "0.1.2",
+		"version": "0.2.0",
 		"news": {
-			"0.1.2": {
+			"0.2.0": {
 				"en": "initial release",
 				"de": "Erstveröffentlichung",
 				"ru": "Начальная версия",
@@ -75,5 +75,25 @@
 		"option2": "42"
 	},
 	"objects": [],
-	"instanceObjects": []
+	"instanceObjects": [{
+		"_id": "info",
+		"type": "channel",
+		"common": {
+			"name": "Information"
+		},
+		"native": {}
+	},
+	{
+		"_id": "info.connection",
+		"type": "state",
+		"common": {
+			"role": "indicator.connected",
+			"name": "If connected to device or service",
+			"type": "boolean",
+			"read": true,
+			"write": false,
+			"def": false
+		},
+		"native": {}
+	}]
 }
