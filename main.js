@@ -33,7 +33,7 @@ class WolfSmartset extends utils.Adapter {
 	 */
 	async onReady() {
 		this.subscribeStates('*');
-		this.onlinePoll = 0;
+		this.onlinePoll = 4;
 
 		try {
 			device = JSON.parse(this.config.devices)
@@ -109,8 +109,7 @@ class WolfSmartset extends utils.Adapter {
 			if(this.onlinePoll > 4){
 				this.onlinePoll = 0;
 
-				let systemStatus = await this.wss.getSystemState(device.SystemId);
-
+				let systemStatus = await this.wss.getSystemState(parseInt(device.SystemId));
 				if(typeof(systemStatus.IsOnline)!== 'undefined'){
 					this.setStateAsync('info.connection', {
 						val: systemStatus.IsOnline,
