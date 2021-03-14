@@ -62,6 +62,8 @@ class WolfSmartset extends utils.Adapter {
 
 	}
 	async main() {
+		await this.wss.init();
+		
 		let GUIdesk = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
 		ParamObjList = await getParams(GUIdesk);
 		await this.CreateParams(ParamObjList)
