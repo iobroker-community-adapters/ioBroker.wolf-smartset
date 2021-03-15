@@ -66,13 +66,15 @@
 		"messagebox": true,
 		"dependencies": [
 			{
-				"js-controller": ">=2.0.0"
+				"js-controller": ">=3.1.0"
 			}
 		]
 	},
+	"encryptedNative": ["password"],
+    "protectedNative": ["password"],
 	"native": {
-		"option1": true,
-		"option2": "42"
+		"user": "",
+		"password": ""
 	},
 	"objects": [],
 	"instanceObjects": [{
