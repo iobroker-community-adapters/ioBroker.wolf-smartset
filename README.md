@@ -17,6 +17,8 @@ Connect Wolf cloud to IoBroker
 ## WIP
 
 ## Changelog
+### 0.2.2 (26.03.2021)
+* (MeisterTR) fix timeouts, fix conection
 ### 0.2.1
 * (MeisterTR) Rebuild api and objects, breaking change
 ### 0.1.2

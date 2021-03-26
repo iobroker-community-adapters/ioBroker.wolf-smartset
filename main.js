@@ -1,11 +1,10 @@
 'use strict';
 
 const utils = require('@iobroker/adapter-core');
-const { runInThisContext } = require('vm');
 const wolfsmartset = require(__dirname + '/lib/wss');
 
 const pollIntervall = 15000; //10 Sekunden
-let pollTimeout = null;
+let timeoutHandler = [];
 let device = {};
 let ValList = [];
 let ParamObjList = [];
@@ -34,22 +33,21 @@ class WolfSmartset extends utils.Adapter {
 	async onReady() {
 		this.subscribeStates('*');
 		this.onlinePoll = 4;
+		this.emptyCount = 0;
 
 		try {
 			device = JSON.parse(this.config.devices)
 
 			//parseWebFormat
-			if(typeof (device.Id) !== 'undefined'){
+			if (typeof (device.Id) !== 'undefined') {
 				device.SystemId = device.Id
 			}
 
 			if (this.config.user && this.config.password && this.config.user != '' && this.config.password != '' && typeof (device.GatewayId) !== 'undefined' && typeof (device.SystemId) !== 'undefined') {
 				this.wss = new wolfsmartset(this.config.user, this.config.password, this);
 
-				//start main after timeout
-				setTimeout(() => {
-					this.main()
-				}, 1000);
+				this.main()
+
 			} else {
 				this.wss = new wolfsmartset('', '', this);
 				this.log.warn('Please configure user, password and device in config')
@@ -63,12 +61,16 @@ class WolfSmartset extends utils.Adapter {
 	}
 	async main() {
 		await this.wss.init();
-		
+
+		// clear timeout if exist
+		if(timeoutHandler['startTimeout']) clearTimeout(timeoutHandler['startTimeout'])
+
 		let GUIdesk = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
 		ParamObjList = await getParams(GUIdesk);
 		await this.CreateParams(ParamObjList)
 
-		setTimeout(async () => {
+		//need 2 seconds to detect the new objects
+		 timeoutHandler['startTimeout'] =  setTimeout(async () => {
 			this.objects = await this.getForeignObjectsAsync(this.namespace + '.*')
 			this.log.debug(JSON.stringify(this.objects))
 
@@ -101,18 +103,19 @@ class WolfSmartset extends utils.Adapter {
 	}
 
 	async PollValueList() {
-		this.onlinePoll ++
+		this.onlinePoll++
 
-		clearTimeout(pollTimeout)
+		if(timeoutHandler['pollTimeout']) clearTimeout(timeoutHandler['pollTimeout'])
+
 		try {
 			let recValList = await this.wss.getValList(device.GatewayId, device.SystemId, ValList);
 			await this.SetStatesArray(recValList);
 
-			if(this.onlinePoll > 4){
+			if (this.onlinePoll > 4) {
 				this.onlinePoll = 0;
 
 				let systemStatus = await this.wss.getSystemState(parseInt(device.SystemId));
-				if(typeof(systemStatus.IsOnline)!== 'undefined'){
+				if (typeof (systemStatus.IsOnline) !== 'undefined') {
 					this.setStateAsync('info.connection', {
 						val: systemStatus.IsOnline,
 						ack: true
@@ -123,12 +126,22 @@ class WolfSmartset extends utils.Adapter {
 		} catch (error) {
 			this.log.warn(error)
 		}
-		setTimeout(() => {
+		timeoutHandler['pollTimeout'] = setTimeout(() => {
 			this.PollValueList()
 		}, pollIntervall)
 	}
 
 	async SetStatesArray(array) {
+		if(array.Values.length === 0 ) this.emptyCount ++
+		else this.emptyCount = 0;
+
+		if(this.emptyCount >= 10){
+			// no data for long time try a restart
+			this.emptyCount = 0;
+			this.main();
+			return
+		}
+
 		array.Values.forEach(recVal => {
 			//this.log.debug("search:" + JSON.stringify(recVal));
 
@@ -212,7 +225,8 @@ class WolfSmartset extends utils.Adapter {
 	 */
 	onUnload(callback) {
 		try {
-			clearTimeout(pollTimeout);
+			if(timeoutHandler['pollTimeout']) clearTimeout(timeoutHandler['pollTimeout'])
+			if(timeoutHandler['startTimeout']) clearTimeout(timeoutHandler['startTimeout'])
 			this.wss.stop();
 
 			callback();
@@ -233,7 +247,7 @@ class WolfSmartset extends utils.Adapter {
 			let obj = await this.getObjectAsync(id)
 
 			const findParamObj = ParamObjList.find(element => element.ParameterId === obj.native.ParameterId);
-			
+
 
 			this.log.warn('Change value for: ' + obj.common.name)
 
