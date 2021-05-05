@@ -1,5 +1,6 @@
 ![Logo](admin/wolf-smartset.png)
 # ioBroker.wolf-smartset
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://www.paypal.com/paypalme/MeisterTR)
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.wolf-smartset.svg)](https://www.npmjs.com/package/iobroker.wolf-smartset)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.wolf-smartset.svg)](https://www.npmjs.com/package/iobroker.wolf-smartset)
@@ -11,10 +12,13 @@
 [![NPM](https://nodei.co/npm/iobroker.wolf-smartset.png?downloads=true)](https://nodei.co/npm/iobroker.wolf-smartset/)
 
 ## wolf-smartset adapter for ioBroker
+Connect your Wolf Heating to iobroker. This adapter connected to to the wolf-smartset cloud. This is not a local connection. The benefit is that you can use the Wolf-smartset app and unse the data in iobroker.
 
-Connect Wolf cloud to IoBroker
+## Hardware
+You need a ISM7I Module or others which are compatible with the wolf-smartset app.
 
-## WIP
+## Login
+To login you only need your username and password from your smartset-app. After you click on "get devices" you can select your heating. Thats it.
 
 ## Changelog
 ### 0.2.2 (26.03.2021)

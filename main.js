@@ -153,7 +153,7 @@ class WolfSmartset extends utils.Adapter {
 					if (this.objects[key].native.ParameterId === findParamObj.ParameterId) {
 
 						if (typeof (recVal.Value) != 'undefined') this.setStateAsync(key, {
-							val: recVal.Value,
+							val: parseFloat(recVal.Value),
 							ack: true
 						});
 					}
@@ -213,7 +213,7 @@ class WolfSmartset extends utils.Adapter {
 		let value = typeof (paramObj.Value) != 'undefined' ? paramObj.Value : null;
 
 		if (typeof (value) != 'undefined') this.setStateAsync(name, {
-			val: value,
+			val: parseFloat(value),
 			ack: true
 		});
 
