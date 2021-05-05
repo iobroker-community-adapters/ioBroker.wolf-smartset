@@ -1,9 +1,9 @@
 {
 	"common": {
 		"name": "wolf-smartset",
-		"version": "0.2.2",
+		"version": "0.2.3",
 		"news": {
-			"0.2.2": {
+			"0.2.3": {
 				"en": "initial release",
 				"de": "Erstveröffentlichung",
 				"ru": "Начальная версия",
@@ -64,6 +64,11 @@
 		"dataSource": "poll",
 		"materialize": true,
 		"messagebox": true,
+		"globalDependencies": [
+            {
+                "admin": ">=4.0.9"
+            }
+        ],
 		"dependencies": [
 			{
 				"js-controller": ">=3.1.0"

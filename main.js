@@ -31,7 +31,6 @@ class WolfSmartset extends utils.Adapter {
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
-		this.subscribeStates('*');
 		this.onlinePoll = 4;
 		this.emptyCount = 0;
 
@@ -100,6 +99,7 @@ class WolfSmartset extends utils.Adapter {
 			});
 			return param;
 		}
+		this.subscribeStates('*');
 	}
 
 	async PollValueList() {
