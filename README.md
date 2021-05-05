@@ -12,7 +12,7 @@
 [![NPM](https://nodei.co/npm/iobroker.wolf-smartset.png?downloads=true)](https://nodei.co/npm/iobroker.wolf-smartset/)
 
 ## wolf-smartset adapter for ioBroker
-Connect your Wolf Heating to iobroker. This adapter connected to to the wolf-smartset cloud. This is not a local connection. The benefit is that you can use the Wolf-smartset app and unse the data in iobroker.
+Connect your Wolf Heating to iobroker. This adapter connected to to the wolf-smartset cloud. This is not a local connection. The benefit is that you can use the Wolf-smartset app and also the data in iobroker.
 
 ## Hardware
 You need a ISM7I Module or others which are compatible with the wolf-smartset app.
