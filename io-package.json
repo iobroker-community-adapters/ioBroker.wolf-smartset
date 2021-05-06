@@ -1,8 +1,20 @@
 {
 	"common": {
 		"name": "wolf-smartset",
-		"version": "0.2.3",
+		"version": "0.2.4",
 		"news": {
+			"0.2.4":{
+				"en": "added sentry",
+				"de": "Wachposten hinzugefügt",
+				"ru": "добавлен часовой",
+				"pt": "adicionado sentinela",
+				"nl": "toegevoegde schildwacht",
+				"fr": "sentinelle ajoutée",
+				"it": "ha aggiunto la sentinella",
+				"es": "centinela añadido",
+				"pl": "dodany wartownik",
+				"zh-cn": "添加哨兵"
+			  },
 			"0.2.3": {
 				"en": "initial release",
 				"de": "Erstveröffentlichung",
@@ -64,6 +76,11 @@
 		"dataSource": "poll",
 		"materialize": true,
 		"messagebox": true,
+		"plugins": {
+            "sentry": {
+                "dsn": "https://a9218dbd5539461fae687736e804c590@sentry.iobroker.net/129"
+            }
+        },
 		"globalDependencies": [
             {
                 "admin": ">=4.0.9"
