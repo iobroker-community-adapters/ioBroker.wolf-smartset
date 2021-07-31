@@ -1,123 +1,141 @@
 {
-	"common": {
-		"name": "wolf-smartset",
-		"version": "0.2.4",
-		"news": {
-			"0.2.4":{
-				"en": "added sentry",
-				"de": "Wachposten hinzugefügt",
-				"ru": "добавлен часовой",
-				"pt": "adicionado sentinela",
-				"nl": "toegevoegde schildwacht",
-				"fr": "sentinelle ajoutée",
-				"it": "ha aggiunto la sentinella",
-				"es": "centinela añadido",
-				"pl": "dodany wartownik",
-				"zh-cn": "添加哨兵"
-			  },
-			"0.2.3": {
-				"en": "initial release",
-				"de": "Erstveröffentlichung",
-				"ru": "Начальная версия",
-				"pt": "lançamento inicial",
-				"nl": "Eerste uitgave",
-				"fr": "Première version",
-				"it": "Versione iniziale",
-				"es": "Versión inicial",
-				"pl": "Pierwsze wydanie",
-				"zh-cn": "首次出版"
-			}
-		},
-		"title": "Wolf SmartSet",
-		"titleLang": {
-			"en": "Wolf SmartSet",
-			"de": "Wolf SmartSet",
-			"ru": "Wolf SmartSet",
-			"pt": "Wolf SmartSet",
-			"nl": "Wolf SmartSet",
-			"fr": "Wolf SmartSet",
-			"it": "Wolf SmartSet",
-			"es": "Wolf SmartSet",
-			"pl": "Wolf SmartSet",
-			"zh-cn": "狼SmartSet"
-		},
-		"desc": {
-			"en": "Connect Wolf cloud to IoBroker",
-			"de": "Verbinden Sie die Wolf Cloud mit IoBroker",
-			"ru": "Подключите облако Wolf к IoBroker",
-			"pt": "Conecte a nuvem Wolf ao IoBroker",
-			"nl": "Verbind Wolf-cloud met IoBroker",
-			"fr": "Connectez Wolf Cloud à IoBroker",
-			"it": "Connetti il ​​cloud Wolf a IoBroker",
-			"es": "Conecte la nube Wolf a IoBroker",
-			"pl": "Połącz chmurę Wolfa z IoBrokerem",
-			"zh-cn": "将Wolf云连接到IoBroker"
-		},
-		"authors": [
-			"MeisterTR <meistertr.smarthome@gmail.com>"
-		],
-		"keywords": [
-			"wolf",
-			"heating",
-			"cloud"
-		],
-		"license": "MIT",
-		"platform": "Javascript/Node.js",
-		"main": "main.js",
-		"icon": "wolf-smartset.png",
-		"enabled": true,
-		"extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wolf-smartset/master/admin/wolf-smartset.png",
-		"readme": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset/blob/master/README.md",
-		"loglevel": "info",
-		"mode": "daemon",
-		"type": "climate-control",
-		"compact": true,
-		"connectionType": "cloud",
-		"dataSource": "poll",
-		"materialize": true,
-		"messagebox": true,
-		"plugins": {
+    "common": {
+        "name": "wolf-smartset",
+        "version": "1.0.0",
+        "news": {
+            "1.0.0": {
+                "en": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3,IOBROKER-WOLF-SMARTSET-4\nChange api from app data to Web PEASE DELETE ADAPTER AND REINSTALL OR DELETE ALL OBJECTS\nadded \"FACHMANN\" states",
+                "de": "Wachposten fixieren: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nÄndere die API von App-Daten zu Web. BITTE ADAPTER LÖSCHEN UND ALLE OBJEKTE NEU INSTALLIEREN ODER LÖSCHEN\nhinzugefügt \"FACHMANN\" heißt es",
+                "ru": "исправить Sentry: IOBROKER-WOLF-SMARTSET-6, IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7, IOBROKER-WOLF-SMARTSET-8, IOBROKER-WOLF-SMARTSET-1, IOBROKER-WOLF-SMARTSET-1, IOBROKER-WOLF-SMARTSET-1, IOBROKER-3 , ИОБРОКЕР-ВОЛК-СМАРЦЕТ-4\nИзмените api с данных приложения на Web PEASE УДАЛИТЬ АДАПТЕР И ПЕРЕУСТАНОВИТЬ ИЛИ УДАЛИТЬ ВСЕ ОБЪЕКТЫ\nдобавлены состояния \"FACHMANN\"",
+                "pt": "corrigir Sentinela: IOBROKER-WOLF-SMARTSET-6, IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7, IOBROKER-WOLF-SMARTSET-8, IOBROKER-WOLF-SMARTSET-1, IOBROKER-3 , IOBROKER-WOLF-SMARTSET-4\nAltere a API de dados do aplicativo para Web PEASE DELETE ADAPTER E REINSTALE OU DELETE TODOS OS OBJETOS\nadicionados estados \"FACHMANN\"",
+                "nl": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nVerander api van app-gegevens naar web PEASE VERWIJDER ADAPTER EN INSTALLEER OF VERWIJDER ALLE OBJECTEN\ntoegevoegd \"FACHMANN\" staten",
+                "fr": "Fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nChangez l'API des données de l'application en Web PEASE SUPPRIMER L'ADAPTATEUR ET RÉINSTALLER OU SUPPRIMER TOUS LES OBJETS\najout des états \"FACHMANN\"",
+                "it": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nCambia l'API dai dati dell'app a Web PEASE ELIMINA ADATTATORE E REINSTALLA O ELIMINA TUTTI GLI OGGETTI\naggiunti gli stati \"FACHMANN\"",
+                "es": "arreglar Sentry: IOBROKER-WOLF-SMARTSET-6, IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7, IOBROKER-WOLF-SMARTSET-8, IOBROKER-WOLF-SMARTSET-1, IOBROKER-SMARTSET-WOLFERTSET-1 , IOBROKER-WOLF-SMARTSET-4\nCambie la API de los datos de la aplicación a Web PEASE ELIMINAR EL ADAPTADOR Y REINSTALAR O ELIMINAR TODOS LOS OBJETOS\nestados agregados \"FACHMANN\"",
+                "pl": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nZmień api z danych aplikacji na Web PEASE USUŃ ADAPTER I PONOWNIE ZAINSTALUJ LUB USUŃ WSZYSTKIE OBIEKTY\ndodano stany „FACHMANN”",
+                "zh-cn": "修复哨兵：IOBROKER-WOLF-SMARTSET-6、IOBROKER-WOLF-SMARTSET-5、IOBROKER-WOLF-SMARTSET-7、IOBROKER-WOLF-SMARTSET-8、IOBROKER-WOLF-SMARTSET-1、IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\n将 api 从应用程序数据更改为 Web PEASE DELETE ADAPTER and REINSTALL OR DELETE ALL OBJECTS\n添加了“FACHMANN”状态"
+            },
+            "0.2.4": {
+                "en": "added sentry",
+                "de": "Wachposten hinzugefügt",
+                "ru": "добавлен часовой",
+                "pt": "adicionado sentinela",
+                "nl": "toegevoegde schildwacht",
+                "fr": "sentinelle ajoutée",
+                "it": "ha aggiunto la sentinella",
+                "es": "centinela añadido",
+                "pl": "dodany wartownik",
+                "zh-cn": "添加哨兵"
+            },
+            "0.2.3": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "zh-cn": "首次出版"
+            }
+        },
+        "title": "Wolf SmartSet",
+        "titleLang": {
+            "en": "Wolf SmartSet",
+            "de": "Wolf SmartSet",
+            "ru": "Wolf SmartSet",
+            "pt": "Wolf SmartSet",
+            "nl": "Wolf SmartSet",
+            "fr": "Wolf SmartSet",
+            "it": "Wolf SmartSet",
+            "es": "Wolf SmartSet",
+            "pl": "Wolf SmartSet",
+            "zh-cn": "狼SmartSet"
+        },
+        "desc": {
+            "en": "Connect Wolf cloud to IoBroker",
+            "de": "Verbinden Sie die Wolf Cloud mit IoBroker",
+            "ru": "Подключите облако Wolf к IoBroker",
+            "pt": "Conecte a nuvem Wolf ao IoBroker",
+            "nl": "Verbind Wolf-cloud met IoBroker",
+            "fr": "Connectez Wolf Cloud à IoBroker",
+            "it": "Connetti il ​​cloud Wolf a IoBroker",
+            "es": "Conecte la nube Wolf a IoBroker",
+            "pl": "Połącz chmurę Wolfa z IoBrokerem",
+            "zh-cn": "将Wolf云连接到IoBroker"
+        },
+        "authors": [
+            "MeisterTR <meistertr.smarthome@gmail.com>"
+        ],
+        "keywords": [
+            "wolf",
+            "heating",
+            "cloud"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "wolf-smartset.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wolf-smartset/master/admin/wolf-smartset.png",
+        "readme": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset/blob/master/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "climate-control",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "materialize": true,
+        "messagebox": true,
+        "plugins": {
             "sentry": {
                 "dsn": "https://a9218dbd5539461fae687736e804c590@sentry.iobroker.net/129"
             }
         },
-		"globalDependencies": [
+        "globalDependencies": [
             {
                 "admin": ">=4.0.9"
             }
         ],
-		"dependencies": [
-			{
-				"js-controller": ">=3.1.0"
-			}
-		]
-	},
-	"encryptedNative": ["password"],
-    "protectedNative": ["password"],
-	"native": {
-		"user": "",
-		"password": ""
-	},
-	"objects": [],
-	"instanceObjects": [{
-		"_id": "info",
-		"type": "channel",
-		"common": {
-			"name": "Information"
-		},
-		"native": {}
-	},
-	{
-		"_id": "info.connection",
-		"type": "state",
-		"common": {
-			"role": "indicator.connected",
-			"name": "If connected to device or service",
-			"type": "boolean",
-			"read": true,
-			"write": false,
-			"def": false
-		},
-		"native": {}
-	}]
+        "dependencies": [
+            {
+                "js-controller": ">=3.1.0"
+            }
+        ]
+    },
+    "encryptedNative": [
+        "password"
+    ],
+    "protectedNative": [
+        "password"
+    ],
+    "native": {
+        "user": "",
+        "password": ""
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "If connected to device or service",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
 }

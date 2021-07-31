@@ -21,7 +21,7 @@ You need a ISM7I Module or others which are compatible with the wolf-smartset ap
 To login you only need your username and password from your smartset-app. After you click on "get devices" you can select your heating. Thats it.
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 1.0.0 (2021-07-31)
 * (MeisterTR) fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3,IOBROKER-WOLF-SMARTSET-4
 * (MeisterTR) Change api from app data to Web PEASE DELETE ADAPTER AND REINSTALL OR DELETE ALL OBJECTS
 * (MEISTERTR) added "FACHMANN" states
