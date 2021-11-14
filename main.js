@@ -1,7 +1,7 @@
 'use strict';
 
 const utils = require('@iobroker/adapter-core');
-const wolfsmartset = require(__dirname + '/lib/wss');
+const wolfsmartset = require('./lib/wss');
 
 const pollIntervall = 15000; //10 Sekunden
 const timeoutHandler = [];
@@ -208,7 +208,7 @@ class WolfSmartset extends utils.Adapter {
 
 			if (findParamObj) {
 				for (const key in this.objects) {
-					if (this.objects[key].native.ParameterId === findParamObj.ParameterId) {
+					if (this.objects[key].native && this.objects[key].native.ParameterId === findParamObj.ParameterId) {
 
 						this.setStatesWithDiffTypes(this.objects[key].native.ControlType, key, recVal.Value);
 					}
@@ -330,30 +330,29 @@ class WolfSmartset extends utils.Adapter {
 		if (state && !state.ack) {
 			const ParamId = id.split('.').pop();
 			const obj = await this.getObjectAsync(id);
+			if (obj) {
+				const findParamObj = ParamObjList.find(element => element.ParameterId === obj.native.ParameterId);
 
-			const findParamObj = ParamObjList.find(element => element.ParameterId === obj.native.ParameterId);
+				this.log.warn('Change value for: ' + obj.common.name);
 
-
-			this.log.warn('Change value for: ' + obj.common.name);
-
-			try {
-				const answer = await this.wss.setParameter(device.GatewayId, device.SystemId, [{
-					ValueId: findParamObj.ValueId,
-					ParameterId: obj.native.ParameterId,
-					Value: String(state.val),
-					ParameterName: obj.common.name
-				}]);
-				if (typeof (answer.Values) !== 'undefined') {
-					this.setStateAsync(id, {
-						val: state.val,
-						ack: true
-					});
-					this.SetStatesArray(answer);
+				try {
+					const answer = await this.wss.setParameter(device.GatewayId, device.SystemId, [{
+						ValueId: findParamObj.ValueId,
+						ParameterId: obj.native.ParameterId,
+						Value: String(state.val),
+						ParameterName: obj.common.name
+					}]);
+					if (typeof (answer.Values) !== 'undefined') {
+						this.setStateAsync(id, {
+							val: state.val,
+							ack: true
+						});
+						this.SetStatesArray(answer);
+					}
+				} catch (err) {
+					this.log.error(err);
 				}
-			} catch (err) {
-				this.log.error(err);
 			}
-
 		}
 	}
 
