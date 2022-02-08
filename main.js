@@ -59,11 +59,11 @@ class WolfSmartset extends utils.Adapter {
 	}
 	async main() {
 
-		this.config.pingInterval = parseInt(this.config.pingInterval, 10) || 20000;
+		this.config.pingInterval = parseInt(this.config.pingInterval, 10) || 15;
 
 		// Abfrageintervall mindestens 10 sec.
-		if (this.config.pingInterval < 15000) {
-			this.config.pingInterval = 15000;
+		if (this.config.pingInterval < 15) {
+			this.config.pingInterval = 15;
 		}
 
 		await this.wss.init();
@@ -193,7 +193,7 @@ class WolfSmartset extends utils.Adapter {
 		}
 		timeoutHandler['pollTimeout'] = setTimeout(() => {
 			this.PollValueList();
-		}, this.config.pingInterval);
+		}, this.config.pingInterval*1000);
 	}
 
 	async SetStatesArray(array) {
