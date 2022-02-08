@@ -112,7 +112,8 @@
     ],
     "native": {
         "user": "",
-        "password": ""
+        "password": "",
+        "pingInterval": 15
     },
     "objects": [],
     "instanceObjects": [

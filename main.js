@@ -3,7 +3,6 @@
 const utils = require('@iobroker/adapter-core');
 const wolfsmartset = require('./lib/wss');
 
-const pollIntervall = 15000; //10 Sekunden
 const timeoutHandler = [];
 let device = {};
 const ValList = [];
@@ -59,6 +58,14 @@ class WolfSmartset extends utils.Adapter {
 
 	}
 	async main() {
+
+		this.config.pingInterval = parseInt(this.config.pingInterval, 10) || 20000;
+
+		// Abfrageintervall mindestens 10 sec.
+		if (this.config.pingInterval < 15000) {
+			this.config.pingInterval = 15000;
+		}
+
 		await this.wss.init();
 
 		// clear timeout if exist
@@ -186,7 +193,7 @@ class WolfSmartset extends utils.Adapter {
 		}
 		timeoutHandler['pollTimeout'] = setTimeout(() => {
 			this.PollValueList();
-		}, pollIntervall);
+		}, this.config.pingInterval);
 	}
 
 	async SetStatesArray(array) {
