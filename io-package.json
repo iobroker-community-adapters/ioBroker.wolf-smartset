@@ -86,6 +86,7 @@
         "compact": true,
         "connectionType": "cloud",
         "dataSource": "poll",
+        "tier": 2,
         "materialize": true,
         "messagebox": true,
         "plugins": {

@@ -267,7 +267,7 @@ class WolfSmartset extends utils.Adapter {
 				type: 'number',
 				role: 'value',
 				read: true,
-				write: WolfObj.IsReadOnly ? false : true,
+				write: !WolfObj.IsReadOnly,
 			};
 			if (WolfObj.ControlType === 5) { //Boolean text
 				common.type = 'boolean';
@@ -277,11 +277,11 @@ class WolfSmartset extends utils.Adapter {
 				common.role = 'text';
 			} else {
 
-				if (typeof (WolfObj.Unit) != 'undefined') common.unit = WolfObj.Unit;
-				if (typeof (WolfObj.MinValue) != 'undefined') common.min = WolfObj.MinValue;
-				if (typeof (WolfObj.MaxValue) != 'undefined') common.max = WolfObj.MaxValue;
-				if (typeof (WolfObj.StepWidth) != 'undefined') common.step = WolfObj.StepWidth;
-				if (typeof (WolfObj.ListItems) != 'undefined') {
+				if (typeof (WolfObj.Unit) !== 'undefined') common.unit = WolfObj.Unit;
+				if (typeof (WolfObj.MinValue) !== 'undefined') common.min = WolfObj.MinValue;
+				if (typeof (WolfObj.MaxValue) !== 'undefined') common.max = WolfObj.MaxValue;
+				if (typeof (WolfObj.StepWidth) !== 'undefined') common.step = WolfObj.StepWidth;
+				if (typeof (WolfObj.ListItems) !== 'undefined') {
 					const states = {};
 					WolfObj.ListItems.forEach(ListItems => {
 						states[ListItems.Value] = ListItems.DisplayText;
@@ -293,7 +293,9 @@ class WolfSmartset extends utils.Adapter {
 			// gereate ValueList for Polling
 			ValList.push(WolfObj.ValueId);
 
-			await this.setObjectNotExistsAsync(id, {
+			this.log.debug(`WolfObj ${JSON.stringify(WolfObj)} --> ioBrokerObj.common ${JSON.stringify(common)}`);
+
+			await this.extendObjectAsync(id, {
 				type: 'state',
 				common: common,
 				native: {
@@ -307,7 +309,6 @@ class WolfSmartset extends utils.Adapter {
 		}));
 
 		this.log.debug('create states DONE');
-		return;
 	}
 
 	/**
@@ -340,7 +341,7 @@ class WolfSmartset extends utils.Adapter {
 			if (obj) {
 				const findParamObj = ParamObjList.find(element => element.ParameterId === obj.native.ParameterId);
 
-				this.log.warn('Change value for: ' + obj.common.name);
+				this.log.info(`Change value for: ${obj.common.name}: ${JSON.stringify(state)}`);
 
 				try {
 					const answer = await this.wss.setParameter(device.GatewayId, device.SystemId, [{
