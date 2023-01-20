@@ -85,7 +85,7 @@
 					password: pass,
 					username: user,
 				}, function (result) {
-					console.log('result recive?!');
+					console.log('result received?!');
 					clearTimeout(timeout);
 
 					console.log(JSON.stringify(result));
@@ -94,7 +94,7 @@
 
 					var arr = result;
 
-					if (arr.error) {
+					if (!arr || arr.error) {
 						showToast(_('ERROR: ' + JSON.stringify(arr.error)));
 						return;
 					}
