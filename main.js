@@ -262,11 +262,14 @@ class WolfSmartset extends utils.Adapter {
 
 	async CreateParams(paramArry) {
 
-		await Promise.all(paramArry.map(async (WolfObj) => {
+		const collectedChannels = {};
+
+		for (const WolfObj of paramArry) {
 			let group = '';
 			let id = '';
 
 			if (WolfObj.Group) group = WolfObj.Group.replace(' ', '_') + '.';
+			collectedChannels[WolfObj.TabName + '.' + group] = true;
 			id = WolfObj.TabName + '.' + group + WolfObj.ParameterId;
 
 			const common = {
@@ -312,8 +315,41 @@ class WolfSmartset extends utils.Adapter {
 				},
 			});
 			await this.setStatesWithDiffTypes(WolfObj.ControlType, id, WolfObj.Value);
+		}
 
-		}));
+		const createdObjects = {};
+		for (let channel of Object.keys(collectedChannels)) {
+			channel = channel.substring(0, channel.length - 1);
+			const name = channel.split('.').pop();
+			await this.extendObjectAsync(channel, {
+				type: 'channel',
+				common: {
+					name
+				},
+				native: {}
+			});
+			createdObjects[channel] = true;
+			this.log.debug(`Create channel ${channel}`);
+			const channelParts = channel.split('.');
+			let id = channelParts.shift() || '';
+			let folderName = id;
+			while (id && channelParts.length > 0) {
+				if (!createdObjects[id]) {
+					await this.extendObjectAsync(id, {
+						type: 'folder',
+						common: {
+							name: folderName
+						},
+						native: {}
+					});
+					this.log.debug(`Create folder ${id}`);
+					createdObjects[id] = true;
+				}
+				folderName = channelParts.shift() || '';
+				if (!folderName) break;
+				id += '.' + folderName;
+			}
+		}
 
 		this.log.debug('create states DONE');
 	}

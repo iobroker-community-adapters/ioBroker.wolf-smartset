@@ -25,6 +25,7 @@ To login you only need your username and password from your smartset-app. After 
 * (Apollon77) Adjusted to new Login procedure
 * (Apollon77) Tokens are now stored and tried to be refreshed automatically
 * (Apollon77) Errors in session updates will try to create new session or authenticate anew
+* (Apollon77) Generates folder and channel structures for created states
 * (Apollon77) Fix some more crash cases
 * (Apollon77) make sure adapter is stopped correctly in all cases
 
