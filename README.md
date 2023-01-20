@@ -1,6 +1,5 @@
 ![Logo](admin/wolf-smartset.png)
 # ioBroker.wolf-smartset
-[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://www.paypal.com/paypalme/MeisterTR)
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.wolf-smartset.svg)](https://www.npmjs.com/package/iobroker.wolf-smartset)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.wolf-smartset.svg)](https://www.npmjs.com/package/iobroker.wolf-smartset)
