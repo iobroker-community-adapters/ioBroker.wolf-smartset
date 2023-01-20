@@ -41,10 +41,11 @@ class WolfSmartset extends utils.Adapter {
 				device.SystemId = device.Id;
 			}
 
-			if (this.config.user && this.config.password && this.config.user != '' && this.config.password != '' && typeof (device.GatewayId) !== 'undefined' && typeof (device.SystemId) !== 'undefined') {
+			if (this.config.user && this.config.password && this.config.user !== '' && this.config.password !== '' && typeof (device.GatewayId) !== 'undefined' && typeof (device.SystemId) !== 'undefined') {
 				this.wss = new wolfsmartset(this.config.user, this.config.password, this);
+				await this.wss.openIdInit();
 
-				this.main();
+				await this.main();
 
 			} else {
 				this.wss = new wolfsmartset('', '', this);
@@ -54,6 +55,7 @@ class WolfSmartset extends utils.Adapter {
 		} catch (error) {
 			this.wss = new wolfsmartset('', '', this);
 			this.log.error('Please configure user, password and device in config');
+			this.log.error(error.stack);
 		}
 
 	}
@@ -61,35 +63,33 @@ class WolfSmartset extends utils.Adapter {
 
 		this.config.pingInterval = parseInt(this.config.pingInterval, 10) || 15;
 
-		// Abfrageintervall mindestens 10 sec.
+		// Abfrageintervall mindestens 15 sec.
 		if (this.config.pingInterval < 15) {
 			this.config.pingInterval = 15;
 		}
 
 		await this.wss.init();
 
-		// clear timeout if exist
-		if (timeoutHandler['startTimeout']) clearTimeout(timeoutHandler['startTimeout']);
-
 		try {
 			const GUIdesk = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
-			if (GUIdesk != null) ParamObjList = await getParamsWebGui(GUIdesk);
-			if (ParamObjList != null) await this.CreateParams(ParamObjList);
+			if (GUIdesk) {
+				ParamObjList = await getParamsWebGui(GUIdesk) || [];
+			}
+			if (ParamObjList) {
+				await this.CreateParams(ParamObjList);
+			}
 
-			//need 2 seconds to detect the new objects
-			timeoutHandler['startTimeout'] = setTimeout(async () => {
-				this.objects = await this.getForeignObjectsAsync(this.namespace + '.*');
-				this.log.debug(JSON.stringify(this.objects));
+			this.objects = await this.getForeignObjectsAsync(this.namespace + '.*');
+			this.log.debug(JSON.stringify(this.objects));
 
-				this.PollValueList();
-			}, 2000);
-
+			await this.PollValueList();
 		} catch (error) {
 			this.log.warn(error);
-			this.log.warn('Try again in 10 sek.');
+			this.log.warn('Try again in 60 sek.');
+			if (timeoutHandler['restartTimeout']) clearTimeout(timeoutHandler['restartTimeout']);
 			timeoutHandler['restartTimeout'] = setTimeout(async () => {
 				this.main();
-			}, 10000);
+			}, 60000);
 		}
 
 		//find Parameter for App Objects
@@ -174,15 +174,22 @@ class WolfSmartset extends utils.Adapter {
 
 		try {
 			const recValList = await this.wss.getValList(device.GatewayId, device.SystemId, ValList);
-			await this.SetStatesArray(recValList);
+			if (recValList) {
+				await this.SetStatesArray(recValList);
+			}
 
 			if (this.onlinePoll > 4) {
 				this.onlinePoll = 0;
 
 				const systemStatus = await this.wss.getSystemState(parseInt(device.SystemId));
-				if (typeof (systemStatus.IsOnline) !== 'undefined') {
-					this.setStateAsync('info.connection', {
+				if (systemStatus && typeof (systemStatus.IsOnline) !== 'undefined') {
+					await this.setStateAsync('info.connection', {
 						val: systemStatus.IsOnline,
+						ack: true
+					});
+				} else {
+					await this.setStateAsync('info.connection', {
+						val: false,
 						ack: true
 					});
 				}
@@ -193,7 +200,7 @@ class WolfSmartset extends utils.Adapter {
 		}
 		timeoutHandler['pollTimeout'] = setTimeout(() => {
 			this.PollValueList();
-		}, this.config.pingInterval*1000);
+		}, this.config.pingInterval * 1000);
 	}
 
 	async SetStatesArray(array) {
@@ -297,7 +304,7 @@ class WolfSmartset extends utils.Adapter {
 
 			await this.extendObjectAsync(id, {
 				type: 'state',
-				common: common,
+				common,
 				native: {
 					ValueId: WolfObj.ValueId,
 					ParameterId: WolfObj.ParameterId,
@@ -351,11 +358,11 @@ class WolfSmartset extends utils.Adapter {
 						ParameterName: obj.common.name
 					}]);
 					if (typeof (answer.Values) !== 'undefined') {
-						this.setStateAsync(id, {
+						await this.setStateAsync(id, {
 							val: state.val,
 							ack: true
 						});
-						this.SetStatesArray(answer);
+						await this.SetStatesArray(answer);
 					}
 				} catch (err) {
 					this.log.error(err);

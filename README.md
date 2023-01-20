@@ -23,6 +23,8 @@ To login you only need your username and password from your smartset-app. After 
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* (Apollon77) Adjusted to new Login procedure
+* (Apollon77) Tokens are now stored and tried to be refreshed automatically
 * (Apollon77) Fix some more crash cases
 * (Apollon77) make sure adapter is stopped correctly in all cases
 
