@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "wolf-smartset",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "news": {
             "1.0.0": {
                 "en": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3,IOBROKER-WOLF-SMARTSET-4\nChange api from app data to Web PEASE DELETE ADAPTER AND REINSTALL OR DELETE ALL OBJECTS\nadded \"FACHMANN\" states",
