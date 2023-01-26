@@ -1,143 +1,156 @@
 {
-    "common": {
-        "name": "wolf-smartset",
-        "version": "1.1.0",
-        "news": {
-            "1.0.0": {
-                "en": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3,IOBROKER-WOLF-SMARTSET-4\nChange api from app data to Web PEASE DELETE ADAPTER AND REINSTALL OR DELETE ALL OBJECTS\nadded \"FACHMANN\" states",
-                "de": "Wachposten fixieren: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nÄndere die API von App-Daten zu Web. BITTE ADAPTER LÖSCHEN UND ALLE OBJEKTE NEU INSTALLIEREN ODER LÖSCHEN\nhinzugefügt \"FACHMANN\" heißt es",
-                "ru": "исправить Sentry: IOBROKER-WOLF-SMARTSET-6, IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7, IOBROKER-WOLF-SMARTSET-8, IOBROKER-WOLF-SMARTSET-1, IOBROKER-WOLF-SMARTSET-1, IOBROKER-WOLF-SMARTSET-1, IOBROKER-3 , ИОБРОКЕР-ВОЛК-СМАРЦЕТ-4\nИзмените api с данных приложения на Web PEASE УДАЛИТЬ АДАПТЕР И ПЕРЕУСТАНОВИТЬ ИЛИ УДАЛИТЬ ВСЕ ОБЪЕКТЫ\nдобавлены состояния \"FACHMANN\"",
-                "pt": "corrigir Sentinela: IOBROKER-WOLF-SMARTSET-6, IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7, IOBROKER-WOLF-SMARTSET-8, IOBROKER-WOLF-SMARTSET-1, IOBROKER-3 , IOBROKER-WOLF-SMARTSET-4\nAltere a API de dados do aplicativo para Web PEASE DELETE ADAPTER E REINSTALE OU DELETE TODOS OS OBJETOS\nadicionados estados \"FACHMANN\"",
-                "nl": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nVerander api van app-gegevens naar web PEASE VERWIJDER ADAPTER EN INSTALLEER OF VERWIJDER ALLE OBJECTEN\ntoegevoegd \"FACHMANN\" staten",
-                "fr": "Fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nChangez l'API des données de l'application en Web PEASE SUPPRIMER L'ADAPTATEUR ET RÉINSTALLER OU SUPPRIMER TOUS LES OBJETS\najout des états \"FACHMANN\"",
-                "it": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nCambia l'API dai dati dell'app a Web PEASE ELIMINA ADATTATORE E REINSTALLA O ELIMINA TUTTI GLI OGGETTI\naggiunti gli stati \"FACHMANN\"",
-                "es": "arreglar Sentry: IOBROKER-WOLF-SMARTSET-6, IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7, IOBROKER-WOLF-SMARTSET-8, IOBROKER-WOLF-SMARTSET-1, IOBROKER-SMARTSET-WOLFERTSET-1 , IOBROKER-WOLF-SMARTSET-4\nCambie la API de los datos de la aplicación a Web PEASE ELIMINAR EL ADAPTADOR Y REINSTALAR O ELIMINAR TODOS LOS OBJETOS\nestados agregados \"FACHMANN\"",
-                "pl": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nZmień api z danych aplikacji na Web PEASE USUŃ ADAPTER I PONOWNIE ZAINSTALUJ LUB USUŃ WSZYSTKIE OBIEKTY\ndodano stany „FACHMANN”",
-                "zh-cn": "修复哨兵：IOBROKER-WOLF-SMARTSET-6、IOBROKER-WOLF-SMARTSET-5、IOBROKER-WOLF-SMARTSET-7、IOBROKER-WOLF-SMARTSET-8、IOBROKER-WOLF-SMARTSET-1、IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\n将 api 从应用程序数据更改为 Web PEASE DELETE ADAPTER and REINSTALL OR DELETE ALL OBJECTS\n添加了“FACHMANN”状态"
-            },
-            "0.2.4": {
-                "en": "added sentry",
-                "de": "Wachposten hinzugefügt",
-                "ru": "добавлен часовой",
-                "pt": "adicionado sentinela",
-                "nl": "toegevoegde schildwacht",
-                "fr": "sentinelle ajoutée",
-                "it": "ha aggiunto la sentinella",
-                "es": "centinela añadido",
-                "pl": "dodany wartownik",
-                "zh-cn": "添加哨兵"
-            },
-            "0.2.3": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版"
-            }
-        },
-        "title": "Wolf SmartSet",
-        "titleLang": {
-            "en": "Wolf SmartSet",
-            "de": "Wolf SmartSet",
-            "ru": "Wolf SmartSet",
-            "pt": "Wolf SmartSet",
-            "nl": "Wolf SmartSet",
-            "fr": "Wolf SmartSet",
-            "it": "Wolf SmartSet",
-            "es": "Wolf SmartSet",
-            "pl": "Wolf SmartSet",
-            "zh-cn": "狼SmartSet"
-        },
-        "desc": {
-            "en": "Connect Wolf cloud to IoBroker",
-            "de": "Verbinden Sie die Wolf Cloud mit IoBroker",
-            "ru": "Подключите облако Wolf к IoBroker",
-            "pt": "Conecte a nuvem Wolf ao IoBroker",
-            "nl": "Verbind Wolf-cloud met IoBroker",
-            "fr": "Connectez Wolf Cloud à IoBroker",
-            "it": "Connetti il ​​cloud Wolf a IoBroker",
-            "es": "Conecte la nube Wolf a IoBroker",
-            "pl": "Połącz chmurę Wolfa z IoBrokerem",
-            "zh-cn": "将Wolf云连接到IoBroker"
-        },
-        "authors": [
-            "MeisterTR <meistertr.smarthome@gmail.com>"
-        ],
-        "keywords": [
-            "wolf",
-            "heating",
-            "cloud"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "main.js",
-        "icon": "wolf-smartset.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wolf-smartset/master/admin/wolf-smartset.png",
-        "readme": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset/blob/master/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "climate-control",
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "poll",
-        "tier": 2,
-        "materialize": true,
-        "messagebox": true,
-        "plugins": {
-            "sentry": {
-                "dsn": "https://a9218dbd5539461fae687736e804c590@sentry.iobroker.net/129"
-            }
-        },
-        "globalDependencies": [
-            {
-                "admin": ">=4.0.9"
-            }
-        ],
-        "dependencies": [
-            {
-                "js-controller": ">=3.1.0"
-            }
-        ]
+  "common": {
+    "name": "wolf-smartset",
+    "version": "1.1.1",
+    "news": {
+      "1.1.1": {
+        "en": "Adjusted to new Login procedure\nTokens are now stored and tried to be refreshed automatically\nErrors in session updates will try to create new session or authenticate anew\nGenerates folder and channel structures for created states\nFix some more crash cases\nmake sure adapter is stopped correctly in all cases",
+        "de": "Anpassung an neue Login-Verfahren\nToken werden nun gespeichert und versucht, automatisch erfrischt zu werden\nFehler in Session-Updates werden versuchen, neue Sitzung zu erstellen oder authentifizieren\nErzeugt Ordner- und Kanalstrukturen für erstellte Zustände\nEinige weitere Crashfälle beheben\nstellen sie sicher, dass der adapter in allen fällen korrekt gestoppt wird",
+        "ru": "Настройка в новую процедуру входа\nТокены теперь хранятся и пытаются обновляться автоматически\nОшибки в обновлениях сессии постараются создать новую сессию или аутентифицировать обновление\nГенерирует папку и структуры каналов для созданных государств\nИсправьте еще некоторые случаи сбоя\nубедитесь, что адаптер остановлен правильно во всех случаях",
+        "pt": "Ajustado ao novo procedimento de login\nOs tokens agora são armazenados e tentaram ser atualizados automaticamente\nErros em atualizações de sessão tentarão criar nova sessão ou autenticar de novo\nGera estruturas de pasta e canal para estados criados\nCorrigir mais casos de acidente\ncertifique-se de que o adaptador é interrompido corretamente em todos os casos",
+        "nl": "Aangepast aan de nieuwe Login procedure\nToken zijn nu opgeslagen en proberen automatisch verfrissend te worden\nErrors in sessie updates zullen proberen nieuwe sessie te creëren of authenticeren anew\nGenereert folder en kanalenstructuur voor gecreëerde staten\nMaak wat meer crash gevallen\nzorg ervoor dat de adapter juist wordt gestopt in alle gevallen",
+        "fr": "Ajusté à la nouvelle procédure de connexion\nLes jetons sont maintenant stockés et essayés d'être rafraîchis automatiquement\nLes erreurs dans les mises à jour de session essayeront de créer une nouvelle session ou d'authentifier un nouveau\nGénère les structures de dossiers et de canaux pour les états créés\nCorrection d'autres cas de crash\ns'assurer que l'adaptateur est arrêté correctement dans tous les cas",
+        "it": "Regolato alla nuova procedura di Login\nI gettoni sono ora memorizzati e hanno cercato di essere rinfrescati automaticamente\nErrori negli aggiornamenti di sessione cercheranno di creare nuova sessione o autenticare di nuovo\nGenera la cartella e le strutture dei canali per gli stati creati\nRisolvi altri casi di crash\nassicurarsi che l'adattatore sia interrotto correttamente in tutti i casi",
+        "es": "Ajuste del nuevo procedimiento de inicio de sesión\nLas fichas se almacenan ahora y se intenta refrescar automáticamente\nLos errores en las actualizaciones de sesión intentarán crear nueva sesión o autenticar de nuevo\nGenera estructuras de carpetas y canales para estados creados\nArreglar algunos casos más de choque\nasegurar que el adaptador se detenga correctamente en todos los casos",
+        "pl": "Wstęp do nowej procedury Login\nObecnie przechowywane są tony i są automatycznie odświeżone\nW aktualizacji sesjów próbują stworzyć nową sesję lub uwierzytelnienie na nowo\nStruktura kanałowa i systemy tworzenia stanów\nSzczegółowe przypadki katastrofy\nw niektórych przypadkach poprawnie zatrzymuje się poprawnie",
+        "uk": "Налаштування нової процедури входу\nЖетони тепер зберігають і спробують освіжити автоматично\nПомилки в оновленнях сеансу намагаються створити новий сеанс або автентифікувати новий\nГенерація папок і каналів для створених держав\nВиправлення деяких випадків аварії\nпереконайтеся, що адаптер припиняється правильно в всіх випадках",
+        "zh-cn": "重新调整新的后勤程序\n目前储存并试图自动予以拆除\n届会更新的与会者将努力创造新的会议或核证新的会议\nD. 建立各州的集成和输送结构\n九 事故\n确保所有情况都不能正确地减少适应。"
+      },
+      "1.0.0": {
+        "en": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3,IOBROKER-WOLF-SMARTSET-4\nChange api from app data to Web PEASE DELETE ADAPTER AND REINSTALL OR DELETE ALL OBJECTS\nadded \"FACHMANN\" states",
+        "de": "Wachposten fixieren: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nÄndere die API von App-Daten zu Web. BITTE ADAPTER LÖSCHEN UND ALLE OBJEKTE NEU INSTALLIEREN ODER LÖSCHEN\nhinzugefügt \"FACHMANN\" heißt es",
+        "ru": "исправить Sentry: IOBROKER-WOLF-SMARTSET-6, IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7, IOBROKER-WOLF-SMARTSET-8, IOBROKER-WOLF-SMARTSET-1, IOBROKER-WOLF-SMARTSET-1, IOBROKER-WOLF-SMARTSET-1, IOBROKER-3 , ИОБРОКЕР-ВОЛК-СМАРЦЕТ-4\nИзмените api с данных приложения на Web PEASE УДАЛИТЬ АДАПТЕР И ПЕРЕУСТАНОВИТЬ ИЛИ УДАЛИТЬ ВСЕ ОБЪЕКТЫ\nдобавлены состояния \"FACHMANN\"",
+        "pt": "corrigir Sentinela: IOBROKER-WOLF-SMARTSET-6, IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7, IOBROKER-WOLF-SMARTSET-8, IOBROKER-WOLF-SMARTSET-1, IOBROKER-3 , IOBROKER-WOLF-SMARTSET-4\nAltere a API de dados do aplicativo para Web PEASE DELETE ADAPTER E REINSTALE OU DELETE TODOS OS OBJETOS\nadicionados estados \"FACHMANN\"",
+        "nl": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nVerander api van app-gegevens naar web PEASE VERWIJDER ADAPTER EN INSTALLEER OF VERWIJDER ALLE OBJECTEN\ntoegevoegd \"FACHMANN\" staten",
+        "fr": "Fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nChangez l'API des données de l'application en Web PEASE SUPPRIMER L'ADAPTATEUR ET RÉINSTALLER OU SUPPRIMER TOUS LES OBJETS\najout des états \"FACHMANN\"",
+        "it": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nCambia l'API dai dati dell'app a Web PEASE ELIMINA ADATTATORE E REINSTALLA O ELIMINA TUTTI GLI OGGETTI\naggiunti gli stati \"FACHMANN\"",
+        "es": "arreglar Sentry: IOBROKER-WOLF-SMARTSET-6, IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7, IOBROKER-WOLF-SMARTSET-8, IOBROKER-WOLF-SMARTSET-1, IOBROKER-SMARTSET-WOLFERTSET-1 , IOBROKER-WOLF-SMARTSET-4\nCambie la API de los datos de la aplicación a Web PEASE ELIMINAR EL ADAPTADOR Y REINSTALAR O ELIMINAR TODOS LOS OBJETOS\nestados agregados \"FACHMANN\"",
+        "pl": "fix Sentry: IOBROKER-WOLF-SMARTSET-6,IOBROKER-WOLF-SMARTSET-5, IOBROKER-WOLF-SMARTSET-7,IOBROKER-WOLF-SMARTSET-8,IOBROKER-WOLF-SMARTSET-1,IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\nZmień api z danych aplikacji na Web PEASE USUŃ ADAPTER I PONOWNIE ZAINSTALUJ LUB USUŃ WSZYSTKIE OBIEKTY\ndodano stany „FACHMANN”",
+        "zh-cn": "修复哨兵：IOBROKER-WOLF-SMARTSET-6、IOBROKER-WOLF-SMARTSET-5、IOBROKER-WOLF-SMARTSET-7、IOBROKER-WOLF-SMARTSET-8、IOBROKER-WOLF-SMARTSET-1、IOBROKER-WOLF-SMARTSET-3 ,IOBROKER-WOLF-SMARTSET-4\n将 api 从应用程序数据更改为 Web PEASE DELETE ADAPTER and REINSTALL OR DELETE ALL OBJECTS\n添加了“FACHMANN”状态"
+      },
+      "0.2.4": {
+        "en": "added sentry",
+        "de": "Wachposten hinzugefügt",
+        "ru": "добавлен часовой",
+        "pt": "adicionado sentinela",
+        "nl": "toegevoegde schildwacht",
+        "fr": "sentinelle ajoutée",
+        "it": "ha aggiunto la sentinella",
+        "es": "centinela añadido",
+        "pl": "dodany wartownik",
+        "zh-cn": "添加哨兵"
+      },
+      "0.2.3": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "zh-cn": "首次出版"
+      }
     },
-    "encryptedNative": [
-        "password"
-    ],
-    "protectedNative": [
-        "password"
-    ],
-    "native": {
-        "user": "",
-        "password": "",
-        "pingInterval": 15
+    "title": "Wolf SmartSet",
+    "titleLang": {
+      "en": "Wolf SmartSet",
+      "de": "Wolf SmartSet",
+      "ru": "Wolf SmartSet",
+      "pt": "Wolf SmartSet",
+      "nl": "Wolf SmartSet",
+      "fr": "Wolf SmartSet",
+      "it": "Wolf SmartSet",
+      "es": "Wolf SmartSet",
+      "pl": "Wolf SmartSet",
+      "zh-cn": "狼SmartSet"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "If connected to device or service",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "Connect Wolf cloud to IoBroker",
+      "de": "Verbinden Sie die Wolf Cloud mit IoBroker",
+      "ru": "Подключите облако Wolf к IoBroker",
+      "pt": "Conecte a nuvem Wolf ao IoBroker",
+      "nl": "Verbind Wolf-cloud met IoBroker",
+      "fr": "Connectez Wolf Cloud à IoBroker",
+      "it": "Connetti il ​​cloud Wolf a IoBroker",
+      "es": "Conecte la nube Wolf a IoBroker",
+      "pl": "Połącz chmurę Wolfa z IoBrokerem",
+      "zh-cn": "将Wolf云连接到IoBroker"
+    },
+    "authors": [
+      "MeisterTR <meistertr.smarthome@gmail.com>"
+    ],
+    "keywords": [
+      "wolf",
+      "heating",
+      "cloud"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "wolf-smartset.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wolf-smartset/master/admin/wolf-smartset.png",
+    "readme": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset/blob/master/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "climate-control",
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "tier": 2,
+    "materialize": true,
+    "messagebox": true,
+    "plugins": {
+      "sentry": {
+        "dsn": "https://a9218dbd5539461fae687736e804c590@sentry.iobroker.net/129"
+      }
+    },
+    "globalDependencies": [
+      {
+        "admin": ">=4.0.9"
+      }
+    ],
+    "dependencies": [
+      {
+        "js-controller": ">=3.1.0"
+      }
     ]
+  },
+  "encryptedNative": [
+    "password"
+  ],
+  "protectedNative": [
+    "password"
+  ],
+  "native": {
+    "user": "",
+    "password": "",
+    "pingInterval": 15
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "If connected to device or service",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
