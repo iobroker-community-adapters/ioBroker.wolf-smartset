@@ -21,6 +21,9 @@ To login you only need your username and password from your smartset-app. After 
 
 ## Changelog
 
+### 1.1.3 (2024-04-14)
+* (flingo64) Debug version
+
 ### 1.1.2 (2024-04-14)
 * (flingo64) Debug version
 
