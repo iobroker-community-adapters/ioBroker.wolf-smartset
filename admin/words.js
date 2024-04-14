@@ -2,7 +2,7 @@
 'use strict';
 
 systemDictionary = {
-	'wolf-smartset adapter settings': {
+	'wolf-ism7 adapter settings': {
 		'en': 'Adapter settings for wolf-smartset',
 		'de': 'Adaptereinstellungen für wolf-smartset',
 		'ru': 'Настройки адаптера для wolf-smartset',

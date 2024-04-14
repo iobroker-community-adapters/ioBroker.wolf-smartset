@@ -1,7 +1,7 @@
 {
 	"cli": true,
-	"adapterName": "wolf-smartset",
-	"title": "Wolf SmartSet",
+	"adapterName": "wolf-ism7",
+	"title": "Wolf ISM7",
 	"description": "Connect Wolf cloud to IoBroker",
 	"keywords": [
 		"wolf",

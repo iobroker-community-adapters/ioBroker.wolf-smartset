@@ -18,7 +18,7 @@ class WolfSmartset extends utils.Adapter {
 	constructor(options) {
 		super({
 			...options,
-			name: 'wolf-smartset',
+			name: 'wolf-ism7',
 		});
 		this.on('ready', this.onReady.bind(this));
 		this.on('stateChange', this.onStateChange.bind(this));
