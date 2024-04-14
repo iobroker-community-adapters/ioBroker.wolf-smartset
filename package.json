@@ -1,5 +1,5 @@
 {
-  "name": "@test/iobroker.wolf-smartset",
+  "name": "iobroker.wolf-smartset",
   "version": "1.1.2",
   "description": "Connect Wolf cloud to IoBroker",
   "author": {
@@ -11,7 +11,7 @@
       "name": "MeisterTR"
     }
   ],
-  "homepage": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset",
+  "homepage": "http://diskstation2.fritz.box:30000/martin.messmer/iobroker.wolf-smartset",
   "license": "MIT",
   "keywords": [
     "wolf",
@@ -66,7 +66,7 @@
     "release": "release-script"
   },
   "bugs": {
-    "url": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset/issues"
+    "url": "http://diskstation2.fritz.box:30000/martin.messmer/iobroker.wolf-smartset/issues"
   },
   "readmeFilename": "README.md"
 }
