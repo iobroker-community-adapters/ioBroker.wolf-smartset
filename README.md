@@ -20,6 +20,10 @@ You need a ISM7I Module or others which are compatible with the wolf-smartset ap
 To login you only need your username and password from your smartset-app. After you click on "get devices" you can select your heating. Thats it.
 
 ## Changelog
+
+### 1.1.2 (2024-04-14)
+* (flingo64) Debug version
+
 ### 1.1.1 (2023-01-26)
 * (Apollon77) Adjusted to new Login procedure
 * (Apollon77) Tokens are now stored and tried to be refreshed automatically

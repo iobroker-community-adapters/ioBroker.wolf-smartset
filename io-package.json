@@ -1,9 +1,22 @@
 {
   "common": {
     "name": "wolf-smartset",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "news": {
-      "1.1.1": {
+		"1.1.2": {
+			"en": "Debug version",
+			"de": "Debug version",
+			"ru": "Debug version",
+			"pt": "Debug version",
+			"nl": "Debug version",
+			"fr": "Debug version",
+			"it": "Debug version",
+			"es": "Debug version",
+			"pl": "Debug version",
+			"uk": "Debug version",
+			"zh-cn": "Debug version"
+		  },
+		  "1.1.1": {
         "en": "Adjusted to new Login procedure\nTokens are now stored and tried to be refreshed automatically\nErrors in session updates will try to create new session or authenticate anew\nGenerates folder and channel structures for created states\nFix some more crash cases\nmake sure adapter is stopped correctly in all cases",
         "de": "Anpassung an neue Login-Verfahren\nToken werden nun gespeichert und versucht, automatisch erfrischt zu werden\nFehler in Session-Updates werden versuchen, neue Sitzung zu erstellen oder authentifizieren\nErzeugt Ordner- und Kanalstrukturen für erstellte Zustände\nEinige weitere Crashfälle beheben\nstellen sie sicher, dass der adapter in allen fällen korrekt gestoppt wird",
         "ru": "Настройка в новую процедуру входа\nТокены теперь хранятся и пытаются обновляться автоматически\nОшибки в обновлениях сессии постараются создать новую сессию или аутентифицировать обновление\nГенерирует папку и структуры каналов для созданных государств\nИсправьте еще некоторые случаи сбоя\nубедитесь, что адаптер остановлен правильно во всех случаях",
