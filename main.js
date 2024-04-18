@@ -425,7 +425,7 @@ class WolfSmartset extends utils.Adapter {
 			}
 			if (obj.command === 'getDeviceList') {
 
-				this.log.info('getDeviceList: starting ...');
+				this.log.debug('getDeviceList: starting ...');
 				let devicelist;
 				try {
 					devicelist = await this.wss.adminGetDevicelist(obj.message.username, obj.message.password);
