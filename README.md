@@ -20,6 +20,14 @@ You need a ISM7I Module or others which are compatible with the wolf-smartset ap
 To login you only need your username and password from your smartset-app. After you click on "get devices" you can select your heating. Thats it.
 
 ## Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ### **WORK IN PROGRESS**
+-->
+### **WORK IN PROGRESS**
+- (mcm1957) Adapter requires node.js >= 18 and js-controller >= 5 now
+- (mcm1957) Dependencies have been updated
+
 ### 1.1.1 (2023-01-26)
 * (Apollon77) Adjusted to new Login procedure
 * (Apollon77) Tokens are now stored and tried to be refreshed automatically
@@ -49,6 +57,7 @@ To login you only need your username and password from your smartset-app. After 
 ## License
 MIT License
 
+Copyright (c) 2024 iobroker-community-adapters <iobroker-community-adapters@gmx.de>
 Copyright (c) 2021-2023 MeisterTR <meistertr.smarthome@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
