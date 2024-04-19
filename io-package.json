@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wolf-smartset",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "news": {
+      "1.2.1": {
+        "en": "Initialization added to openId. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]",
+        "de": "Initialisierung zu openId hinzugefügt. Dies behebt GET_AUTH_TOKEN_ERROR [#304, #330]",
+        "ru": "Инициализация добавлена к открытию Ид. Это исправляет GET_AUTH_TOKEN_ERROR [#304, #330]",
+        "pt": "Inicialização adicionada para abrir Id. Isso corrige GET_AUTH_TOKEN_ERROR [#304, #330]",
+        "nl": "Initialisatie toegevoegd aan openen Id. Dit lost GET_AUTH_TOKEN_ERROR [#304, #330]",
+        "fr": "Initialisation ajoutée à ouverte Id. Cela corrige GET_AUTH_TOKEN_ERROR [#304, #330]",
+        "it": "Inizializzazione aggiunta ad aprire Id. Questo risolve GET_AUTH_TOKEN_ERROR [#304, #330]",
+        "es": "Iniciación agregada para abrir Id. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]",
+        "pl": "Inicjalizacja dodana do otwartego Id. To naprawia GET _ AUTH _ TOKEN _ ERROR [# 304, # 330]",
+        "uk": "Початкова обробка додано до відкриття Id. Це фіксує GET_AUTH_TOKEN_ERROR [#304, #330]",
+        "zh-cn": "初始化添加到打开 Id. 此修正 [# 304, # 330]"
+      },
       "1.2.0": {
         "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nDependencies have been updated",
         "de": "Adapter benötigt node.js >= 18 und js-controller >= 5 jetzt\nAbhängigkeiten wurden aktualisiert",
