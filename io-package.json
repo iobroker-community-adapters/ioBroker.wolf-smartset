@@ -1,21 +1,8 @@
 {
   "common": {
     "name": "wolf-smartset",
-    "version": "1.2.2",
+    "version": "1.2.1",
     "news": {
-      "1.2.2": {
-        "en": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication",
-        "de": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication",
-        "ru": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication",
-        "pt": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication",
-        "nl": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication",
-        "fr": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication",
-        "it": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication",
-        "es": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication",
-        "pl": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication",
-        "uk": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication",
-        "zh-cn": "_getAuthToken: call openIdInit only once to avoid endless loop during re-authentication"
-      },
       "1.2.1": {
         "en": "Initialization added to openId. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]",
         "de": "Initialisierung zu openId hinzugefügt. Dies behebt GET_AUTH_TOKEN_ERROR [#304, #330]",
