@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wolf-smartset",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "news": {
+      "1.2.2": {
+        "en": "A crash during re-authentication has been fixed. OpenIdInit will be called only once to avoid endless loop during re-authentication.",
+        "de": "Ein Absturz während der Neuauthentifizierung wurde behoben. OpenIdInit wird nur einmal aufgerufen, um endlose Schleife während der Neuauthentifizierung zu vermeiden.",
+        "ru": "Сбой во время повторного вскрытия был зафиксирован. OpenIdInit будет называться только один раз, чтобы избежать бесконечной петли во время повторного открытия.",
+        "pt": "Um acidente durante a reautenticação foi corrigido. OpenIdInit será chamado apenas uma vez para evitar loop sem fim durante a re-autenticação.",
+        "nl": "Een crash tijdens herauthenticatie is opgelost. OpenIdInit wordt maar één keer gebeld om eindeloze lus tijdens herauthenticatie te vermijden.",
+        "fr": "Un accident lors de la réauthentification a été corrigé. OpenIdInit ne sera appelé qu'une seule fois pour éviter une boucle sans fin pendant la réauthentification.",
+        "it": "Un incidente durante la ricognizione è stato fissato. OpenIdInit sarà chiamato solo una volta per evitare l'anello infinito durante la ri-authentication.",
+        "es": "Se ha fijado un accidente durante la reauténticación. OpenIdInit se llamará sólo una vez para evitar un bucle interminable durante la reauthenticación.",
+        "pl": "Katastrofa podczas ponownego uwierzytelniania została naprawiona. OpenIdInit będzie wywoływany tylko raz, aby uniknąć niekończącej się pętli podczas ponownego uwierzytelniania.",
+        "uk": "Зафіксовано аварійну аварію під час переобладнання. OpenIdInit буде називатися тільки один раз, щоб уникнути нескінченної петлі під час реабілітації.",
+        "zh-cn": "重新校验时的坠机已被修复 。 OpenIdInit只会被调用一次,以避免在重新验证时出现无尽的循环."
+      },
       "1.2.1": {
         "en": "Initialization added to openId. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]",
         "de": "Initialisierung zu openId hinzugefügt. Dies behebt GET_AUTH_TOKEN_ERROR [#304, #330]",
