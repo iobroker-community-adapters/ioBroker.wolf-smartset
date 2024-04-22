@@ -25,7 +25,7 @@ To login you only need your username and password from your smartset-app. After 
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-- (flingo64) _getAuthToken: call openIdInit only once to avoid endless loop during re-authentication
+- (flingo64) A crash during re-authentication has been fixed. OpenIdInit will be called only once to avoid endless loop during re-authentication.
 
 ### 1.2.1 (2024-04-19)
 - (flingo64) Initialization added to openId. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]
