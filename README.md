@@ -24,7 +24,7 @@ To login you only need your username and password from your smartset-app. After 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 1.2.2 (2024-04-21)
+### **WORK IN PROGRESS**
 - (flingo64) _getAuthToken: call openIdInit only once to avoid endless loop during re-authentication
 
 ### 1.2.1 (2024-04-19)
