@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wolf-smartset",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "news": {
+      "1.2.3": {
+        "en": "Dependencies have been updated",
+        "de": "Abhängigkeiten wurden aktualisiert",
+        "ru": "Зависимость обновлена",
+        "pt": "As dependências foram atualizadas",
+        "nl": "Afhankelijkheden zijn bijgewerkt",
+        "fr": "Les dépendances ont été actualisées",
+        "it": "Le dipendenze sono state aggiornate",
+        "es": "Se han actualizado las dependencias",
+        "pl": "Zaktualizowano zależności",
+        "uk": "Залежність було оновлено",
+        "zh-cn": "依赖关系已更新"
+      },
       "1.2.2": {
         "en": "A crash during re-authentication has been fixed. OpenIdInit will be called only once to avoid endless loop during re-authentication.",
         "de": "Ein Absturz während der Neuauthentifizierung wurde behoben. OpenIdInit wird nur einmal aufgerufen, um endlose Schleife während der Neuauthentifizierung zu vermeiden.",
@@ -78,18 +91,6 @@
         "es": "centinela añadido",
         "pl": "dodany wartownik",
         "zh-cn": "添加哨兵"
-      },
-      "0.2.3": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
       }
     },
     "title": "Wolf SmartSet",
