@@ -24,6 +24,10 @@ To login you only need your username and password from your smartset-app. After 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (flingo64) Use Min/MaxValueCondition, not Min/MaxValue (float bug)
+- (flingo64) Added som comments on Smartset ControlTypes
+
 ### 1.2.3 (2024-04-29)
 - (mcm1957) Dependencies have been updated
 
