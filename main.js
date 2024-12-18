@@ -318,8 +318,14 @@ class WolfSmartset extends utils.Adapter {
 			} else {
 
 				if (typeof (WolfObj.Unit) !== 'undefined') common.unit = WolfObj.Unit;
+
+				// thresholds min/max : use Min/MaxValueCondition if available, otherwise use MinValue/MaxValue
+				// Min/MaxValue might be wrong in case of floats, whereas Min/MaxValueCondition seem to be always correct
+				if (typeof (WolfObj.MinValue) !== 'undefined') common.min = WolfObj.MinValue;
 				if (typeof (WolfObj.MinValueCondition) !== 'undefined') common.min = parseFloat(WolfObj.MinValueCondition);
+				if (typeof (WolfObj.MaxValue) !== 'undefined') common.max = WolfObj.MaxValue;
 				if (typeof (WolfObj.MaxValueCondition) !== 'undefined') common.max = parseFloat(WolfObj.MaxValueCondition);
+
 				if (typeof (WolfObj.StepWidth) !== 'undefined') common.step = WolfObj.StepWidth;
 				if (typeof (WolfObj.ListItems) !== 'undefined') {
 					const states = {};

@@ -25,8 +25,8 @@ To login you only need your username and password from your smartset-app. After 
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-- (flingo64) Use Min/MaxValueCondition, not Min/MaxValue (float bug)
-- (flingo64) Added some comments on Smartset ControlTypes
+- (flingo64) Bugfix for issues #281, #329, #365, #406: for ioBroker object thresholds min/max use Wolf Samrtset Min/MaxValueCondition if available, otherwise use Min/MaxValue
+- (flingo64) Added some comments on Wolf Smartset ControlTypes
 - (flingo64) Modified misspelled variable name to 'SubMenuEntry'
 
 ### 1.2.3 (2024-04-29)
