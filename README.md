@@ -26,7 +26,8 @@ To login you only need your username and password from your smartset-app. After 
 -->
 ### **WORK IN PROGRESS**
 - (flingo64) Use Min/MaxValueCondition, not Min/MaxValue (float bug)
-- (flingo64) Added som comments on Smartset ControlTypes
+- (flingo64) Added some comments on Smartset ControlTypes
+- (flingo64) Modified misspelled variable name to 'SubMenuEntry'
 
 ### 1.2.3 (2024-04-29)
 - (mcm1957) Dependencies have been updated
