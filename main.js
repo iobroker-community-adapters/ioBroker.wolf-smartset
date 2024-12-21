@@ -287,7 +287,9 @@ class WolfSmartset extends utils.Adapter {
 			id = WolfObj.TabName + '.' + group + WolfObj.ParameterId;
 
 			const common = {
-				name: WolfObj.Name,
+				name: typeof (WolfObj.NamePrefix) !== 'undefined' 
+						? WolfObj.NamePrefix + ': ' + WolfObj.Name
+						: WolfObj.Name,
 				type: 'number',
 				role: 'value',
 				read: true,
