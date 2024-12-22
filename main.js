@@ -143,9 +143,9 @@ class WolfSmartset extends utils.Adapter {
 
 				});
 				//Fachmannebene
-				MenuItems.SubMenuEntries.forEach(SubMenuEntrie => {
-					const tab = SubMenuEntrie.Name;
-					SubMenuEntrie.TabViews.forEach(TabViews => {
+				MenuItems.SubMenuEntries.forEach(SubMenuEntry => {
+					const tab = SubMenuEntry.Name;
+					SubMenuEntry.TabViews.forEach(TabViews => {
 
 						const tabName2 = tabName + '.' + tab + '.' + TabViews.TabName;
 
@@ -234,6 +234,20 @@ class WolfSmartset extends utils.Adapter {
 	async setStatesWithDiffTypes(type, id, value) {
 		if (type == null || id == null || value == null) return;
 
+			// Wolf ControlTypes:
+			// 0: Unknown
+			// 1: Enum w/ ListItems (simple)
+			// 5: Bool
+			// 6: Number; 'Decimals' = decimal places (accuracy)
+			// 9: Date
+			// 10: Time
+			// 13: list of time programs (1, 2 or 3)
+			// 14: list of time ranges 
+			// 19: time program (Mon - Sun)
+			// 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
+			// 21: IPv4 addr or netmask
+			// 31: Number range
+			// 35: Enum w/ ListItems (w/ Image, Decription, ...)
 		switch (type) {
 			case 5:
 				this.setStateAsync(id, {
@@ -273,12 +287,30 @@ class WolfSmartset extends utils.Adapter {
 			id = WolfObj.TabName + '.' + group + WolfObj.ParameterId;
 
 			const common = {
-				name: WolfObj.Name,
+				name: typeof (WolfObj.NamePrefix) !== 'undefined' 
+						? WolfObj.NamePrefix + ': ' + WolfObj.Name
+						: WolfObj.Name,
 				type: 'number',
 				role: 'value',
 				read: true,
 				write: !WolfObj.IsReadOnly,
 			};
+
+			// Wolf ControlTypes:
+			// 0: Unknown
+			// 1: Enum w/ ListItems (simple)
+			// 5: Bool
+			// 6: Number; 'Decimals' = decimal places (accuracy)
+			// 9: Date
+			// 10: Time
+			// 13: list of time programs (1, 2 or 3)
+			// 14: list of time ranges 
+			// 19: time program (Mon - Sun)
+			// 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
+			// 21: IPv4 addr or netmask
+			// 31: Number range
+			// 35: Enum w/ ListItems (w/ Image, Decription, ...)
+
 			if (WolfObj.ControlType === 5) { //Boolean text
 				common.type = 'boolean';
 				common.role = WolfObj.IsReadOnly ? 'indicator' : 'switch';
@@ -288,8 +320,14 @@ class WolfSmartset extends utils.Adapter {
 			} else {
 
 				if (typeof (WolfObj.Unit) !== 'undefined') common.unit = WolfObj.Unit;
+
+				// thresholds min/max : use Min/MaxValueCondition if available, otherwise use MinValue/MaxValue
+				// Min/MaxValue might be wrong in case of floats, whereas Min/MaxValueCondition seem to be always correct
 				if (typeof (WolfObj.MinValue) !== 'undefined') common.min = WolfObj.MinValue;
+				if (typeof (WolfObj.MinValueCondition) !== 'undefined') common.min = parseFloat(WolfObj.MinValueCondition);
 				if (typeof (WolfObj.MaxValue) !== 'undefined') common.max = WolfObj.MaxValue;
+				if (typeof (WolfObj.MaxValueCondition) !== 'undefined') common.max = parseFloat(WolfObj.MaxValueCondition);
+
 				if (typeof (WolfObj.StepWidth) !== 'undefined') common.step = WolfObj.StepWidth;
 				if (typeof (WolfObj.ListItems) !== 'undefined') {
 					const states = {};
