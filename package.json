@@ -14,6 +14,7 @@
   "homepage": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset",
   "license": "MIT",
   "keywords": [
+    "ioBroker",
     "wolf",
     "heating",
     "cloud"
