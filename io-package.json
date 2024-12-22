@@ -92,7 +92,8 @@
       "it": "Wolf SmartSet",
       "es": "Wolf SmartSet",
       "pl": "Wolf SmartSet",
-      "zh-cn": "狼SmartSet"
+      "zh-cn": "狼SmartSet",
+      "uk": "Wolf SmartSet"
     },
     "desc": {
       "en": "Connect Wolf cloud to IoBroker",
@@ -104,7 +105,8 @@
       "it": "Connetti il ​​cloud Wolf a IoBroker",
       "es": "Conecte la nube Wolf a IoBroker",
       "pl": "Połącz chmurę Wolfa z IoBrokerem",
-      "zh-cn": "将Wolf云连接到IoBroker"
+      "zh-cn": "将Wolf云连接到IoBroker",
+      "uk": "Підключіть Wolf cloud до IoBroker"
     },
     "authors": [
       "MeisterTR <meistertr.smarthome@gmail.com>"
