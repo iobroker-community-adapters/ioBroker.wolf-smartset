@@ -24,7 +24,7 @@ To login you only need your username and password from your smartset-app. After 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 1.2.4-alpha.1 (2024-12-22)
 - (flingo64) Bugfix for issues #281, #329, #365, #406: for ioBroker object thresholds min/max use Wolf Samrtset Min/MaxValueCondition if available, otherwise use Min/MaxValue
 - (flingo64) Added some comments on Wolf Smartset ControlTypes
 - (flingo64) Modified misspelled variable name to 'SubMenuEntry'
