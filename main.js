@@ -9,7 +9,7 @@ const ValList = [];
 let ParamObjList = [];
 //const objects = {};
 
-class WolfSmartset extends utils.Adapter {
+class WolfSmartsetAdapter extends utils.Adapter {
     /**
      * @param [options]
      */
@@ -63,7 +63,7 @@ class WolfSmartset extends utils.Adapter {
         }
     }
     async main() {
-        this.config.pingInterval = parseInt(this.config.pingInterval, 10) || 15;
+        this.config.pingInterval = parseInt(this.config.pingInterval, 10) || 60;
 
         // Abfrageintervall mindestens 15 sec.
         if (this.config.pingInterval < 15) {
@@ -530,8 +530,8 @@ if (module.parent) {
     /**
      * @param [options]
      */
-    module.exports = options => new WolfSmartset(options);
+    module.exports = options => new WolfSmartsetAdapter(options);
 } else {
     // otherwise start the instance directly
-    new WolfSmartset();
+    new WolfSmartsetAdapter();
 }
