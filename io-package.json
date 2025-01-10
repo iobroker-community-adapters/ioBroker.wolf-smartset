@@ -172,7 +172,9 @@
   "native": {
     "user": "",
     "password": "",
-    "pingInterval": 15
+    "pingInterval": 60,
+	"doExpert": false,
+	"expertPassword": ""
   },
   "objects": [],
   "instanceObjects": [
