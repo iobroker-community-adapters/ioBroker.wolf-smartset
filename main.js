@@ -80,9 +80,9 @@ class WolfSmartsetAdapter extends utils.Adapter {
         await this.wss.init();
 
         try {
-            const GUIdesk = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
-            if (GUIdesk) {
-                ParamObjList = (await getParamsWebGui(GUIdesk)) || [];
+            const GUIDesc = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
+            if (GUIDesc) {
+                ParamObjList = (await getParamsWebGui(GUIDesc)) || [];
             }
             if (ParamObjList) {
                 await this.CreateParams(ParamObjList);
@@ -136,14 +136,14 @@ class WolfSmartsetAdapter extends utils.Adapter {
             }
             const param = [];
 
-            guiData.MenuItems.forEach(MenuItems => {
-                const tabName = MenuItems.Name;
+            guiData.MenuItems.forEach(MenuItem => {
+                const tabName = MenuItem.Name;
 
-                MenuItems.TabViews.forEach(TabViews => {
-                    const tabName2 = `${tabName}.${TabViews.TabName}`;
+                MenuItem.TabViews.forEach(TabView => {
+                    const tabName2 = `${tabName}.${TabView.TabName}`;
 
-                    TabViews.ParameterDescriptors.forEach(ParameterDescriptors => {
-                        const paramInfo = ParameterDescriptors;
+                    TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
+                        const paramInfo = ParameterDescriptor;
                         //search duplicate
                         const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
@@ -154,13 +154,13 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     });
                 });
                 //Fachmannebene
-                MenuItems.SubMenuEntries.forEach(SubMenuEntry => {
+                MenuItem.SubMenuEntries.forEach(SubMenuEntry => {
                     const tab = SubMenuEntry.Name;
-                    SubMenuEntry.TabViews.forEach(TabViews => {
-                        const tabName2 = `${tabName}.${tab}.${TabViews.TabName}`;
+                    SubMenuEntry.TabViews.forEach(TabView => {
+                        const tabName2 = `${tabName}.${tab}.${TabView.TabName}`;
 
-                        TabViews.ParameterDescriptors.forEach(ParameterDescriptors => {
-                            const paramInfo = ParameterDescriptors;
+                        TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
+                            const paramInfo = ParameterDescriptor;
                             //search duplicate
                             const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
