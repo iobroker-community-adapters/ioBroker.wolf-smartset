@@ -10,8 +10,11 @@ let ParamObjList = [];
 //const objects = {};
 
 class WolfSmartsetAdapter extends utils.Adapter {
+    wss;
+    onlinePoll;
+    emptyCount;
     /**
-     * @param [options]
+     * @param [options] - adapter options
      */
     constructor(options) {
         super({
@@ -62,8 +65,12 @@ class WolfSmartsetAdapter extends utils.Adapter {
             this.log.error(error.stack);
         }
     }
+
+    /**
+     * main function is called from onReady(), PollValueList() and in case of an error by itself
+     */
     async main() {
-        this.config.pingInterval = parseInt(this.config.pingInterval, 10) || 60;
+        this.config.pingInterval = this.config.pingInterval || 60;
 
         // Abfrageintervall mindestens 15 sec.
         if (this.config.pingInterval < 15) {
@@ -422,7 +429,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
      *
-     * @param callback
+     * @param callback - callback function
      */
     onUnload(callback) {
         try {
@@ -446,8 +453,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
     /**
      * Is called if a subscribed state changes
      *
-     * @param id
-     * @param state
+     * @param id - value id
+     * @param state - value state
      */
     async onStateChange(id, state) {
         if (state && !state.ack) {
@@ -527,9 +534,6 @@ class WolfSmartsetAdapter extends utils.Adapter {
 // @ts-expect-error parent is a valid property on module
 if (module.parent) {
     // Export the constructor in compact mode
-    /**
-     * @param [options]
-     */
     module.exports = options => new WolfSmartsetAdapter(options);
 } else {
     // otherwise start the instance directly

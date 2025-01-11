@@ -164,14 +164,17 @@
     ]
   },
   "encryptedNative": [
-    "password"
+    "password",
+	"expertPassword"
   ],
   "protectedNative": [
-    "password"
+    "password",
+	"expertPassword"
   ],
   "native": {
     "user": "",
     "password": "",
+	"devices": "",
     "pingInterval": 60,
 	"doExpert": false,
 	"expertPassword": ""
