@@ -27,6 +27,9 @@ To login you only need your username and password from your smartset-app. After 
 
 ### **WORK IN PROGRESS**
 - (flingo64) Demystified (decoded) API constants (array _021a[])
+- (flingo64) Minor code cleanup: all API strings (URL, paths, params) as constants
+- (flingo64) Added adapter settings 'Fetch Expert Values' and 'Expert Password'
+- (flingo64) Bugfix for issue #242: added 'Expert Login' to received also expert values periodically, if 'Fetch Expert Values' is set
 
 ### 1.2.4 (2024-12-22)
 - (flingo64) Bugfix for issues #281, #329, #365, #406: ioBroker object limits min/max use Wolf Smartset Min/MaxValueCondition if available, otherwise use Min/MaxValue now.
