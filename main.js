@@ -5,7 +5,6 @@ const wolfsmartset = require('./lib/wss');
 
 const timeoutHandler = [];
 let device = {};
-const ValList = [];
 let ParamObjList = [];
 //const objects = {};
 
@@ -13,6 +12,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
     wss;
     onlinePoll;
     emptyCount;
+    BundleValuesList;
     /**
      * @param [options] - adapter options
      */
@@ -86,6 +86,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
             }
             if (ParamObjList) {
                 await this.CreateParams(ParamObjList);
+                // create a list of params for each BundleId as defined in the GUI Desc
+                this.BundleValuesList = await this.CreateBundleValuesLists(ParamObjList);
             }
 
             this.objects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
@@ -277,7 +279,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
         }
 
         try {
-            const recValList = await this.wss.getValList(device.GatewayId, device.SystemId, ValList);
+            const recValList = await this.wss.getValList(device.GatewayId, device.SystemId, this.BundleValuesList);
             if (recValList) {
                 await this.SetStatesArray(recValList);
             }
@@ -382,20 +384,27 @@ class WolfSmartsetAdapter extends utils.Adapter {
         }
     }
 
-    async CreateParams(paramArry) {
+    /**
+     * Generates adapter object states for each param in WolfParamDescriptions.
+     *
+     * @param WolfParamDescriptions - list of ParamDescriptions returned by getParamsWebGui()
+     */
+    async CreateParams(WolfParamDescriptions) {
         const collectedChannels = {};
 
-        for (const WolfObj of paramArry) {
-            collectedChannels[`${WolfObj.TabName}`] = true;
-            const id = `${WolfObj.TabName}.${WolfObj.ParameterId.toString()}`;
+        for (const WolfParamDescription of WolfParamDescriptions) {
+            collectedChannels[`${WolfParamDescription.TabName}`] = true;
+            const id = `${WolfParamDescription.TabName}.${WolfParamDescription.ParameterId.toString()}`;
 
             const common = {
                 name:
-                    typeof WolfObj.NamePrefix !== 'undefined' ? `${WolfObj.NamePrefix}: ${WolfObj.Name}` : WolfObj.Name,
+                    typeof WolfParamDescription.NamePrefix !== 'undefined'
+                        ? `${WolfParamDescription.NamePrefix}: ${WolfParamDescription.Name}`
+                        : WolfParamDescription.Name,
                 type: 'number',
                 role: 'value',
                 read: true,
-                write: !WolfObj.IsReadOnly,
+                write: !WolfParamDescription.IsReadOnly,
             };
 
             // Wolf ControlTypes:
@@ -413,67 +422,65 @@ class WolfSmartsetAdapter extends utils.Adapter {
             // 31: Number of any kind
             // 35: Enum w/ ListItems (w/ Image, Decription, ...)
 
-            if (WolfObj.ControlType === 5) {
+            if (WolfParamDescription.ControlType === 5) {
                 //Boolean text
                 common.type = 'boolean';
-                common.role = WolfObj.IsReadOnly ? 'indicator' : 'switch';
+                common.role = WolfParamDescription.IsReadOnly ? 'indicator' : 'switch';
             } else if (
-                WolfObj.ControlType === 9 ||
-                WolfObj.ControlType === 10 ||
-                WolfObj.ControlType === 14 ||
-                WolfObj.ControlType === 20 ||
-                WolfObj.ControlType === 21
+                WolfParamDescription.ControlType === 9 ||
+                WolfParamDescription.ControlType === 10 ||
+                WolfParamDescription.ControlType === 14 ||
+                WolfParamDescription.ControlType === 20 ||
+                WolfParamDescription.ControlType === 21
             ) {
                 common.type = 'string';
                 common.role = 'text';
             } else {
-                if (typeof WolfObj.Unit !== 'undefined') {
-                    common.unit = WolfObj.Unit;
+                if (typeof WolfParamDescription.Unit !== 'undefined') {
+                    common.unit = WolfParamDescription.Unit;
                 }
 
                 // thresholds min/max : use Min/MaxValueCondition if available, otherwise use MinValue/MaxValue
                 // Min/MaxValue might be wrong in case of floats, whereas Min/MaxValueCondition seem to be always correct
-                if (typeof WolfObj.MinValue !== 'undefined') {
-                    common.min = WolfObj.MinValue;
+                if (typeof WolfParamDescription.MinValue !== 'undefined') {
+                    common.min = WolfParamDescription.MinValue;
                 }
-                if (typeof WolfObj.MinValueCondition !== 'undefined') {
-                    common.min = parseFloat(WolfObj.MinValueCondition);
+                if (typeof WolfParamDescription.MinValueCondition !== 'undefined') {
+                    common.min = parseFloat(WolfParamDescription.MinValueCondition);
                 }
-                if (typeof WolfObj.MaxValue !== 'undefined') {
-                    common.max = WolfObj.MaxValue;
+                if (typeof WolfParamDescription.MaxValue !== 'undefined') {
+                    common.max = WolfParamDescription.MaxValue;
                 }
-                if (typeof WolfObj.MaxValueCondition !== 'undefined') {
-                    common.max = parseFloat(WolfObj.MaxValueCondition);
+                if (typeof WolfParamDescription.MaxValueCondition !== 'undefined') {
+                    common.max = parseFloat(WolfParamDescription.MaxValueCondition);
                 }
 
-                if (typeof WolfObj.StepWidth !== 'undefined') {
-                    common.step = WolfObj.StepWidth;
+                if (typeof WolfParamDescription.StepWidth !== 'undefined') {
+                    common.step = WolfParamDescription.StepWidth;
                 }
-                if (typeof WolfObj.ListItems !== 'undefined') {
+                if (typeof WolfParamDescription.ListItems !== 'undefined') {
                     const states = {};
-                    WolfObj.ListItems.forEach(ListItems => {
+                    WolfParamDescription.ListItems.forEach(ListItems => {
                         states[ListItems.Value] = ListItems.DisplayText;
                     });
                     common.states = states;
                 }
             }
 
-            // generate ValueList for Polling
-            // use ParameterId, not ValueId (may be 0) only if > 0
-            ValList.push(WolfObj.ParameterId);
-
-            this.log.debug(`WolfObj ${JSON.stringify(WolfObj)} --> ioBrokerObj.common ${JSON.stringify(common)}`);
+            this.log.debug(
+                `WolfParamDescription ${JSON.stringify(WolfParamDescription)} --> ioBrokerObj.common ${JSON.stringify(common)}`,
+            );
 
             await this.extendObjectAsync(id, {
                 type: 'state',
                 common,
                 native: {
-                    ValueId: WolfObj.ValueId,
-                    ParameterId: WolfObj.ParameterId,
-                    ControlType: WolfObj.ControlType,
+                    ValueId: WolfParamDescription.ValueId,
+                    ParameterId: WolfParamDescription.ParameterId,
+                    ControlType: WolfParamDescription.ControlType,
                 },
             });
-            await this.setStatesWithDiffTypes(WolfObj.ControlType, id, WolfObj.Value);
+            await this.setStatesWithDiffTypes(WolfParamDescription.ControlType, id, WolfParamDescription.Value);
         }
 
         const createdObjects = {};
@@ -513,6 +520,29 @@ class WolfSmartsetAdapter extends utils.Adapter {
         }
 
         this.log.debug('create states DONE');
+    }
+
+    /**
+     * Creates a list of ParameterId for each BundleId defined in WolfParamDescriptions
+     * The lists are required when calling PollValueList()
+     *
+     * @param WolfParamDescriptions - list of extended WolfParamDescriptions returned by getParamsWebGui()
+     */
+    async CreateBundleValuesLists(WolfParamDescriptions) {
+        const BundleValuesList = {};
+
+        for (const WolfParamDescription of WolfParamDescriptions) {
+            const bundleId = WolfParamDescription.BundleId;
+            if (typeof BundleValuesList[bundleId] == 'undefined') {
+                BundleValuesList[bundleId] = [];
+            }
+            // De-duplicate ParamterIds: the might be at multiple locations in the tree
+            if (typeof BundleValuesList[bundleId][WolfParamDescription.ParameterId] == 'undefined') {
+                BundleValuesList[bundleId].push(WolfParamDescription.ParameterId);
+            }
+        }
+
+        return BundleValuesList;
     }
 
     /**
