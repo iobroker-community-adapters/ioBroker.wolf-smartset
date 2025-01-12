@@ -139,39 +139,131 @@ class WolfSmartsetAdapter extends utils.Adapter {
             guiData.MenuItems.forEach(MenuItem => {
                 const tabName = MenuItem.Name;
 
+                // Benutzerebene: iterate over MenuItems
                 MenuItem.TabViews.forEach(TabView => {
                     const tabName2 = `${tabName}.${TabView.TabName}`;
+                    // BundleId and GuiId of TabView are required in each param below thie TabView
+                    const TabViewBundleId = TabView.BundleId;
+                    const TabViewGuiId = TabView.GuiId;
 
                     TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
-                        const paramInfo = ParameterDescriptor;
-                        //search duplicate
-                        const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
-
-                        if (!find) {
-                            paramInfo.TabName = tabName2.replace(' ', '_');
-                            param.push(paramInfo);
+                        var tabName3;
+                        if (typeof ParameterDescriptor.Group !== 'undefined') {
+                            tabName3 = `${tabName2}.${ParameterDescriptor.Group}`;
+                        } else {
+                            tabName3 = tabName2;
                         }
-                    });
-                });
-                //Fachmannebene
-                MenuItem.SubMenuEntries.forEach(SubMenuEntry => {
-                    const tab = SubMenuEntry.Name;
-                    SubMenuEntry.TabViews.forEach(TabView => {
-                        const tabName2 = `${tabName}.${tab}.${TabView.TabName}`;
 
-                        TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
+                        // ignore pseudo or intermediate/complex parameters (e.g list of time programs)
+                        if (ParameterDescriptor.ParameterId > 0) {
                             const paramInfo = ParameterDescriptor;
+                            paramInfo.BundleId = TabViewBundleId;
+                            paramInfo.GuiId = TabViewGuiId;
+
                             //search duplicate
                             const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
                             if (!find) {
-                                paramInfo.TabName = tabName2.replace(' ', '_');
+                                paramInfo.TabName = tabName3.replace(' ', '_');
+                                // remove subtree if exists
+                                // delete paramInfo.ChildParameterDescriptors;
                                 param.push(paramInfo);
+                            }
+                        }
+
+                        // Check for ChildParameterDescriptors (e.g. time program)
+                        if (typeof ParameterDescriptor.ChildParameterDescriptors !== 'undefined') {
+                            ParameterDescriptor.ChildParameterDescriptors.forEach(ChildParameterDescriptor => {
+                                var tabName4 = `${tabName3}.${ParameterDescriptor.Name}`;
+                                // if (ChildParameterDescriptor.NoDataPoint == false) {
+                                //     tabName4 = `${tabName3}.${ParameterDescriptor.Name}`;
+                                // } else {
+                                //     // intermediate node: add own name to path for own childs
+                                //     tabName4 = `${tabName3}.${ParameterDescriptor.Name}.${ChildParameterDescriptor.Name}`;
+                                // }
+
+                                // ignore pseudo or intermediate/complex parameters (e.g time program)
+                                if (
+                                    ChildParameterDescriptor.NoDataPoint == false &&
+                                    ChildParameterDescriptor.ParameterId > 0
+                                ) {
+                                    const paramInfo = ChildParameterDescriptor;
+                                    paramInfo.BundleId = TabViewBundleId;
+                                    paramInfo.GuiId = TabViewGuiId;
+
+                                    //search duplicate
+                                    const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
+
+                                    if (!find) {
+                                        paramInfo.TabName = tabName4.replace(' ', '_');
+                                        param.push(paramInfo);
+                                    }
+                                }
+
+                                if (typeof ChildParameterDescriptor.ChildParameterDescriptors !== 'undefined') {
+                                    ChildParameterDescriptor.ChildParameterDescriptors.forEach(
+                                        ChildChildParameterDescriptor => {
+                                            const tabName5 = `${tabName4}.${ChildParameterDescriptor.Name}`;
+
+                                            if (ChildChildParameterDescriptor.ParameterId > 0) {
+                                                const paramInfo = ChildChildParameterDescriptor;
+                                                paramInfo.BundleId = TabViewBundleId;
+                                                paramInfo.GuiId = TabViewGuiId;
+
+                                                //search duplicate
+                                                const find = param.find(
+                                                    element => element.ParameterId === paramInfo.ParameterId,
+                                                );
+
+                                                if (!find) {
+                                                    paramInfo.TabName = tabName5.replace(' ', '_');
+                                                    param.push(paramInfo);
+                                                }
+                                            }
+                                        },
+                                    );
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Fachmannebene: interate over SubMenuEntries
+                MenuItem.SubMenuEntries.forEach(SubMenuEntry => {
+                    const tabName2 = `${tabName}.${SubMenuEntry.Name}`;
+                    SubMenuEntry.TabViews.forEach(TabView => {
+                        const tabName3 = `${tabName2}.${TabView.TabName}`;
+                        // BundleId and GuiId of TabView are required in each param below thie TabView
+                        const TabViewBundleId = TabView.BundleId;
+                        const TabViewGuiId = TabView.GuiId;
+
+                        TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
+                            var tabName4;
+                            if (typeof ParameterDescriptor.Group !== 'undefined') {
+                                tabName4 = `${tabName3}.${ParameterDescriptor.Group}`;
+                            } else {
+                                tabName4 = tabName3;
+                            }
+
+                            // ignore pseudo or intermediate/complex parameters (e.g list of time programs)
+                            if (ParameterDescriptor.ParameterId > 0) {
+                                const paramInfo = ParameterDescriptor;
+                                paramInfo.BundleId = TabViewBundleId;
+                                paramInfo.GuiId = TabViewGuiId;
+
+                                //search duplicate
+                                const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
+
+                                if (!find) {
+                                    paramInfo.TabName = tabName4.replace(' ', '_');
+                                    param.push(paramInfo);
+                                }
                             }
                         });
                     });
                 });
             });
+
             return param;
         }
         this.subscribeStates('*');
@@ -256,12 +348,12 @@ class WolfSmartsetAdapter extends utils.Adapter {
         // 6: Number; 'Decimals' = decimal places (accuracy)
         // 9: Date
         // 10: Time
-        // 13: list of time programs (1, 2 or 3)
+        // 13: list of time programs (1, 2 or 3) (not a Value)
         // 14: list of time ranges
-        // 19: time program (Mon - Sun)
+        // 19: time program (Mon - Sun) (not a value)
         // 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
         // 21: IPv4 addr or netmask
-        // 31: Number range
+        // 31: Number of any kind
         // 35: Enum w/ ListItems (w/ Image, Decription, ...)
         switch (type) {
             case 5:
@@ -270,10 +362,11 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     ack: true,
                 });
                 break;
+            case 9:
+            case 10:
+            case 14:
             case 20:
             case 21:
-            case 10:
-            case 9:
                 this.setStateAsync(id, {
                     val: value.toString(),
                     ack: true,
@@ -293,14 +386,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
         const collectedChannels = {};
 
         for (const WolfObj of paramArry) {
-            let group = '';
-            let id = '';
-
-            if (WolfObj.Group) {
-                group = `${WolfObj.Group.replace(' ', '_')}.`;
-            }
-            collectedChannels[`${WolfObj.TabName}.${group}`] = true;
-            id = `${WolfObj.TabName}.${group}${WolfObj.ParameterId}`;
+            collectedChannels[`${WolfObj.TabName}`] = true;
+            const id = `${WolfObj.TabName}.${WolfObj.ParameterId.toString()}`;
 
             const common = {
                 name:
@@ -318,12 +405,12 @@ class WolfSmartsetAdapter extends utils.Adapter {
             // 6: Number; 'Decimals' = decimal places (accuracy)
             // 9: Date
             // 10: Time
-            // 13: list of time programs (1, 2 or 3)
+            // 13: list of time programs (1, 2 or 3) (not a Value)
             // 14: list of time ranges
-            // 19: time program (Mon - Sun)
+            // 19: time program (Mon - Sun) (not a value)
             // 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
             // 21: IPv4 addr or netmask
-            // 31: Number range
+            // 31: Number of any kind
             // 35: Enum w/ ListItems (w/ Image, Decription, ...)
 
             if (WolfObj.ControlType === 5) {
@@ -331,9 +418,10 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 common.type = 'boolean';
                 common.role = WolfObj.IsReadOnly ? 'indicator' : 'switch';
             } else if (
-                WolfObj.ControlType === 20 ||
                 WolfObj.ControlType === 9 ||
                 WolfObj.ControlType === 10 ||
+                WolfObj.ControlType === 14 ||
+                WolfObj.ControlType === 20 ||
                 WolfObj.ControlType === 21
             ) {
                 common.type = 'string';
@@ -370,8 +458,9 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 }
             }
 
-            // gereate ValueList for Polling
-            ValList.push(WolfObj.ValueId);
+            // generate ValueList for Polling
+            // use ParameterId, not ValueId (may be 0) only if > 0
+            ValList.push(WolfObj.ParameterId);
 
             this.log.debug(`WolfObj ${JSON.stringify(WolfObj)} --> ioBrokerObj.common ${JSON.stringify(common)}`);
 
@@ -389,7 +478,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
 
         const createdObjects = {};
         for (let channel of Object.keys(collectedChannels)) {
-            channel = channel.substring(0, channel.length - 1);
+            // channel = channel.substring(0, channel.length - 1);
             const name = channel.split('.').pop();
             await this.extendObjectAsync(channel, {
                 type: 'channel',
