@@ -555,9 +555,6 @@ class WolfSmartsetAdapter extends utils.Adapter {
             if (timeoutHandler['pollTimeout']) {
                 clearTimeout(timeoutHandler['pollTimeout']);
             }
-            if (timeoutHandler['startTimeout']) {
-                clearTimeout(timeoutHandler['startTimeout']);
-            }
             if (timeoutHandler['restartTimeout']) {
                 clearTimeout(timeoutHandler['restartTimeout']);
             }
