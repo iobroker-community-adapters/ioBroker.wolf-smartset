@@ -7,6 +7,7 @@ const timeoutHandler = [];
 let device = {};
 let ParamObjList = [];
 //const objects = {};
+const bundleIdFull = 9999;
 
 class WolfSmartsetAdapter extends utils.Adapter {
     wss;
@@ -151,7 +152,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
                         var tabName3;
                         if (typeof ParameterDescriptor.Group !== 'undefined') {
-                            tabName3 = `${tabName2}.${ParameterDescriptor.Group}`;
+                            tabName3 = `${tabName2}.${ParameterDescriptor.Group.replace(' ', '_')}`;
                         } else {
                             tabName3 = tabName2;
                         }
@@ -166,7 +167,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                             const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
                             if (!find) {
-                                paramInfo.TabName = tabName3.replace(' ', '_');
+                                paramInfo.TabName = tabName3;
                                 // remove subtree if exists
                                 // delete paramInfo.ChildParameterDescriptors;
                                 param.push(paramInfo);
@@ -228,7 +229,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 MenuItem.SubMenuEntries.forEach(SubMenuEntry => {
                     const tabName2 = `${tabName}.${SubMenuEntry.Name}`;
                     SubMenuEntry.TabViews.forEach(TabView => {
-                        const tabName3 = `${tabName2}.${TabView.TabName}`;
+                        const tabName3 = `${tabName2}.${TabView.TabName}`.replace(' ', '_');
                         // BundleId and GuiId of TabView are required in each param below thie TabView
                         const TabViewBundleId = TabView.BundleId;
                         const TabViewGuiId = TabView.GuiId;
@@ -236,7 +237,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                         TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
                             var tabName4;
                             if (typeof ParameterDescriptor.Group !== 'undefined') {
-                                tabName4 = `${tabName3}.${ParameterDescriptor.Group}`;
+                                tabName4 = `${tabName3}.${ParameterDescriptor.Group.replace(' ', '_')}`;
                             } else {
                                 tabName4 = tabName3;
                             }
@@ -251,7 +252,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                                 const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
                                 if (!find) {
-                                    paramInfo.TabName = tabName4.replace(' ', '_');
+                                    paramInfo.TabName = tabName4;
                                     param.push(paramInfo);
                                 }
                             }
@@ -524,13 +525,19 @@ class WolfSmartsetAdapter extends utils.Adapter {
      */
     async CreateBundleValuesLists(WolfParamDescriptions) {
         const BundleValuesList = {};
+        BundleValuesList[bundleIdFull] = [];
 
         for (const WolfParamDescription of WolfParamDescriptions) {
             const bundleId = WolfParamDescription.BundleId;
             if (typeof BundleValuesList[bundleId] == 'undefined') {
                 BundleValuesList[bundleId] = [];
             }
-            // De-duplicate ParamterIds: the might be at multiple locations in the tree
+
+            // De-duplicate ParamterIds for bundleIdFull: there might be at multiple locations in the tree
+            if (typeof BundleValuesList[bundleIdFull][WolfParamDescription.ParameterId] == 'undefined') {
+                BundleValuesList[bundleIdFull].push(WolfParamDescription.ParameterId);
+            }
+            // De-duplicate ParamterIds for bundleId: there might be at multiple locations in the tree
             if (typeof BundleValuesList[bundleId][WolfParamDescription.ParameterId] == 'undefined') {
                 BundleValuesList[bundleId].push(WolfParamDescription.ParameterId);
             }
