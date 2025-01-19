@@ -284,12 +284,12 @@ class WolfSmartsetAdapter extends utils.Adapter {
 
                 const systemStatus = await this.wss.getSystemState(parseInt(device.SystemId));
                 if (systemStatus && typeof systemStatus.IsOnline !== 'undefined') {
-                    await this.setStateAsync('info.connection', {
+                    this.setState('info.connection', {
                         val: systemStatus.IsOnline,
                         ack: true,
                     });
                 } else {
-                    await this.setStateAsync('info.connection', {
+                    this.setState('info.connection', {
                         val: false,
                         ack: true,
                     });
@@ -354,7 +354,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
         // 35: Enum w/ ListItems (w/ Image, Decription, ...)
         switch (type) {
             case 5:
-                this.setStateAsync(id, {
+                this.setState(id, {
                     val: value === 'True' ? true : false,
                     ack: true,
                 });
@@ -364,14 +364,14 @@ class WolfSmartsetAdapter extends utils.Adapter {
             case 14:
             case 20:
             case 21:
-                this.setStateAsync(id, {
+                this.setState(id, {
                     val: value.toString(),
                     ack: true,
                 });
                 break;
 
             default:
-                this.setStateAsync(id, {
+                this.setState(id, {
                     val: parseFloat(value),
                     ack: true,
                 });
@@ -592,7 +592,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                         },
                     ]);
                     if (typeof answer.Values !== 'undefined') {
-                        await this.setStateAsync(id, {
+                        this.setState(id, {
                             val: state.val,
                             ack: true,
                         });
