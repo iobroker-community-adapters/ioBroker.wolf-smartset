@@ -177,12 +177,6 @@ class WolfSmartsetAdapter extends utils.Adapter {
                         if (typeof ParameterDescriptor.ChildParameterDescriptors !== 'undefined') {
                             ParameterDescriptor.ChildParameterDescriptors.forEach(ChildParameterDescriptor => {
                                 var tabName4 = `${tabName3}.${ParameterDescriptor.Name}`;
-                                // if (ChildParameterDescriptor.NoDataPoint == false) {
-                                //     tabName4 = `${tabName3}.${ParameterDescriptor.Name}`;
-                                // } else {
-                                //     // intermediate node: add own name to path for own childs
-                                //     tabName4 = `${tabName3}.${ParameterDescriptor.Name}.${ChildParameterDescriptor.Name}`;
-                                // }
 
                                 // ignore pseudo or intermediate/complex parameters (e.g time program)
                                 if (
@@ -385,9 +379,9 @@ class WolfSmartsetAdapter extends utils.Adapter {
     }
 
     /**
-     * Generates adapter object states for each param in WolfParamDescriptions.
+     * Generates folders, channels and adapter object states for each param in WolfParamDescriptions.
      *
-     * @param WolfParamDescriptions - list of ParamDescriptions returned by getParamsWebGui()
+     * @param WolfParamDescriptions - flat list of ParamDescriptions for each state returned by getParamsWebGui()
      */
     async CreateParams(WolfParamDescriptions) {
         const collectedChannels = {};
