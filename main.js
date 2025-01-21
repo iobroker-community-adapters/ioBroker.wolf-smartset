@@ -7,7 +7,9 @@ const timeoutHandler = [];
 let device = {};
 let ParamObjList = [];
 //const objects = {};
-const bundleIdFull = 9999;
+
+// define pseudo bundle ids
+const bundleIdFull = 500;
 
 class WolfSmartsetAdapter extends utils.Adapter {
     wss;
@@ -387,8 +389,10 @@ class WolfSmartsetAdapter extends utils.Adapter {
     async CreateParams(WolfParamDescriptions) {
         const collectedChannels = {};
 
+        // 1.: Create states
         for (const WolfParamDescription of WolfParamDescriptions) {
-            collectedChannels[`${WolfParamDescription.TabName}`] = true;
+            // export BundleId of object to associated channel
+            collectedChannels[`${WolfParamDescription.TabName}`] = WolfParamDescription.BundleId;
             const id = `${WolfParamDescription.TabName}.${WolfParamDescription.ParameterId.toString()}`;
 
             const common = {
@@ -466,26 +470,27 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 `WolfParamDescription ${JSON.stringify(WolfParamDescription)} --> ioBrokerObj.common ${JSON.stringify(common)}`,
             );
 
-            await this.extendObjectAsync(id, {
+            this.extendObject(id, {
                 type: 'state',
-                common,
+                common: common,
                 native: {
                     ValueId: WolfParamDescription.ValueId,
                     ParameterId: WolfParamDescription.ParameterId,
                     ControlType: WolfParamDescription.ControlType,
                 },
             });
+            // 2.: Update object states
             await this.setStatesWithDiffTypes(WolfParamDescription.ControlType, id, WolfParamDescription.Value);
         }
 
+        // 3.: Create folders and channels
         const createdObjects = {};
-        for (let channel of Object.keys(collectedChannels)) {
-            // channel = channel.substring(0, channel.length - 1);
-            const name = channel.split('.').pop();
-            await this.extendObjectAsync(channel, {
+        for (const [channel, bundleId] of Object.entries(collectedChannels)) {
+            const name = `${channel.split('.').pop()} (Bundle: ${bundleId})`;
+            this.extendObject(channel, {
                 type: 'channel',
                 common: {
-                    name,
+                    name: name,
                 },
                 native: {},
             });
@@ -496,7 +501,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
             let folderName = id;
             while (id && channelParts.length > 0) {
                 if (!createdObjects[id]) {
-                    await this.extendObjectAsync(id, {
+                    await this.extendObject(id, {
                         type: 'folder',
                         common: {
                             name: folderName,
