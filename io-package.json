@@ -177,7 +177,8 @@
 	"devices": "",
     "pingInterval": 60,
 	"doExpert": false,
-	"expertPassword": ""
+	"expertPassword": "",
+	"doApiProfile": false
   },
   "objects": [],
   "instanceObjects": [
@@ -199,6 +200,66 @@
         "read": true,
         "write": false,
         "def": false
+      },
+      "native": {}
+    },
+    {
+	  "_id": "info_api",
+	  "type": "channel",
+	  "common": {
+	    "name": "API Profile Info"
+	  },
+	  "native": {}
+    },
+    {
+      "_id": "info_api.poll_req_bundle_id",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Polled BundleId",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info_api.poll_req_num_params",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Number of requested parameter values",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info_api.poll_resp_num_params",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Number of returned parameters",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info_api.poll_resp_num_values",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Number of returned parameters havind a value",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
       },
       "native": {}
     }
