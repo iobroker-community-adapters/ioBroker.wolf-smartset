@@ -174,11 +174,13 @@
   "native": {
     "user": "",
     "password": "",
+	"Devicelist": "",
 	"devices": "",
     "pingInterval": 60,
 	"doExpert": false,
 	"expertPassword": "",
-	"doApiProfile": false
+	"doApiProfile": false,
+	"doFullPull": false
   },
   "objects": [],
   "instanceObjects": [

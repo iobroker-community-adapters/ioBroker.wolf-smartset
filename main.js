@@ -8,9 +8,6 @@ let device = {};
 let ParamObjList = [];
 //const objects = {};
 
-// define pseudo bundle ids
-const bundleIdFull = 500;
-
 class WolfSmartsetAdapter extends utils.Adapter {
     wss;
     onlinePoll;
@@ -470,6 +467,18 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 `WolfParamDescription ${JSON.stringify(WolfParamDescription)} --> ioBrokerObj.common ${JSON.stringify(common)}`,
             );
 
+            // const my_object = {
+            //     type: 'state',
+            //     common: common,
+            //     native: {
+            //         ValueId: WolfParamDescription.ValueId,
+            //         ParameterId: WolfParamDescription.ParameterId,
+            //         ControlType: WolfParamDescription.ControlType,
+            //     },
+            // };
+
+            // this.setObjectNotExists(id, my_object);
+
             this.extendObject(id, {
                 type: 'state',
                 common: common,
@@ -479,6 +488,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     ControlType: WolfParamDescription.ControlType,
                 },
             });
+
             // 2.: Update object states
             await this.setStatesWithDiffTypes(WolfParamDescription.ControlType, id, WolfParamDescription.Value);
         }
@@ -530,7 +540,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
      */
     async CreateBundleValuesLists(WolfParamDescriptions) {
         const BundleValuesList = {};
-        BundleValuesList[bundleIdFull] = [];
+        // full pull value list is stored under pseudo bundleId 0
+        BundleValuesList[0] = [];
 
         for (const WolfParamDescription of WolfParamDescriptions) {
             const bundleId = WolfParamDescription.BundleId;
@@ -538,11 +549,11 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 BundleValuesList[bundleId] = [];
             }
 
-            // De-duplicate ParamterIds for bundleIdFull: there might be at multiple locations in the tree
-            if (typeof BundleValuesList[bundleIdFull][WolfParamDescription.ParameterId] == 'undefined') {
-                BundleValuesList[bundleIdFull].push(WolfParamDescription.ParameterId);
+            // De-duplicate ParamterIds for FullPull bundle: they might be at multiple locations in the tree
+            if (typeof BundleValuesList[0][WolfParamDescription.ParameterId] == 'undefined') {
+                BundleValuesList[0].push(WolfParamDescription.ParameterId);
             }
-            // De-duplicate ParamterIds for bundleId: there might be at multiple locations in the tree
+            // De-duplicate ParamterIds for bundleId: they might be at multiple locations in the tree
             if (typeof BundleValuesList[bundleId][WolfParamDescription.ParameterId] == 'undefined') {
                 BundleValuesList[bundleId].push(WolfParamDescription.ParameterId);
             }
