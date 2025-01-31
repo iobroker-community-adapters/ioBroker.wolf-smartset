@@ -175,7 +175,7 @@
     "user": "",
     "password": "",
 	"Devicelist": "",
-	"devices": "",
+	"devices": "{}",
     "pingInterval": 60,
 	"doExpert": false,
 	"expertPassword": "",
