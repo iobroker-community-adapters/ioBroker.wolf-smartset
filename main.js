@@ -39,7 +39,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
             device = JSON.parse(this.config.devices);
 
             //parseWebFormat
-            if (typeof device.Id !== 'undefined') {
+            if (device && typeof device.Id !== 'undefined') {
                 device.SystemId = device.Id;
             }
 
@@ -48,6 +48,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 this.config.password &&
                 this.config.user !== '' &&
                 this.config.password !== '' &&
+                device &&
                 typeof device.GatewayId !== 'undefined' &&
                 typeof device.SystemId !== 'undefined'
             ) {
@@ -56,7 +57,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
 
                 await this.main();
             } else {
-                this.wss = new wolfsmartset('', '', this);
+                this.wss = new wolfsmartset(this.config.user || '', this.config.password || '', this);
                 this.log.warn('Please configure user, password and device in config');
             }
         } catch (error) {
