@@ -3,6 +3,8 @@
 const utils = require('@iobroker/adapter-core');
 const wolfsmartset = require('./lib/wss');
 
+const MIN_POLL_INTERVAL = 60;
+
 const timeoutHandler = [];
 let device = {};
 let ParamObjList = [];
@@ -73,9 +75,9 @@ class WolfSmartsetAdapter extends utils.Adapter {
     async main() {
         this.config.pingInterval = this.config.pingInterval || 60;
 
-        // Abfrageintervall mindestens 15 sec.
-        if (this.config.pingInterval < 15) {
-            this.config.pingInterval = 15;
+        // Adjust poll interval if required
+        if (this.config.pingInterval < MIN_POLL_INTERVAL) {
+            this.config.pingInterval = MIN_POLL_INTERVAL;
         }
 
         await this.wss.init();
@@ -577,7 +579,6 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 clearTimeout(timeoutHandler['restartTimeout']);
             }
 
-            this.log.info('onUnload: calling adapter stop');
             this.wss.stop();
 
             callback();
