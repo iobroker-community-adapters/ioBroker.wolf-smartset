@@ -576,6 +576,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
             if (timeoutHandler['restartTimeout']) {
                 clearTimeout(timeoutHandler['restartTimeout']);
             }
+
+            this.log.info('onUnload: calling adapter stop');
             this.wss.stop();
 
             callback();
