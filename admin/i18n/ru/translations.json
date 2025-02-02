@@ -1,0 +1,16 @@
+{
+    "Device List": "Список устройств",
+    "Devices": "Устройства",
+    "Enable API Profiling": "Включить профилирование API",
+    "Expert Password": "Экспертный пароль",
+    "Get Devices": "Получить устройства",
+    "Password": "Пароль",
+    "Please get Devices first": "Пожалуйста, получите устройства сначала",
+    "Please select your Device": "Пожалуйста, выберите свое устройство",
+    "Poll Interval (in sec)": "Интервал опроса (в разд.)",
+    "Request Expert Parameters": "Запросить экспертные параметры",
+    "Request all Parameters": "Запросите все параметры",
+    "Username": "имя пользователя",
+    "donateInformation": "Не стесняйтесь предлагать новые функции или устройства через GitHub или Iobroker Forum. Если вам нравится этот адаптер, вы можете пожертвовать.",
+    "wolf-smartset adapter settings": "Настройки адаптера для Wolf-Smartset"
+}

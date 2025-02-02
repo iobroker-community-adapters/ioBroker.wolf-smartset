@@ -1,0 +1,16 @@
+{
+    "Device List": "Список пристроїв",
+    "Devices": "Пристрої",
+    "Enable API Profiling": "Увімкнути профілювання API",
+    "Expert Password": "Експертний пароль",
+    "Get Devices": "Отримайте пристрої",
+    "Password": "Пароль",
+    "Please get Devices first": "Будь ласка, отримайте пристрої спочатку",
+    "Please select your Device": "Виберіть свій пристрій",
+    "Poll Interval (in sec)": "Інтервал опитування (в секунді)",
+    "Request Expert Parameters": "Попросіть експертних параметрів",
+    "Request all Parameters": "Попросіть усі параметри",
+    "Username": "Ім'я користувача",
+    "donateInformation": "Не соромтеся пропонувати нові функції або пристрої через форум Github або iObroker. Якщо вам подобається цей адаптер, ви дуже вітаєте пожертвувати.",
+    "wolf-smartset adapter settings": "Налаштування адаптера для Wolf-Smartset"
+}

@@ -1,0 +1,16 @@
+{
+    "Device List": "Lista urządzeń",
+    "Devices": "Urządzenia",
+    "Enable API Profiling": "Włącz profilowanie API",
+    "Expert Password": "Hasło eksperckie",
+    "Get Devices": "Zdobądź urządzenia",
+    "Password": "Hasło",
+    "Please get Devices first": "Najpierw uzyskaj urządzenia",
+    "Please select your Device": "Wybierz urządzenie",
+    "Poll Interval (in sec)": "Odstęp ankiety (w SEC)",
+    "Request Expert Parameters": "Żądaj parametrów ekspertów",
+    "Request all Parameters": "Poproś o wszystkie parametry",
+    "Username": "nazwa użytkownika",
+    "donateInformation": "Zaproponuj nowe funkcje lub urządzenia za pośrednictwem GitHub lub IOBRAKER Forum. Jeśli podoba Ci się ten adapter, bardzo zapraszasz na przekazanie darowizny.",
+    "wolf-smartset adapter settings": "Ustawienia adaptera dla wilka-martset"
+}

@@ -1,0 +1,16 @@
+{
+    "Device List": "Apparaatlijst",
+    "Devices": "Apparaten",
+    "Enable API Profiling": "Schakel API -profilering in",
+    "Expert Password": "Deskundige wachtwoord",
+    "Get Devices": "Krijg apparaten",
+    "Password": "Wachtwoord",
+    "Please get Devices first": "Haal eerst apparaten",
+    "Please select your Device": "Selecteer uw apparaat",
+    "Poll Interval (in sec)": "Poll -interval (in SEC)",
+    "Request Expert Parameters": "Vraag deskundige parameters aan",
+    "Request all Parameters": "Vraag alle parameters aan",
+    "Username": "gebruikersnaam",
+    "donateInformation": "Voel je vrij om nieuwe functies of apparaten voor te stellen via GitHub of Iobroker Forum. Als je deze adapter leuk vindt, ben je van harte welkom om te doneren.",
+    "wolf-smartset adapter settings": "Adapterinstellingen voor Wolf-Smartset"
+}

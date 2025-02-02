@@ -1,0 +1,16 @@
+{
+    "Device List": "Liste des appareils",
+    "Devices": "Dispositifs",
+    "Enable API Profiling": "Activer le profilage de l'API",
+    "Expert Password": "Mot de passe expert",
+    "Get Devices": "Obtenir des appareils",
+    "Password": "Mot de passe",
+    "Please get Devices first": "Veuillez d'abord obtenir des appareils",
+    "Please select your Device": "Veuillez sélectionner votre appareil",
+    "Poll Interval (in sec)": "Intervalle de sondage (en sec)",
+    "Request Expert Parameters": "Demander des paramètres d'experts",
+    "Request all Parameters": "Demander tous les paramètres",
+    "Username": "nom d'utilisateur",
+    "donateInformation": "N'hésitez pas à suggérer de nouvelles fonctionnalités ou appareils via GitHub ou Iobroker Forum. Si vous aimez cet adaptateur, vous vous êtes bien invité à faire un don.",
+    "wolf-smartset adapter settings": "Paramètres de l'adaptateur pour Wolf-Smartset"
+}
