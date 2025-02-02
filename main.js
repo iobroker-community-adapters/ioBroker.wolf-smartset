@@ -472,20 +472,18 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 `WolfParamDescription ${JSON.stringify(WolfParamDescription)} --> ioBrokerObj.common ${JSON.stringify(common)}`,
             );
 
-            // const my_object = {
-            //     type: 'state',
-            //     common: common,
-            //     native: {
-            //         ValueId: WolfParamDescription.ValueId,
-            //         ParameterId: WolfParamDescription.ParameterId,
-            //         ControlType: WolfParamDescription.ControlType,
-            //     },
-            // };
-
-            // this.setObjectNotExists(id, my_object);
+            this.setObjectNotExists(id, {
+                _id: id,
+                type: this.wss.config,
+                common: common,
+                native: {
+                    ValueId: WolfParamDescription.ValueId,
+                    ParameterId: WolfParamDescription.ParameterId,
+                    ControlType: WolfParamDescription.ControlType,
+                },
+            });
 
             this.extendObject(id, {
-                type: 'state',
                 common: common,
                 native: {
                     ValueId: WolfParamDescription.ValueId,
