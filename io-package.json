@@ -257,7 +257,7 @@
       "type": "state",
       "common": {
         "role": "value",
-        "name": "Number of returned parameters havind a value",
+        "name": "Number of returned parameters having a value",
         "type": "number",
         "read": true,
         "write": false,
