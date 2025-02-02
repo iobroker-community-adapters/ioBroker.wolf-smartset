@@ -194,6 +194,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
      * @param WolfParamDescriptions - flat list of ParamDescriptions for each state returned by getParamsWebGui()
      */
     async _CreateParams(WolfParamDescriptions) {
+        // get list of instance objects before fetching new list of params from Wolf server
+        const oldInstanceObjects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
         const collectedChannels = {};
 
         // 1.: Create states
@@ -277,16 +279,22 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 `WolfParamDescription ${JSON.stringify(WolfParamDescription)} --> ioBrokerObj.common ${JSON.stringify(common)}`,
             );
 
-            this.setObjectNotExists(id, {
-                _id: id,
-                type: this.wss.config,
-                common: common,
-                native: {
-                    ValueId: WolfParamDescription.ValueId,
-                    ParameterId: WolfParamDescription.ParameterId,
-                    ControlType: WolfParamDescription.ControlType,
-                },
-            });
+            //  if this is a new object, create it first
+            const fullId = `${this.namespace}.${id}`;
+            if (typeof oldInstanceObjects[`${fullId}`] == 'undefined') {
+                this.setObjectNotExists(id, {
+                    _id: id,
+                    type: this.wss.config,
+                    common: common,
+                    native: {
+                        ValueId: WolfParamDescription.ValueId,
+                        ParameterId: WolfParamDescription.ParameterId,
+                        ControlType: WolfParamDescription.ControlType,
+                    },
+                });
+            } else {
+                oldInstanceObjects[fullId].common.desc = 'active';
+            }
 
             this.extendObject(id, {
                 common: common,
@@ -301,7 +309,20 @@ class WolfSmartsetAdapter extends utils.Adapter {
             await this._setStatesWithDiffTypes(WolfParamDescription.ControlType, id, WolfParamDescription.Value);
         }
 
-        // 3.: Create folders and channels
+        // 3.: mark obsoleted objects
+        for (const fullId in oldInstanceObjects) {
+            let re = new RegExp(String.raw`^${this.namespace}.info`, 'g');
+            if (
+                !fullId.match(re) &&
+                typeof oldInstanceObjects[fullId].common != 'undefined' &&
+                typeof oldInstanceObjects[fullId].common.desc == 'undefined'
+            ) {
+                oldInstanceObjects[fullId].common.desc = 'obsoleted';
+                this.extendObject(fullId, oldInstanceObjects[fullId]);
+            }
+        }
+
+        // 4.: Create folders and channels
         const createdObjects = {};
         for (const [channel, bundleId] of Object.entries(collectedChannels)) {
             const name = `${channel.split('.').pop()} (Bundle: ${bundleId})`;
@@ -337,7 +358,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
             }
         }
 
-        this.log.debug('create states DONE');
+        this.log.debug('createParams DONE');
     }
 
     /**
@@ -604,7 +625,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 this.log.info(`Change value for: ${obj.common.name}: ${JSON.stringify(state)}`);
 
                 try {
-                    const answer = await this.wss.setParameter(device.GatewayId, device.SystemId, [
+                    const answer = await this.wss.setValList(device.GatewayId, device.SystemId, [
                         {
                             ValueId: findParamObj.ValueId,
                             ParameterId: obj.native.ParameterId,
