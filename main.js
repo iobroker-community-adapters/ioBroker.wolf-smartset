@@ -30,135 +30,140 @@ class WolfSmartsetAdapter extends utils.Adapter {
         this.on('unload', this.onUnload.bind(this));
     }
 
-    /**
-     * Is called when databases are connected and adapter received configuration.
-     */
-    async onReady() {
-        this.onlinePoll = 4;
-        this.emptyCount = 0;
+    // //find Parameter for App Objects
+    // async getParams(guiData) {
+    //     if (guiData == null) {
+    //         return;
+    //     }
+    //     const param = [];
 
-        try {
-            device = JSON.parse(this.config.devices);
+    //     guiData.UserSystemOverviewData.forEach(UserSystemOverviewData => {
+    //         const tabName = UserSystemOverviewData.TabName;
 
-            //parseWebFormat
-            if (device && typeof device.Id !== 'undefined') {
-                device.SystemId = device.Id;
-            }
+    //         UserSystemOverviewData.ParameterDescriptors.forEach(ParameterDescriptors => {
+    //             const paramInfo = ParameterDescriptors;
 
-            if (
-                this.config.user &&
-                this.config.password &&
-                this.config.user !== '' &&
-                this.config.password !== '' &&
-                device &&
-                typeof device.GatewayId !== 'undefined' &&
-                typeof device.SystemId !== 'undefined'
-            ) {
-                this.wss = new wolfsmartset(this.config.user, this.config.password, this);
-                await this.wss.openIdInit();
+    //             //search duplicate
+    //             const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
-                await this.main();
-            } else {
-                this.wss = new wolfsmartset(this.config.user || '', this.config.password || '', this);
-                this.log.warn('Please configure user, password and device in config');
-            }
-        } catch (error) {
-            this.wss = new wolfsmartset('', '', this);
-            this.log.error('Please configure user, password and device in config');
-            this.log.error(error.stack);
+    //             if (find) {
+    //                 //this.log.debug('find double: ' + paramInfo.Name)
+    //             } else {
+    //                 paramInfo.TabName = tabName;
+    //                 param.push(paramInfo);
+    //             }
+    //         });
+    //     });
+    //     return param;
+    // }
+
+    async _getParamsWebGui(guiData) {
+        if (guiData == null) {
+            return;
         }
-    }
+        const param = [];
 
-    /**
-     * main function is called from onReady(), PollValueList() and in case of an error by itself
-     */
-    async main() {
-        this.config.pingInterval = this.config.pingInterval || 60;
+        guiData.MenuItems.forEach(MenuItem => {
+            const tabName = MenuItem.Name;
 
-        // Adjust poll interval if required
-        if (this.config.pingInterval < MIN_POLL_INTERVAL) {
-            this.config.pingInterval = MIN_POLL_INTERVAL;
-        }
+            // Benutzerebene: iterate over MenuItems
+            MenuItem.TabViews.forEach(TabView => {
+                const tabName2 = `${tabName}.${TabView.TabName}`;
+                // BundleId and GuiId of TabView are required in each param below thie TabView
+                const TabViewBundleId = TabView.BundleId;
+                const TabViewGuiId = TabView.GuiId;
 
-        await this.wss.init();
+                TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
+                    var tabName3;
+                    if (typeof ParameterDescriptor.Group !== 'undefined') {
+                        tabName3 = `${tabName2}.${ParameterDescriptor.Group.replace(' ', '_')}`;
+                    } else {
+                        tabName3 = tabName2;
+                    }
 
-        try {
-            const GUIDesc = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
-            if (GUIDesc) {
-                ParamObjList = (await getParamsWebGui(GUIDesc)) || [];
-            } else {
-                throw new Error('Could not get GUIDescription (device might be down)');
-            }
-            if (ParamObjList) {
-                await this.CreateParams(ParamObjList);
-                // create a list of params for each BundleId as defined in the GUI Desc
-                this.BundleValuesList = await this.CreateBundleValuesLists(ParamObjList);
-            }
+                    // ignore pseudo or intermediate/complex parameters (e.g list of time programs)
+                    if (ParameterDescriptor.ParameterId > 0) {
+                        const paramInfo = ParameterDescriptor;
+                        paramInfo.BundleId = TabViewBundleId;
+                        paramInfo.GuiId = TabViewGuiId;
 
-            this.objects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
-            this.log.debug(JSON.stringify(this.objects));
+                        //search duplicate
+                        const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
-            await this.PollValueList();
-        } catch (error) {
-            this.log.warn(error);
-            this.log.warn('Try again in 60 sek.');
-            if (timeoutHandler['restartTimeout']) {
-                clearTimeout(timeoutHandler['restartTimeout']);
-            }
-            timeoutHandler['restartTimeout'] = setTimeout(async () => {
-                this.main();
-            }, 60000);
-        }
+                        if (!find) {
+                            paramInfo.TabName = tabName3;
+                            // remove subtree if exists
+                            // delete paramInfo.ChildParameterDescriptors;
+                            param.push(paramInfo);
+                        }
+                    }
 
-        // //find Parameter for App Objects
-        // async function getParams(guiData) {
-        //     if (guiData == null) {
-        //         return;
-        //     }
-        //     const param = [];
+                    // Check for ChildParameterDescriptors (e.g. time program)
+                    if (typeof ParameterDescriptor.ChildParameterDescriptors !== 'undefined') {
+                        ParameterDescriptor.ChildParameterDescriptors.forEach(ChildParameterDescriptor => {
+                            var tabName4 = `${tabName3}.${ParameterDescriptor.Name}`;
 
-        //     guiData.UserSystemOverviewData.forEach(UserSystemOverviewData => {
-        //         const tabName = UserSystemOverviewData.TabName;
+                            // ignore pseudo or intermediate/complex parameters (e.g time program)
+                            if (
+                                ChildParameterDescriptor.NoDataPoint == false &&
+                                ChildParameterDescriptor.ParameterId > 0
+                            ) {
+                                const paramInfo = ChildParameterDescriptor;
+                                paramInfo.BundleId = TabViewBundleId;
+                                paramInfo.GuiId = TabViewGuiId;
 
-        //         UserSystemOverviewData.ParameterDescriptors.forEach(ParameterDescriptors => {
-        //             const paramInfo = ParameterDescriptors;
+                                //search duplicate
+                                const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
-        //             //search duplicate
-        //             const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
+                                if (!find) {
+                                    paramInfo.TabName = tabName4.replace(' ', '_');
+                                    param.push(paramInfo);
+                                }
+                            }
 
-        //             if (find) {
-        //                 //this.log.debug('find double: ' + paramInfo.Name)
-        //             } else {
-        //                 paramInfo.TabName = tabName;
-        //                 param.push(paramInfo);
-        //             }
-        //         });
-        //     });
-        //     return param;
-        // }
+                            if (typeof ChildParameterDescriptor.ChildParameterDescriptors !== 'undefined') {
+                                ChildParameterDescriptor.ChildParameterDescriptors.forEach(
+                                    ChildChildParameterDescriptor => {
+                                        const tabName5 = `${tabName4}.${ChildParameterDescriptor.Name}`;
 
-        async function getParamsWebGui(guiData) {
-            if (guiData == null) {
-                return;
-            }
-            const param = [];
+                                        if (ChildChildParameterDescriptor.ParameterId > 0) {
+                                            const paramInfo = ChildChildParameterDescriptor;
+                                            paramInfo.BundleId = TabViewBundleId;
+                                            paramInfo.GuiId = TabViewGuiId;
 
-            guiData.MenuItems.forEach(MenuItem => {
-                const tabName = MenuItem.Name;
+                                            //search duplicate
+                                            const find = param.find(
+                                                element => element.ParameterId === paramInfo.ParameterId,
+                                            );
 
-                // Benutzerebene: iterate over MenuItems
-                MenuItem.TabViews.forEach(TabView => {
-                    const tabName2 = `${tabName}.${TabView.TabName}`;
+                                            if (!find) {
+                                                paramInfo.TabName = tabName5.replace(' ', '_');
+                                                param.push(paramInfo);
+                                            }
+                                        }
+                                    },
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Fachmannebene: interate over SubMenuEntries
+            MenuItem.SubMenuEntries.forEach(SubMenuEntry => {
+                const tabName2 = `${tabName}.${SubMenuEntry.Name}`;
+                SubMenuEntry.TabViews.forEach(TabView => {
+                    const tabName3 = `${tabName2}.${TabView.TabName}`.replace(' ', '_');
                     // BundleId and GuiId of TabView are required in each param below thie TabView
                     const TabViewBundleId = TabView.BundleId;
                     const TabViewGuiId = TabView.GuiId;
 
                     TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
-                        var tabName3;
+                        var tabName4;
                         if (typeof ParameterDescriptor.Group !== 'undefined') {
-                            tabName3 = `${tabName2}.${ParameterDescriptor.Group.replace(' ', '_')}`;
+                            tabName4 = `${tabName3}.${ParameterDescriptor.Group.replace(' ', '_')}`;
                         } else {
-                            tabName3 = tabName2;
+                            tabName4 = tabName3;
                         }
 
                         // ignore pseudo or intermediate/complex parameters (e.g list of time programs)
@@ -171,216 +176,16 @@ class WolfSmartsetAdapter extends utils.Adapter {
                             const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
                             if (!find) {
-                                paramInfo.TabName = tabName3;
-                                // remove subtree if exists
-                                // delete paramInfo.ChildParameterDescriptors;
+                                paramInfo.TabName = tabName4;
                                 param.push(paramInfo);
                             }
                         }
-
-                        // Check for ChildParameterDescriptors (e.g. time program)
-                        if (typeof ParameterDescriptor.ChildParameterDescriptors !== 'undefined') {
-                            ParameterDescriptor.ChildParameterDescriptors.forEach(ChildParameterDescriptor => {
-                                var tabName4 = `${tabName3}.${ParameterDescriptor.Name}`;
-
-                                // ignore pseudo or intermediate/complex parameters (e.g time program)
-                                if (
-                                    ChildParameterDescriptor.NoDataPoint == false &&
-                                    ChildParameterDescriptor.ParameterId > 0
-                                ) {
-                                    const paramInfo = ChildParameterDescriptor;
-                                    paramInfo.BundleId = TabViewBundleId;
-                                    paramInfo.GuiId = TabViewGuiId;
-
-                                    //search duplicate
-                                    const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
-
-                                    if (!find) {
-                                        paramInfo.TabName = tabName4.replace(' ', '_');
-                                        param.push(paramInfo);
-                                    }
-                                }
-
-                                if (typeof ChildParameterDescriptor.ChildParameterDescriptors !== 'undefined') {
-                                    ChildParameterDescriptor.ChildParameterDescriptors.forEach(
-                                        ChildChildParameterDescriptor => {
-                                            const tabName5 = `${tabName4}.${ChildParameterDescriptor.Name}`;
-
-                                            if (ChildChildParameterDescriptor.ParameterId > 0) {
-                                                const paramInfo = ChildChildParameterDescriptor;
-                                                paramInfo.BundleId = TabViewBundleId;
-                                                paramInfo.GuiId = TabViewGuiId;
-
-                                                //search duplicate
-                                                const find = param.find(
-                                                    element => element.ParameterId === paramInfo.ParameterId,
-                                                );
-
-                                                if (!find) {
-                                                    paramInfo.TabName = tabName5.replace(' ', '_');
-                                                    param.push(paramInfo);
-                                                }
-                                            }
-                                        },
-                                    );
-                                }
-                            });
-                        }
-                    });
-                });
-
-                // Fachmannebene: interate over SubMenuEntries
-                MenuItem.SubMenuEntries.forEach(SubMenuEntry => {
-                    const tabName2 = `${tabName}.${SubMenuEntry.Name}`;
-                    SubMenuEntry.TabViews.forEach(TabView => {
-                        const tabName3 = `${tabName2}.${TabView.TabName}`.replace(' ', '_');
-                        // BundleId and GuiId of TabView are required in each param below thie TabView
-                        const TabViewBundleId = TabView.BundleId;
-                        const TabViewGuiId = TabView.GuiId;
-
-                        TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
-                            var tabName4;
-                            if (typeof ParameterDescriptor.Group !== 'undefined') {
-                                tabName4 = `${tabName3}.${ParameterDescriptor.Group.replace(' ', '_')}`;
-                            } else {
-                                tabName4 = tabName3;
-                            }
-
-                            // ignore pseudo or intermediate/complex parameters (e.g list of time programs)
-                            if (ParameterDescriptor.ParameterId > 0) {
-                                const paramInfo = ParameterDescriptor;
-                                paramInfo.BundleId = TabViewBundleId;
-                                paramInfo.GuiId = TabViewGuiId;
-
-                                //search duplicate
-                                const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
-
-                                if (!find) {
-                                    paramInfo.TabName = tabName4;
-                                    param.push(paramInfo);
-                                }
-                            }
-                        });
                     });
                 });
             });
-
-            return param;
-        }
-        this.subscribeStates('*');
-    }
-
-    async PollValueList() {
-        this.onlinePoll++;
-
-        if (timeoutHandler['pollTimeout']) {
-            clearTimeout(timeoutHandler['pollTimeout']);
-        }
-
-        try {
-            const recValList = await this.wss.getValList(device.GatewayId, device.SystemId, this.BundleValuesList);
-            if (recValList) {
-                await this.SetStatesArray(recValList);
-            }
-
-            if (this.onlinePoll > 4) {
-                this.onlinePoll = 0;
-
-                const systemStatus = await this.wss.getSystemState(parseInt(device.SystemId));
-                if (systemStatus && typeof systemStatus.IsOnline !== 'undefined') {
-                    this.setState('info.connection', {
-                        val: systemStatus.IsOnline,
-                        ack: true,
-                    });
-                } else {
-                    this.setState('info.connection', {
-                        val: false,
-                        ack: true,
-                    });
-                }
-            }
-        } catch (error) {
-            this.log.warn(error);
-        }
-        timeoutHandler['pollTimeout'] = setTimeout(() => {
-            this.PollValueList();
-        }, this.config.pingInterval * 1000);
-    }
-
-    async SetStatesArray(array) {
-        if (array.Values.length === 0) {
-            this.emptyCount++;
-        } else {
-            this.emptyCount = 0;
-        }
-
-        if (this.emptyCount >= 10) {
-            // no data for long time try a restart
-            this.emptyCount = 0;
-            this.main();
-            return;
-        }
-
-        array.Values.forEach(recVal => {
-            //this.log.debug("search:" + JSON.stringify(recVal));
-
-            //find ParamId for ValueId
-            const findParamObj = ParamObjList.find(element => element.ValueId === recVal.ValueId);
-
-            if (findParamObj) {
-                for (const key in this.objects) {
-                    if (this.objects[key].native && this.objects[key].native.ParameterId === findParamObj.ParameterId) {
-                        this.setStatesWithDiffTypes(this.objects[key].native.ControlType, key, recVal.Value);
-                    }
-                }
-            }
         });
-    }
 
-    async setStatesWithDiffTypes(type, id, value) {
-        if (type == null || id == null || value == null) {
-            return;
-        }
-
-        // Wolf ControlTypes:
-        // 0: Unknown
-        // 1: Enum w/ ListItems (simple)
-        // 5: Bool
-        // 6: Number; 'Decimals' = decimal places (accuracy)
-        // 9: Date
-        // 10: Time
-        // 13: list of time programs (1, 2 or 3) (not a Value)
-        // 14: list of time ranges
-        // 19: time program (Mon - Sun) (not a value)
-        // 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
-        // 21: IPv4 addr or netmask
-        // 31: Number of any kind
-        // 35: Enum w/ ListItems (w/ Image, Decription, ...)
-        switch (type) {
-            case 5:
-                this.setState(id, {
-                    val: value === 'True' ? true : false,
-                    ack: true,
-                });
-                break;
-            case 9:
-            case 10:
-            case 14:
-            case 20:
-            case 21:
-                this.setState(id, {
-                    val: value.toString(),
-                    ack: true,
-                });
-                break;
-
-            default:
-                this.setState(id, {
-                    val: parseFloat(value),
-                    ack: true,
-                });
-                break;
-        }
+        return param;
     }
 
     /**
@@ -388,7 +193,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
      *
      * @param WolfParamDescriptions - flat list of ParamDescriptions for each state returned by getParamsWebGui()
      */
-    async CreateParams(WolfParamDescriptions) {
+    async _CreateParams(WolfParamDescriptions) {
         const collectedChannels = {};
 
         // 1.: Create states
@@ -493,7 +298,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
             });
 
             // 2.: Update object states
-            await this.setStatesWithDiffTypes(WolfParamDescription.ControlType, id, WolfParamDescription.Value);
+            await this._setStatesWithDiffTypes(WolfParamDescription.ControlType, id, WolfParamDescription.Value);
         }
 
         // 3.: Create folders and channels
@@ -541,7 +346,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
      *
      * @param WolfParamDescriptions - list of extended WolfParamDescriptions returned by getParamsWebGui()
      */
-    async CreateBundleValuesLists(WolfParamDescriptions) {
+    async _CreateBundleValuesLists(WolfParamDescriptions) {
         const BundleValuesList = {};
         // full pull value list is stored under pseudo bundleId 0
         BundleValuesList[0] = [];
@@ -563,6 +368,202 @@ class WolfSmartsetAdapter extends utils.Adapter {
         }
 
         return BundleValuesList;
+    }
+
+    async _PollValueList() {
+        this.onlinePoll++;
+
+        if (timeoutHandler['pollTimeout']) {
+            clearTimeout(timeoutHandler['pollTimeout']);
+        }
+
+        try {
+            const recValList = await this.wss.getValList(device.GatewayId, device.SystemId, this.BundleValuesList);
+            if (recValList) {
+                await this._SetStatesArray(recValList);
+            }
+
+            if (this.onlinePoll > 4) {
+                this.onlinePoll = 0;
+
+                const systemStatus = await this.wss.getSystemState(parseInt(device.SystemId));
+                if (systemStatus && typeof systemStatus.IsOnline !== 'undefined') {
+                    this.setState('info.connection', {
+                        val: systemStatus.IsOnline,
+                        ack: true,
+                    });
+                } else {
+                    this.setState('info.connection', {
+                        val: false,
+                        ack: true,
+                    });
+                }
+            }
+        } catch (error) {
+            this.log.warn(error);
+        }
+        timeoutHandler['pollTimeout'] = setTimeout(() => {
+            this._PollValueList();
+        }, this.config.pingInterval * 1000);
+    }
+
+    async _SetStatesArray(array) {
+        if (array.Values.length === 0) {
+            this.emptyCount++;
+        } else {
+            this.emptyCount = 0;
+        }
+
+        if (this.emptyCount >= 10) {
+            // no data for long time try a restart
+            this.emptyCount = 0;
+            this.main();
+            return;
+        }
+
+        array.Values.forEach(recVal => {
+            //this.log.debug("search:" + JSON.stringify(recVal));
+
+            //find ParamId for ValueId
+            const findParamObj = ParamObjList.find(element => element.ValueId === recVal.ValueId);
+
+            if (findParamObj) {
+                for (const key in this.objects) {
+                    if (this.objects[key].native && this.objects[key].native.ParameterId === findParamObj.ParameterId) {
+                        this._setStatesWithDiffTypes(this.objects[key].native.ControlType, key, recVal.Value);
+                    }
+                }
+            }
+        });
+    }
+
+    async _setStatesWithDiffTypes(type, id, value) {
+        if (type == null || id == null || value == null) {
+            return;
+        }
+
+        // Wolf ControlTypes:
+        // 0: Unknown
+        // 1: Enum w/ ListItems (simple)
+        // 5: Bool
+        // 6: Number; 'Decimals' = decimal places (accuracy)
+        // 9: Date
+        // 10: Time
+        // 13: list of time programs (1, 2 or 3) (not a Value)
+        // 14: list of time ranges
+        // 19: time program (Mon - Sun) (not a value)
+        // 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
+        // 21: IPv4 addr or netmask
+        // 31: Number of any kind
+        // 35: Enum w/ ListItems (w/ Image, Decription, ...)
+        switch (type) {
+            case 5:
+                this.setState(id, {
+                    val: value === 'True' ? true : false,
+                    ack: true,
+                });
+                break;
+            case 9:
+            case 10:
+            case 14:
+            case 20:
+            case 21:
+                this.setState(id, {
+                    val: value.toString(),
+                    ack: true,
+                });
+                break;
+
+            default:
+                this.setState(id, {
+                    val: parseFloat(value),
+                    ack: true,
+                });
+                break;
+        }
+    }
+
+    /**
+     * Is called when databases are connected and adapter received configuration.
+     */
+    async onReady() {
+        this.onlinePoll = 4;
+        this.emptyCount = 0;
+
+        try {
+            device = JSON.parse(this.config.devices);
+
+            //parseWebFormat
+            if (device && typeof device.Id !== 'undefined') {
+                device.SystemId = device.Id;
+            }
+
+            if (
+                this.config.user &&
+                this.config.password &&
+                this.config.user !== '' &&
+                this.config.password !== '' &&
+                device &&
+                typeof device.GatewayId !== 'undefined' &&
+                typeof device.SystemId !== 'undefined'
+            ) {
+                this.wss = new wolfsmartset(this.config.user, this.config.password, this);
+                await this.wss.openIdInit();
+
+                await this.main();
+            } else {
+                this.wss = new wolfsmartset(this.config.user || '', this.config.password || '', this);
+                this.log.warn('Please configure user, password and device in config');
+            }
+        } catch (error) {
+            this.wss = new wolfsmartset('', '', this);
+            this.log.error('Please configure user, password and device in config');
+            this.log.error(error.stack);
+        }
+    }
+
+    /**
+     * main function is called from onReady(), PollValueList() and in case of an error by itself
+     */
+    async main() {
+        this.config.pingInterval = this.config.pingInterval || 60;
+
+        // Adjust poll interval if required
+        if (this.config.pingInterval < MIN_POLL_INTERVAL) {
+            this.config.pingInterval = MIN_POLL_INTERVAL;
+        }
+
+        await this.wss.init();
+
+        try {
+            const GUIDesc = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
+            if (GUIDesc) {
+                ParamObjList = (await this._getParamsWebGui(GUIDesc)) || [];
+            } else {
+                throw new Error('Could not get GUIDescription (device might be down)');
+            }
+            if (ParamObjList) {
+                await this._CreateParams(ParamObjList);
+                // create a list of params for each BundleId as defined in the GUI Desc
+                this.BundleValuesList = await this._CreateBundleValuesLists(ParamObjList);
+            }
+
+            this.objects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
+            this.log.debug(JSON.stringify(this.objects));
+
+            await this._PollValueList();
+        } catch (error) {
+            this.log.warn(error);
+            this.log.warn('Try again in 60 sek.');
+            if (timeoutHandler['restartTimeout']) {
+                clearTimeout(timeoutHandler['restartTimeout']);
+            }
+            timeoutHandler['restartTimeout'] = setTimeout(async () => {
+                this.main();
+            }, 60000);
+        }
+
+        this.subscribeStates('*');
     }
 
     /**
@@ -616,7 +617,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                             val: state.val,
                             ack: true,
                         });
-                        await this.SetStatesArray(answer);
+                        await this._SetStatesArray(answer);
                     }
                 } catch (err) {
                     this.log.error(err);
