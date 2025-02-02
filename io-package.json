@@ -165,22 +165,22 @@
   },
   "encryptedNative": [
     "password",
-	"expertPassword"
+    "expertPassword"
   ],
   "protectedNative": [
     "password",
-	"expertPassword"
+    "expertPassword"
   ],
   "native": {
     "user": "",
     "password": "",
-	"Devicelist": "",
-	"devices": "{}",
+    "Devicelist": "",
+    "devices": "{}",
     "pingInterval": 60,
-	"doExpert": false,
-	"expertPassword": "",
-	"doApiProfile": false,
-	"doFullPull": false
+    "doExpert": false,
+    "expertPassword": "",
+    "doApiProfile": false,
+    "doFullPull": false
   },
   "objects": [],
   "instanceObjects": [
@@ -206,12 +206,12 @@
       "native": {}
     },
     {
-	  "_id": "info_api",
-	  "type": "channel",
-	  "common": {
-	    "name": "API Profile Info"
-	  },
-	  "native": {}
+      "_id": "info_api",
+      "type": "channel",
+      "common": {
+        "name": "API Profile Info"
+      },
+      "native": {}
     },
     {
       "_id": "info_api.poll_req_bundle_id",
