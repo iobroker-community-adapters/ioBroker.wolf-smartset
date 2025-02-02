@@ -86,6 +86,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
             const GUIDesc = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
             if (GUIDesc) {
                 ParamObjList = (await getParamsWebGui(GUIDesc)) || [];
+            } else {
+                throw new Error('Could not get GUIDescription (device might be down)');
             }
             if (ParamObjList) {
                 await this.CreateParams(ParamObjList);
