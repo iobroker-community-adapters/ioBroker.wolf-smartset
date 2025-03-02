@@ -1,0 +1,214 @@
+{
+    "i18n": true,
+    "type": "tabs",
+    "tabsStyle": {
+        "width": "calc(100% - 100px)"
+    },
+    "items": {
+        "tab_1":{
+            "type": "panel",
+            "label": "Main Settings",
+            "items": {
+                "accountHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "Wolf Smartset Account",
+                    "size": 2
+                },
+                "accountTxt": {
+                    "type": "staticText",
+                    "text": "Enter username and password of your Wolf Smartset account",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "username": {
+                    "type": "text",
+                    "label": "Username",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "password": {
+                    "type": "password",
+                    "label": "Password",
+                    "repeat": true,
+                    "visible": true,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "deviceHeader": {
+                    "type": "header",
+                    "text": "Wolf Device",
+                    "size": 2
+                },
+                "deviceTxt": {
+                    "type": "staticText",
+                    "text": "Select the Wolf device for this adapter instance",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+		       	"deviceSelection": {
+                    "type": "sendTo",
+                    "label": "Get Devices",
+                    "command": "getDeviceList",
+                    "jsonData": "{ \"username\": \"${data.username}\", \"password\": \"${data.password}\" }",
+                    "useNative": true,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "deviceName": {
+                    "type": "text",
+                    "label": "Device Name",
+                    "newLine": true,
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "systemId": {
+                    "type": "text",
+                    "label": "System Id",
+                    "newLine": false,
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "gatewayId": {
+                    "type": "text",
+                    "label": "Gateway Id",
+                    "newLine": false,
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+			}
+       	},
+    	"tab_2":{
+            "type": "panel",
+            "label": "Advanced Settings",
+            "items": {
+                "expertHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "Wolf Smartset Expert Settings",
+                    "size": 2
+                },
+                "expertTxt": {
+                    "type": "staticText",
+                    "text": "Configure Poll Interval and which Parameters to fetch",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "pollInterval": {
+                    "type": "number",
+                    "label": "API Poll Interval",
+                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
+                    // "help": "Help text possible",
+                    "min": 60,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "doFullPull": {
+                    "type": "checkbox",
+                    "label": "Request all Parameter Values",
+                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
+                    // "help": "Help text possible",
+                    "default": false,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "doExpert": {
+                    "type": "checkbox",
+                    "label": "Fetch Expert Parameter Values",
+                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
+                    // "help": "Help text possible",
+                    "default": false,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "expertPassword": {
+                    "type": "password",
+                    "label": "Expert Password",
+                    "visible": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "profilingHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "API Profiling",
+                    "size": 2
+                },
+                "profilingTxt": {
+                    "type": "staticText",
+                    "text": "Enable API profiling to track number of parameters requested and rerurned",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "doApiProfile": {
+                    "type": "checkbox",
+                    "label": "Enable API Profiling",
+                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
+                    // "help": "Help text possible",
+                    "default": false,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+            }
+        }
+    }
+}

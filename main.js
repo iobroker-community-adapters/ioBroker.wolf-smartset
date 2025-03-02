@@ -283,8 +283,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
             const fullId = `${this.namespace}.${id}`;
             if (typeof oldInstanceObjects[`${fullId}`] == 'undefined') {
                 this.setObjectNotExists(id, {
-                    _id: id,
-                    type: this.wss.config,
+                    type: 'state',
                     common: common,
                     native: {
                         ValueId: WolfParamDescription.ValueId,
@@ -425,7 +424,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
         }
         timeoutHandler['pollTimeout'] = setTimeout(() => {
             this._PollValueList();
-        }, this.config.pingInterval * 1000);
+        }, this.config.pollInterval * 1000);
     }
 
     async _SetStatesArray(array) {
@@ -512,33 +511,28 @@ class WolfSmartsetAdapter extends utils.Adapter {
         this.emptyCount = 0;
 
         try {
-            device = JSON.parse(this.config.devices);
-
-            //parseWebFormat
-            if (device && typeof device.Id !== 'undefined') {
-                device.SystemId = device.Id;
-            }
-
             if (
-                this.config.user &&
-                this.config.password &&
-                this.config.user !== '' &&
+                this.config.username !== '' &&
                 this.config.password !== '' &&
-                device &&
-                typeof device.GatewayId !== 'undefined' &&
-                typeof device.SystemId !== 'undefined'
+                this.config.deviceName !== '' &&
+                this.config.systemId !== '' &&
+                this.config.gatewayId !== ''
             ) {
-                this.wss = new wolfsmartset(this.config.user, this.config.password, this);
+                this.config.device = {
+                    Name: this.config.deviceName,
+                    SystemId: this.config.systemId,
+                    GatewayId: this.config.gatewayId,
+                };
+                device = this.config.device;
+                this.wss = new wolfsmartset(this.config.username, this.config.password, this);
                 await this.wss.openIdInit();
 
                 await this.main();
             } else {
-                this.wss = new wolfsmartset(this.config.user || '', this.config.password || '', this);
-                this.log.warn('Please configure user, password and device in config');
+                this.log.warn('Please configure username, password and device in adapter instance settings');
             }
         } catch (error) {
-            this.wss = new wolfsmartset('', '', this);
-            this.log.error('Please configure user, password and device in config');
+            this.log.error('Please configure username, password and device in adapter instance settings');
             this.log.error(error.stack);
         }
     }
@@ -547,11 +541,9 @@ class WolfSmartsetAdapter extends utils.Adapter {
      * main function is called from onReady(), PollValueList() and in case of an error by itself
      */
     async main() {
-        this.config.pingInterval = this.config.pingInterval || 60;
-
         // Adjust poll interval if required
-        if (this.config.pingInterval < MIN_POLL_INTERVAL) {
-            this.config.pingInterval = MIN_POLL_INTERVAL;
+        if (this.config.pollInterval < MIN_POLL_INTERVAL) {
+            this.config.pollInterval = MIN_POLL_INTERVAL;
         }
 
         await this.wss.init();
@@ -667,11 +659,29 @@ class WolfSmartsetAdapter extends utils.Adapter {
             if (obj.command === 'getDeviceList') {
                 this.log.info('getDeviceList');
                 let devicelist;
+                let getDeviceListResponse;
                 try {
+                    if (!this.wss) {
+                        this.wss = new wolfsmartset(this.config.username || '', this.config.password || '', this);
+                    }
+                    if (!this.wss.openIdClient) {
+                        await this.wss.openIdInit();
+                    }
                     devicelist = await this.wss.adminGetDevicelist(obj.message.username, obj.message.password);
+                    if (typeof devicelist !== 'undefined') {
+                        getDeviceListResponse = {
+                            native: {
+                                deviceName: `${devicelist[0].Name}`,
+                                systemId: `${devicelist[0].Id}`,
+                                gatewayId: `${devicelist[0].GatewayId}`,
+                            },
+                        };
+                    } else {
+                        getDeviceListResponse = {};
+                    }
 
                     if (obj.callback) {
-                        this.sendTo(obj.from, obj.command, devicelist, obj.callback);
+                        this.sendTo(obj.from, obj.command, getDeviceListResponse, obj.callback);
                     }
                 } catch (error) {
                     if (obj.callback) {

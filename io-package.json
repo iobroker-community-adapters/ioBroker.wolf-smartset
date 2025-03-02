@@ -122,7 +122,8 @@
       "uk": "Підключіть Wolf cloud до IoBroker"
     },
     "authors": [
-      "MeisterTR <meistertr.smarthome@gmail.com>"
+      "MeisterTR <meistertr.smarthome@gmail.com>",
+	  "flingo64 <github@messmer-online.de>"
     ],
     "keywords": [
       "wolf",
@@ -136,6 +137,7 @@
     "platform": "Javascript/Node.js",
     "icon": "wolf-smartset.png",
     "enabled": true,
+    "messagebox": true,
     "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wolf-smartset/master/admin/wolf-smartset.png",
     "readme": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset/blob/master/README.md",
     "loglevel": "info",
@@ -145,9 +147,10 @@
     "compact": true,
     "connectionType": "cloud",
     "dataSource": "poll",
-    "materialize": true,
-    "messagebox": true,
-    "plugins": {
+    "adminUI": {
+      "config": "json"
+    },
+	"plugins": {
       "sentry": {
         "dsn": "https://a9218dbd5539461fae687736e804c590@sentry.iobroker.net/129"
       }
@@ -172,11 +175,13 @@
     "expertPassword"
   ],
   "native": {
-    "user": "",
+    "username": "",
     "password": "",
-    "Devicelist": "",
-    "devices": "{}",
-    "pingInterval": 60,
+    "device": {},
+    "deviceName": "",
+	"systemId": "",
+	"gatewayId": "",
+    "pollInterval": 60,
     "doExpert": false,
     "expertPassword": "",
     "doApiProfile": false,
