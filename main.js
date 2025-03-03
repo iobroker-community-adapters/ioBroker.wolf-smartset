@@ -503,6 +503,65 @@ class WolfSmartsetAdapter extends utils.Adapter {
         }
     }
 
+    // /**
+    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
+    //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
+    //  * @param {ioBroker.Message} obj
+    //  */
+    async onMessage(obj) {
+        if (typeof obj === 'object' && obj.message) {
+            if (obj.command === 'send') {
+                // e.g. send email or pushover or whatever
+                this.log.info('send command');
+
+                // Send response in callback if required
+                if (obj.callback) {
+                    this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
+                }
+            }
+
+            // getDeviceList: triggered by adapter instance settings UI: 'Get Devices'
+            if (obj.command === 'getDeviceList') {
+                this.log.info('getDeviceList');
+                let devicelist;
+                let getDeviceListResponse;
+                try {
+                    if (!this.wss) {
+                        this.wss = new wolfsmartset(this.config.username || '', this.config.password || '', this);
+                    }
+
+                    devicelist = await this.wss.adminGetDevicelist(obj.message.username, obj.message.password);
+                    if (typeof devicelist !== 'undefined') {
+                        getDeviceListResponse = {
+                            native: {
+                                deviceName: `${devicelist[0].Name}`,
+                                systemId: `${devicelist[0].Id}`,
+                                gatewayId: `${devicelist[0].GatewayId}`,
+                            },
+                        };
+                    } else {
+                        getDeviceListResponse = {};
+                    }
+
+                    if (obj.callback) {
+                        this.sendTo(obj.from, obj.command, getDeviceListResponse, obj.callback);
+                    }
+                } catch (error) {
+                    if (obj.callback) {
+                        this.sendTo(
+                            obj.from,
+                            obj.command,
+                            {
+                                error: error,
+                            },
+                            obj.callback,
+                        );
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Is called when databases are connected and adapter received configuration.
      */
@@ -524,8 +583,13 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     GatewayId: this.config.gatewayId,
                 };
                 device = this.config.device;
+
+                // Adjust poll interval if required
+                if (this.config.pollInterval < MIN_POLL_INTERVAL) {
+                    this.config.pollInterval = MIN_POLL_INTERVAL;
+                }
+
                 this.wss = new wolfsmartset(this.config.username, this.config.password, this);
-                await this.wss.openIdInit();
 
                 await this.main();
             } else {
@@ -541,14 +605,12 @@ class WolfSmartsetAdapter extends utils.Adapter {
      * main function is called from onReady(), PollValueList() and in case of an error by itself
      */
     async main() {
-        // Adjust poll interval if required
-        if (this.config.pollInterval < MIN_POLL_INTERVAL) {
-            this.config.pollInterval = MIN_POLL_INTERVAL;
-        }
-
-        await this.wss.init();
-
         try {
+            const wssInitialized = await this.wss.init();
+            if (!wssInitialized) {
+                throw new Error('Could not initialized WSS session');
+            }
+
             const GUIDesc = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
             if (GUIDesc) {
                 ParamObjList = (await this._getParamsWebGui(GUIDesc)) || [];
@@ -567,10 +629,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
             await this._PollValueList();
         } catch (error) {
             this.log.warn(error);
-            this.log.warn('Try again in 60 sek.');
-            if (timeoutHandler['restartTimeout']) {
-                clearTimeout(timeoutHandler['restartTimeout']);
-            }
+            this.log.warn('Trying again in 60 sec...');
+            timeoutHandler['restartTimeout'] && clearTimeout(timeoutHandler['restartTimeout']);
             timeoutHandler['restartTimeout'] = setTimeout(async () => {
                 this.main();
             }, 60000);
@@ -634,66 +694,6 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     }
                 } catch (err) {
                     this.log.error(err);
-                }
-            }
-        }
-    }
-
-    // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
-    // /**
-    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-    //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-    //  * @param {ioBroker.Message} obj
-    //  */
-    async onMessage(obj) {
-        if (typeof obj === 'object' && obj.message) {
-            if (obj.command === 'send') {
-                // e.g. send email or pushover or whatever
-                this.log.info('send command');
-
-                // Send response in callback if required
-                if (obj.callback) {
-                    this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-                }
-            }
-            if (obj.command === 'getDeviceList') {
-                this.log.info('getDeviceList');
-                let devicelist;
-                let getDeviceListResponse;
-                try {
-                    if (!this.wss) {
-                        this.wss = new wolfsmartset(this.config.username || '', this.config.password || '', this);
-                    }
-                    if (!this.wss.openIdClient) {
-                        await this.wss.openIdInit();
-                    }
-                    devicelist = await this.wss.adminGetDevicelist(obj.message.username, obj.message.password);
-                    if (typeof devicelist !== 'undefined') {
-                        getDeviceListResponse = {
-                            native: {
-                                deviceName: `${devicelist[0].Name}`,
-                                systemId: `${devicelist[0].Id}`,
-                                gatewayId: `${devicelist[0].GatewayId}`,
-                            },
-                        };
-                    } else {
-                        getDeviceListResponse = {};
-                    }
-
-                    if (obj.callback) {
-                        this.sendTo(obj.from, obj.command, getDeviceListResponse, obj.callback);
-                    }
-                } catch (error) {
-                    if (obj.callback) {
-                        this.sendTo(
-                            obj.from,
-                            obj.command,
-                            {
-                                error: error,
-                            },
-                            obj.callback,
-                        );
-                    }
                 }
             }
         }
