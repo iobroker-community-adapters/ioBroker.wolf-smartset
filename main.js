@@ -12,9 +12,12 @@ let ParamObjList = [];
 
 class WolfSmartsetAdapter extends utils.Adapter {
     wss;
+    wss_user;
+    wss_password;
     onlinePoll;
     emptyCount;
     BundleValuesList;
+    ValueIdList;
     /**
      * @param [options] - adapter options
      */
@@ -284,7 +287,13 @@ class WolfSmartsetAdapter extends utils.Adapter {
             if (typeof oldInstanceObjects[`${fullId}`] == 'undefined') {
                 this.setObjectNotExists(id, {
                     type: 'state',
-                    common: common,
+                    common: {
+                        name: common.name,
+                        type: common.type,
+                        role: common.role,
+                        read: common.read,
+                        write: common.write,
+                    },
                     native: {
                         ValueId: WolfParamDescription.ValueId,
                         ParameterId: WolfParamDescription.ParameterId,
@@ -390,6 +399,22 @@ class WolfSmartsetAdapter extends utils.Adapter {
         return BundleValuesList;
     }
 
+    /**
+     * Create the list of ValueId to request from Wolf server
+     *
+     */
+    async _CreateValueIdList() {
+        let ValueIdList = [];
+
+        for (const bundleId of this.config.bundleIdTable) {
+            if (bundleId.bundleIdUse && typeof this.BundleValuesList[bundleId.bundleIdName] != 'undefined') {
+                ValueIdList = ValueIdList.concat(this.BundleValuesList[bundleId.bundleIdName]);
+            }
+        }
+
+        return ValueIdList;
+    }
+
     async _PollValueList() {
         this.onlinePoll++;
 
@@ -398,7 +423,12 @@ class WolfSmartsetAdapter extends utils.Adapter {
         }
 
         try {
-            const recValList = await this.wss.getValList(device.GatewayId, device.SystemId, this.BundleValuesList);
+            const recValList = await this.wss.getValList(
+                device.GatewayId,
+                device.SystemId,
+                this.config.bundleIdRequested,
+                this.ValueIdList,
+            );
             if (recValList) {
                 await this._SetStatesArray(recValList);
             }
@@ -526,38 +556,60 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 let devicelist;
                 let getDeviceListResponse;
                 try {
-                    if (!this.wss) {
-                        this.wss = new wolfsmartset(this.config.username || '', this.config.password || '', this);
+                    if (obj.message.username == '' || obj.message.password == '') {
+                        throw new Error('Please set username and password');
+                    }
+                    // check if we can use an already existing instance object, otherwise create one
+                    if (
+                        !this.wss ||
+                        this.wss_user != obj.message.username ||
+                        this.wss_password != obj.message.password
+                    ) {
+                        this.wss = new wolfsmartset(obj.message.username, obj.message.password, this);
+                        this.wss_user = obj.message.username;
+                        this.wss_password = obj.message.password;
                     }
 
-                    devicelist = await this.wss.adminGetDevicelist(obj.message.username, obj.message.password);
+                    devicelist = await this.wss.adminGetDevicelist();
                     if (typeof devicelist !== 'undefined') {
-                        getDeviceListResponse = {
+                        getDeviceListResponse = [{ label: devicelist[0].Name, value: JSON.stringify(devicelist[0]) }];
+                    } else {
+                        getDeviceListResponse = [{ label: 'No devices found', value: '' }];
+                    }
+                } catch (error) {
+                    getDeviceListResponse = [{ label: error.message, value: '' }];
+                }
+                this.sendTo(obj.from, obj.command, getDeviceListResponse, obj.callback);
+            }
+
+            // confirmDevice: triggered by adapter instance settings UI: 'Confirm Devices'
+            if (obj.command === 'confirmDevice') {
+                this.log.info('confirmDevice');
+                let myDevice;
+                let confirmDeviceResponse;
+
+                try {
+                    myDevice = JSON.parse(obj.message.deviceObject);
+
+                    if (
+                        typeof myDevice.Name !== 'undefined' &&
+                        typeof myDevice.Id !== 'undefined' &&
+                        typeof myDevice.GatewayId !== 'undefined'
+                    ) {
+                        confirmDeviceResponse = {
                             native: {
-                                deviceName: `${devicelist[0].Name}`,
-                                systemId: `${devicelist[0].Id}`,
-                                gatewayId: `${devicelist[0].GatewayId}`,
+                                deviceName: `${myDevice.Name}`,
+                                systemId: `${myDevice.Id}`,
+                                gatewayId: `${myDevice.GatewayId}`,
                             },
                         };
                     } else {
-                        getDeviceListResponse = {};
-                    }
-
-                    if (obj.callback) {
-                        this.sendTo(obj.from, obj.command, getDeviceListResponse, obj.callback);
+                        confirmDeviceResponse = { error: 'Error: no device selected' };
                     }
                 } catch (error) {
-                    if (obj.callback) {
-                        this.sendTo(
-                            obj.from,
-                            obj.command,
-                            {
-                                error: error,
-                            },
-                            obj.callback,
-                        );
-                    }
+                    confirmDeviceResponse = { error: error };
                 }
+                this.sendTo(obj.from, obj.command, confirmDeviceResponse, obj.callback);
             }
         }
     }
@@ -589,7 +641,10 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     this.config.pollInterval = MIN_POLL_INTERVAL;
                 }
 
+                // create a new instance object (do not use an existing one)
                 this.wss = new wolfsmartset(this.config.username, this.config.password, this);
+                this.wss_user = this.config.username;
+                this.wss_password = this.config.password;
 
                 await this.main();
             } else {
@@ -621,6 +676,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 await this._CreateParams(ParamObjList);
                 // create a list of params for each BundleId as defined in the GUI Desc
                 this.BundleValuesList = await this._CreateBundleValuesLists(ParamObjList);
+                this.ValueIdList = await this._CreateValueIdList();
             }
 
             this.objects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
