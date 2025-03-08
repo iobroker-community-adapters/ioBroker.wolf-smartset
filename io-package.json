@@ -178,14 +178,42 @@
     "username": "",
     "password": "",
     "device": {},
-    "deviceName": "",
+	"deviceSelect": "",
+    "deviceName": "No device selected",
 	"systemId": "",
 	"gatewayId": "",
     "pollInterval": 60,
     "doExpert": false,
     "expertPassword": "",
     "doApiProfile": false,
-    "doFullPull": false
+    "doFullPull": false,
+    "bundleIdRequested": "1000",
+    "bundleIdTable": [
+		{
+			"bundleIdUse": true,
+			"bundleIdName": "1000"
+		},
+		{
+			"bundleIdUse": false,
+			"bundleIdName": "3100"
+		},
+		{
+			"bundleIdUse": false,
+			"bundleIdName": "3500"
+	  	},
+		{
+			"bundleIdUse": false,
+			"bundleIdName": "6300"
+		},
+		{
+			"bundleIdUse": false,
+			"bundleIdName": "7100"
+		},
+		{
+			"bundleIdUse": false,
+			"bundleIdName": "7600"
+		}
+	]
   },
   "objects": [],
   "instanceObjects": [

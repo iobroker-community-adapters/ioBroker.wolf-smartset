@@ -52,29 +52,6 @@
                     "text": "Wolf Device",
                     "size": 2
                 },
-                "deviceTxt": {
-                    "type": "staticText",
-                    "text": "Select the Wolf device for this adapter instance",
-                    "newLine": true,
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 12,
-                    "lg": 6,
-                    "xl": 6
-                },
-		       	"deviceSelection": {
-                    "type": "sendTo",
-                    "label": "Get Devices",
-                    "command": "getDeviceList",
-                    "jsonData": "{ \"username\": \"${data.username}\", \"password\": \"${data.password}\" }",
-                    "useNative": true,
-                    "newLine": true,
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
-                },
                 "deviceName": {
                     "type": "text",
                     "label": "Device Name",
@@ -91,6 +68,7 @@
                     "label": "System Id",
                     "newLine": false,
                     "readOnly": true,
+					"hidden": "true",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
@@ -102,12 +80,58 @@
                     "label": "Gateway Id",
                     "newLine": false,
                     "readOnly": true,
+					"hidden": "true",
                     "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
                     "xl": 4
                 },
+                "deviceDivider": {
+                    "type": "divider",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "deviceTxt": {
+                    "type": "staticText",
+                    "text": "Select the Wolf device for this adapter instance",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+		       	"deviceSelect": {
+                    "type": "selectSendTo",
+                    "label": "Get Devices",
+                    "command": "getDeviceList",
+                    "jsonData": "{ \"username\": \"${data.username}\", \"password\": \"${data.password}\" }",
+                    "newLine": true,
+					"manual": false,
+					"noTranslation": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+		       	"deviceConfirm": {
+                    "type": "sendTo",
+                    "label": "Confirm Device selection",
+                    "jsonData": "{ \"deviceObject\": \"${data.deviceSelect}\" }",
+                    "command": "confirmDevice",
+                    "useNative": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                }
 			}
        	},
     	"tab_2":{
@@ -181,6 +205,51 @@
                     "lg": 4,
                     "xl": 4
                 },
+				"bundleIdRequested": {
+                    "type": "autocomplete",
+                    "label": "BundleId to set in Requests",
+                    "options":["1000", "3100", "3500", "6300", "7100", "7600"],
+                    "freeSolo": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4,
+                    "newLine": true
+                },
+                "bundleIdTable": {
+                    "type": "table",
+                    "newLine": true,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
+                    "label": "",
+                    "noDelete": true,
+                    "items": [
+                        {
+                            "type": "checkbox",
+                            "attr": "bundleIdUse",
+                            "width": "50% ",
+                            "title": "Request",
+                            "tooltip": "Request Params with this BundleId",
+                            "filter": false,
+                            "sort": false,
+                            "default": false
+                        },
+                        {
+                            "type": "text",
+                            "attr": "bundleIdName",
+                            "width": "50% ",
+                            "title": "BundleId",
+                            "tooltip": "BundleId from Wolf SmartSet API",
+                            "filter": false,
+                            "sort": false,
+                            "readOnly": true,
+                            "default": ""
+                        }
+                    ]
+                },
                 "profilingHdr": {
                     "newLine": true,
                     "type": "header",
@@ -209,7 +278,7 @@
                     "md": 6,
                     "lg": 4,
                     "xl": 4
-                },
+                }
             }
         }
     }
