@@ -10,7 +10,7 @@
     "Poll Interval (in sec)": "Poll Interval (in sec)",
     "Request Expert Parameters": "Request Expert Parameters",
     "Request all Parameters": "Request all Parameters",
-    "Username": "username",
-    "donateInformation": "Feel free to suggest new features or devices via Github or ioBroker forum. If you like this adapter, you very welcome to donate.",
+    "Username": "Username",
+    "donateInformation": "Feel free to suggest new features or devices via Github or ioBroker forum. If you like this adapter, you are very welcome to donate.",
     "wolf-smartset adapter settings": "Adapter settings for wolf-smartset"
 }
