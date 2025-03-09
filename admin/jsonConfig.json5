@@ -22,18 +22,18 @@
                     "xs": 12,
                     "sm": 12,
                     "md": 12,
-                    "lg": 6,
-                    "xl": 6
+                    "lg": 4,
+                    "xl": 4
                 },
                 "username": {
                     "type": "text",
                     "label": "Username",
                     "newLine": true,
                     "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
                 },
                 "password": {
                     "type": "password",
@@ -43,8 +43,8 @@
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
-                    "md": 6,
-                    "lg": 4,
+                    "md": 8,
+                    "lg": 6,
                     "xl": 4
                 },
                 "deviceHeader": {
@@ -54,38 +54,26 @@
                 },
                 "deviceName": {
                     "type": "text",
-                    "label": "Device Name",
+                    "label": "Device",
                     "newLine": true,
                     "readOnly": true,
                     "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
                 },
-                "systemId": {
+                "device": {
                     "type": "text",
-                    "label": "System Id",
+                    "label": "Device Info",
                     "newLine": false,
                     "readOnly": true,
 					"hidden": "true",
                     "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
-                },
-                "gatewayId": {
-                    "type": "text",
-                    "label": "Gateway Id",
-                    "newLine": false,
-                    "readOnly": true,
-					"hidden": "true",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
                 },
                 "deviceDivider": {
                     "type": "divider",
@@ -98,39 +86,40 @@
                 },
                 "deviceTxt": {
                     "type": "staticText",
-                    "text": "Select the Wolf device for this adapter instance",
+                    "text": "Select a different Wolf device for this adapter instance",
                     "newLine": true,
                     "xs": 12,
-                    "sm": 12,
-                    "md": 12,
-                    "lg": 6,
-                    "xl": 6
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
                 },
 		       	"deviceSelect": {
                     "type": "selectSendTo",
-                    "label": "Get Devices",
+                    "label": "List of Wolf Devices",
                     "command": "getDeviceList",
                     "jsonData": "{ \"username\": \"${data.username}\", \"password\": \"${data.password}\" }",
                     "newLine": true,
 					"manual": false,
+					"alsoDependsOn": ["username", "password"],
 					"noTranslation": true,
                     "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
                 },
 		       	"deviceConfirm": {
                     "type": "sendTo",
-                    "label": "Confirm Device selection",
+                    "label": "Use this device",
                     "jsonData": "{ \"deviceObject\": \"${data.deviceSelect}\" }",
                     "command": "confirmDevice",
                     "useNative": true,
                     "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
                 }
 			}
        	},
@@ -138,15 +127,15 @@
             "type": "panel",
             "label": "Advanced Settings",
             "items": {
-                "expertHdr": {
+                "pollHdr": {
                     "newLine": true,
                     "type": "header",
-                    "text": "Wolf Smartset Expert Settings",
+                    "text": "Poll Cycle Intervals and Parameter Lists",
                     "size": 2
                 },
-                "expertTxt": {
+                "pollTxt": {
                     "type": "staticText",
-                    "text": "Configure Poll Interval and which Parameters to fetch",
+                    "text": "Configure poll intervals and the set of parameters to poll",
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
@@ -154,101 +143,155 @@
                     "lg": 6,
                     "xl": 6
                 },
-                "pollInterval": {
+                "pollIntervalTxt": {
+                    "type": "staticText",
+                    "text": "Configure short and Long Poll Cycle interval",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "pollIntervalShort": {
                     "type": "number",
-                    "label": "API Poll Interval",
+                    "label": "Short Poll Cycle Interval (sec)",
                     // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
                     // "help": "Help text possible",
                     "min": 60,
 					"step": 15,
-                    "newLine": true,
                     "xs": 12,
                     "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
                 },
-                "doFullPull": {
-                    "type": "checkbox",
-                    "label": "Request all Parameter Values",
+                "pollIntervalLong": {
+                    "type": "number",
+                    "label": "Long Poll Cycle Interval (min)",
                     // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
                     // "help": "Help text possible",
-                    "default": false,
-                    "newLine": true,
+                    "min": 15,
+					"step": 15,
                     "xs": 12,
                     "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
-                },
-                "doExpert": {
-                    "type": "checkbox",
-                    "label": "Fetch Expert Parameter Values",
-                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
-                    // "help": "Help text possible",
-                    "default": false,
-                    "newLine": true,
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
-                },
-                "expertPassword": {
-                    "type": "password",
-                    "label": "Expert Password",
-                    "visible": true,
-					"disabled": "data.doExpert === false",
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
-                },
-				"bundleIdRequested": {
-                    "type": "autocomplete",
-                    "label": "BundleId to set in Requests",
-                    "options":["1000", "3100", "3500", "6300", "7100", "7600"],
-                    "freeSolo": true,
-                    "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4,
-                    "newLine": true
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
                 },
                 "bundleIdTable": {
                     "type": "table",
                     "newLine": true,
                     "sm": 12,
                     "md": 12,
-                    "lg": 12,
-                    "xl": 12,
+                    "lg": 6,
+                    "xl": 6,
                     "label": "",
                     "noDelete": true,
                     "items": [
                         {
+                            "type": "text",
+                            "attr": "bundleIdName",
+                            "title": "Parameters of Bundle",
+                            "tooltip": "BundleId of Parameters from Wolf SmartSet API",
+                            "filter": false,
+                            "sort": false,
+                            "readOnly": true,
+                            "default": ""
+                        },
+                        {
                             "type": "checkbox",
-                            "attr": "bundleIdUse",
-                            "width": "50% ",
-                            "title": "Request",
-                            "tooltip": "Request Params with this BundleId",
+                            "attr": "bundleIdUseShort",
+                            "title": "Include in Short Poll Cycle",
+                            "tooltip": "Request Params with this BundleId in Short Poll Cylce",
                             "filter": false,
                             "sort": false,
                             "default": false
                         },
                         {
-                            "type": "text",
-                            "attr": "bundleIdName",
-                            "width": "50% ",
-                            "title": "BundleId",
-                            "tooltip": "BundleId from Wolf SmartSet API",
+                            "type": "checkbox",
+                            "attr": "bundleIdUseLong",
+                            "title": "Include in Long Poll Cycle",
+                            "tooltip": "Request Params with this BundleId in Long Poll Cycle",
                             "filter": false,
                             "sort": false,
-                            "readOnly": true,
-                            "default": ""
+                            "default": false
                         }
                     ]
+                },
+                "bundleIdRequestedText": {
+                    "type": "staticText",
+                    "text": "Set the BundleId to be used in poll requests",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+				"bundleIdRequestedShort": {
+                    "type": "autocomplete",
+                    "label": "BundleId for Short Poll Cycle",
+                    "options":["Default", "1000", "3100", "3500", "6300", "7100", "7600"],
+                    "freeSolo": true,
+					"default": "Default",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2,
+                },
+				"bundleIdRequestedLong": {
+                    "type": "autocomplete",
+                    "label": "BundleId for Long Poll Cycle",
+                    "options":["Default", "1000", "3100", "3500", "6300", "7100", "7600"],
+                    "freeSolo": true,
+					"default": "Default",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2,
+                },
+                "expertHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "Expert Login",
+                    "size": 2
+                },
+                "expertTxt": {
+                    "type": "staticText",
+                    "text": "Expert Log may be required to poll certain expert parameters (see README)",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "doExpertLogin": {
+                    "type": "checkbox",
+                    "label": "Do Expert Login",
+                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
+                    // "help": "Help text possible",
+                    "default": false,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "expertPassword": {
+                    "type": "password",
+                    "label": "Expert Password",
+                    "visible": true,
+					"disabled": "data.doExpertLogin === false",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
                 },
                 "profilingHdr": {
                     "newLine": true,
@@ -258,7 +301,7 @@
                 },
                 "profilingTxt": {
                     "type": "staticText",
-                    "text": "Enable API profiling to track number of parameters requested and rerurned",
+                    "text": "Enable API profiling to track number of parameters requested and returned",
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
@@ -274,10 +317,10 @@
                     "default": false,
                     "newLine": true,
                     "xs": 12,
-                    "sm": 12,
-                    "md": 6,
-                    "lg": 4,
-                    "xl": 4
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
                 }
             }
         }

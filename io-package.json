@@ -177,41 +177,45 @@
   "native": {
     "username": "",
     "password": "",
-    "device": {},
-	"deviceSelect": "",
+    "device": "",
     "deviceName": "No device selected",
-	"systemId": "",
-	"gatewayId": "",
-    "pollInterval": 60,
-    "doExpert": false,
+    "pollIntervalShort": 120,
+    "pollIntervalLong": 60,
+    "doExpertLogin": false,
     "expertPassword": "",
     "doApiProfile": false,
-    "doFullPull": false,
-    "bundleIdRequested": "1000",
+    "bundleIdRequestedShort": "Default",
+    "bundleIdRequestedLong": "Default",
     "bundleIdTable": [
 		{
-			"bundleIdUse": true,
-			"bundleIdName": "1000"
+			"bundleIdName": "1000",
+			"bundleIdUseShort": true,
+			"bundleIdUseLong": false
 		},
 		{
-			"bundleIdUse": false,
-			"bundleIdName": "3100"
+			"bundleIdName": "3100",
+			"bundleIdUseShort": true,
+			"bundleIdUseLong": false
 		},
 		{
-			"bundleIdUse": false,
-			"bundleIdName": "3500"
+			"bundleIdName": "3500",
+			"bundleIdUseShort": false,
+			"bundleIdUseLong": true
 	  	},
 		{
-			"bundleIdUse": false,
-			"bundleIdName": "6300"
+			"bundleIdName": "6300",
+			"bundleIdUseShort": false,
+			"bundleIdUseLong": true
 		},
 		{
-			"bundleIdUse": false,
-			"bundleIdName": "7100"
+			"bundleIdName": "7100",
+			"bundleIdUseShort": false,
+			"bundleIdUseLong": true
 		},
 		{
-			"bundleIdUse": false,
-			"bundleIdName": "7600"
+			"bundleIdName": "7600",
+			"bundleIdUseShort": false,
+			"bundleIdUseLong": true
 		}
 	]
   },
