@@ -702,6 +702,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
             await this._ShortPollValueList();
             await this._LongPollValueList();
         } catch (error) {
+            timeoutHandler['shortPollTimeout'] && clearTimeout(timeoutHandler['shortPollTimeout']);
+            timeoutHandler['longPollTimeout'] && clearTimeout(timeoutHandler['longPollTimeout']);
             this.log.warn(error);
             this.log.warn('Trying again in 60 sec...');
             timeoutHandler['restartTimeout'] && clearTimeout(timeoutHandler['restartTimeout']);
