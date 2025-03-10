@@ -123,7 +123,7 @@
     },
     "authors": [
       "MeisterTR <meistertr.smarthome@gmail.com>",
-	  "flingo64 <github@messmer-online.de>"
+      "flingo64 <github@messmer-online.de>"
     ],
     "keywords": [
       "wolf",
@@ -150,7 +150,7 @@
     "adminUI": {
       "config": "json"
     },
-	"plugins": {
+    "plugins": {
       "sentry": {
         "dsn": "https://a9218dbd5539461fae687736e804c590@sentry.iobroker.net/129"
       }
@@ -187,37 +187,37 @@
     "bundleIdRequestedShort": "Default",
     "bundleIdRequestedLong": "Default",
     "bundleIdTable": [
-		{
-			"bundleIdName": "1000",
-			"bundleIdUseShort": true,
-			"bundleIdUseLong": false
-		},
-		{
-			"bundleIdName": "3100",
-			"bundleIdUseShort": true,
-			"bundleIdUseLong": false
-		},
-		{
-			"bundleIdName": "3500",
-			"bundleIdUseShort": false,
-			"bundleIdUseLong": true
-	  	},
-		{
-			"bundleIdName": "6300",
-			"bundleIdUseShort": false,
-			"bundleIdUseLong": true
-		},
-		{
-			"bundleIdName": "7100",
-			"bundleIdUseShort": false,
-			"bundleIdUseLong": true
-		},
-		{
-			"bundleIdName": "7600",
-			"bundleIdUseShort": false,
-			"bundleIdUseLong": true
-		}
-	]
+      {
+        "bundleIdName": "1000",
+        "bundleIdUseShort": true,
+        "bundleIdUseLong": false
+      },
+      {
+        "bundleIdName": "3100",
+        "bundleIdUseShort": true,
+        "bundleIdUseLong": false
+      },
+      {
+        "bundleIdName": "3500",
+        "bundleIdUseShort": false,
+        "bundleIdUseLong": true
+      },
+      {
+        "bundleIdName": "6300",
+        "bundleIdUseShort": false,
+        "bundleIdUseLong": true
+      },
+      {
+        "bundleIdName": "7100",
+        "bundleIdUseShort": false,
+        "bundleIdUseLong": true
+      },
+      {
+        "bundleIdName": "7600",
+        "bundleIdUseShort": false,
+        "bundleIdUseLong": true
+      }
+    ]
   },
   "objects": [],
   "instanceObjects": [
