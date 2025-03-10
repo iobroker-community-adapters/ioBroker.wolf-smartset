@@ -145,7 +145,7 @@
                 },
                 "pollIntervalTxt": {
                     "type": "staticText",
-                    "text": "Configure short and Long Poll Cycle interval",
+                    "text": "Configure Short and Long Poll Cycle Interval",
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
@@ -261,7 +261,7 @@
                 },
                 "expertTxt": {
                     "type": "staticText",
-                    "text": "Expert Log may be required to poll certain expert parameters (see README)",
+                    "text": "Expert Login may be required to poll certain expert parameters (see README)",
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
