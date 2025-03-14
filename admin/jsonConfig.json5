@@ -68,7 +68,7 @@
                     "label": "Device Info",
                     "newLine": false,
                     "readOnly": true,
-					"hidden": "true",
+                    "hidden": "true",
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
@@ -94,22 +94,22 @@
                     "lg": 3,
                     "xl": 2
                 },
-		       	"deviceSelect": {
+                   "deviceSelect": {
                     "type": "selectSendTo",
                     "label": "List of Wolf Devices",
                     "command": "getDeviceList",
                     "jsonData": "{ \"username\": \"${data.username}\", \"password\": \"${data.password}\" }",
                     "newLine": true,
-					"manual": false,
-					"alsoDependsOn": ["username", "password"],
-					"noTranslation": true,
+                    "manual": false,
+                    "alsoDependsOn": ["username", "password"],
+                    "noTranslation": true,
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
                     "lg": 3,
                     "xl": 2
                 },
-		       	"deviceConfirm": {
+                   "deviceConfirm": {
                     "type": "sendTo",
                     "label": "Use this device",
                     "jsonData": "{ \"deviceObject\": \"${data.deviceSelect}\" }",
@@ -121,9 +121,9 @@
                     "lg": 3,
                     "xl": 2
                 }
-			}
-       	},
-    	"tab_2":{
+            }
+           },
+        "tab_2":{
             "type": "panel",
             "label": "Advanced Settings",
             "items": {
@@ -159,7 +159,7 @@
                     // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
                     // "help": "Help text possible",
                     "min": 60,
-					"step": 15,
+                    "step": 15,
                     "xs": 12,
                     "sm": 12,
                     "md": 4,
@@ -172,7 +172,7 @@
                     // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
                     // "help": "Help text possible",
                     "min": 15,
-					"step": 15,
+                    "step": 15,
                     "xs": 12,
                     "sm": 12,
                     "md": 4,
@@ -230,24 +230,24 @@
                     "lg": 3,
                     "xl": 2
                 },
-				"bundleIdRequestedShort": {
+                "bundleIdRequestedShort": {
                     "type": "autocomplete",
                     "label": "BundleId for Short Poll Cycle",
                     "options":["Default", "1000", "3100", "3500", "6300", "7100", "7600"],
                     "freeSolo": true,
-					"default": "Default",
+                    "default": "Default",
                     "xs": 12,
                     "sm": 12,
                     "md": 4,
                     "lg": 3,
                     "xl": 2,
                 },
-				"bundleIdRequestedLong": {
+                "bundleIdRequestedLong": {
                     "type": "autocomplete",
                     "label": "BundleId for Long Poll Cycle",
                     "options":["Default", "1000", "3100", "3500", "6300", "7100", "7600"],
                     "freeSolo": true,
-					"default": "Default",
+                    "default": "Default",
                     "xs": 12,
                     "sm": 12,
                     "md": 4,
@@ -287,7 +287,7 @@
                     "type": "password",
                     "label": "Expert Password",
                     "visible": true,
-					"disabled": "data.doExpertLogin === false",
+                    "disabled": "data.doExpertLogin === false",
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
