@@ -14,7 +14,9 @@ class WolfSmartsetAdapter extends utils.Adapter {
     device;
     onlinePoll;
     emptyCount;
+    BundleIdShortCycle;
     ValueIdListShortCycle;
+    BundleIdLongCycle;
     ValueIdListLongCycle;
     /**
      * @param [options] - adapter options
@@ -377,7 +379,9 @@ class WolfSmartsetAdapter extends utils.Adapter {
      */
     async _CreateBundleValuesLists(WolfParamDescriptions) {
         let BundleValuesList = {};
+        let DefaultBundleIdShortCycle = 0;
         let ValueIdListShortCycle = [];
+        let DefaultBundleIdLongCycle = 0;
         let ValueIdListLongCycle = [];
 
         for (const WolfParamDescription of WolfParamDescriptions) {
@@ -395,13 +399,30 @@ class WolfSmartsetAdapter extends utils.Adapter {
         for (const bundleId of this.config.bundleIdTable) {
             if (bundleId.bundleIdUseShort && typeof BundleValuesList[bundleId.bundleIdName] != 'undefined') {
                 ValueIdListShortCycle = ValueIdListShortCycle.concat(BundleValuesList[bundleId.bundleIdName]);
+                DefaultBundleIdShortCycle =
+                    Number(bundleId.bundleIdName) > DefaultBundleIdShortCycle
+                        ? Number(bundleId.bundleIdName)
+                        : DefaultBundleIdShortCycle;
             }
             if (bundleId.bundleIdUseLong && typeof BundleValuesList[bundleId.bundleIdName] != 'undefined') {
                 ValueIdListLongCycle = ValueIdListLongCycle.concat(BundleValuesList[bundleId.bundleIdName]);
+                DefaultBundleIdLongCycle =
+                    Number(bundleId.bundleIdName) > DefaultBundleIdLongCycle
+                        ? Number(bundleId.bundleIdName)
+                        : DefaultBundleIdLongCycle;
             }
         }
 
+        this.BundleIdShortCycle =
+            this.config.bundleIdRequestedShort == 'Default'
+                ? DefaultBundleIdShortCycle
+                : this.config.bundleIdRequestedShort;
         this.ValueIdListShortCycle = ValueIdListShortCycle;
+
+        this.BundleIdLongCycle =
+            this.config.bundleIdRequestedLong == 'Default'
+                ? DefaultBundleIdLongCycle
+                : this.config.bundleIdRequestedLong;
         this.ValueIdListLongCycle = ValueIdListLongCycle;
     }
 
@@ -415,7 +436,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
             const recValList = await this.wss.getValList(
                 this.device.GatewayId,
                 this.device.SystemId,
-                pollCycle == 'short' ? this.config.bundleIdRequestedShort : this.config.bundleIdRequestedLong,
+                pollCycle == 'short' ? this.BundleIdShortCycle : this.BundleIdLongCycle,
                 pollCycle == 'short' ? this.ValueIdListShortCycle : this.ValueIdListLongCycle,
                 pollCycle,
             );
