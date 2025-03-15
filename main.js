@@ -193,7 +193,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
      *
      * @param WolfParamDescriptions - flat list of ParamDescriptions for each state returned by getParamsWebGui()
      */
-    async _CreateParams(WolfParamDescriptions) {
+    async _CreateObjects(WolfParamDescriptions) {
         // get list of instance objects before fetching new list of params from Wolf server
         const oldInstanceObjects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
         const collectedChannels = {};
@@ -628,7 +628,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 throw new Error('Could not get GUIDescription (device might be down)');
             }
             if (ParamObjList) {
-                await this._CreateParams(ParamObjList);
+                await this._CreateObjects(ParamObjList);
                 // create a list of params for each BundleId as defined in the GUI Desc
                 await this._CreateBundleValuesLists(ParamObjList);
             }
