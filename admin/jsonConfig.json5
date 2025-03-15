@@ -115,6 +115,7 @@
                     "jsonData": "{ \"deviceObject\": \"${data.deviceSelect}\" }",
                     "command": "confirmDevice",
                     "useNative": true,
+                    "variant": "outlined",
                     "xs": 12,
                     "sm": 6,
                     "md": 4,
@@ -262,7 +263,7 @@
                 },
                 "expertTxt": {
                     "type": "staticText",
-                    "text": "Expert Login may be required to poll certain expert parameters (see README)",
+                    "text": "Expert Login is required to poll expert parameters",
                     "newLine": true,
                     "xs": 12,
                     "sm": 12,
@@ -273,8 +274,6 @@
                 "doExpertLogin": {
                     "type": "checkbox",
                     "label": "Do Expert Login",
-                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
-                    // "help": "Help text possible",
                     "default": false,
                     "newLine": true,
                     "xs": 12,
@@ -288,6 +287,33 @@
                     "label": "Expert Password",
                     "visible": true,
                     "disabled": "data.doExpertLogin === false",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "pubIpCheckHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "Check for Public IP Changes",
+                    "size": 2
+                },
+                "pubIpCheckTxt": {
+                    "type": "staticText",
+                    "text": "Enable checking your public IP via ipify.org for faster session recovery after changed public IP",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "doPubIpCheck": {
+                    "type": "checkbox",
+                    "label": "Enable Public IP Checking",
+                    "default": false,
+                    "newLine": true,
                     "xs": 12,
                     "sm": 6,
                     "md": 4,

@@ -3,6 +3,10 @@
 const utils = require('@iobroker/adapter-core');
 const wolfsmartset = require('./lib/wss');
 
+// ipify.org REST API: get your public IP
+const axios = require('axios').default;
+const _GET_MY_PUBLIC_IP_URL = 'https://api.ipify.org?format=json';
+
 const timeoutHandler = [];
 let ParamObjList = [];
 //const objects = {};
@@ -11,6 +15,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
     wss;
     wss_user;
     wss_password;
+    myPublicIp;
     device;
     onlinePoll;
     emptyCount;
@@ -33,32 +38,24 @@ class WolfSmartsetAdapter extends utils.Adapter {
         this.on('unload', this.onUnload.bind(this));
     }
 
-    // //find Parameter for App Objects
-    // async getParams(guiData) {
-    //     if (guiData == null) {
-    //         return;
-    //     }
-    //     const param = [];
+    /**
+     * Get our public IP from ipify.org
+     *
+     */
+    async _getMyPublicIp() {
+        if (this.config.doPubIpCheck) {
+            try {
+                const myIpDataResponse = await axios.get(_GET_MY_PUBLIC_IP_URL);
 
-    //     guiData.UserSystemOverviewData.forEach(UserSystemOverviewData => {
-    //         const tabName = UserSystemOverviewData.TabName;
-
-    //         UserSystemOverviewData.ParameterDescriptors.forEach(ParameterDescriptors => {
-    //             const paramInfo = ParameterDescriptors;
-
-    //             //search duplicate
-    //             const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
-
-    //             if (find) {
-    //                 //this.log.debug('find double: ' + paramInfo.Name)
-    //             } else {
-    //                 paramInfo.TabName = tabName;
-    //                 param.push(paramInfo);
-    //             }
-    //         });
-    //     });
-    //     return param;
-    // }
+                if (myIpDataResponse.status == 200 && myIpDataResponse.data && myIpDataResponse.data.ip) {
+                    return myIpDataResponse.data.ip;
+                }
+            } catch (error) {
+                this.log.warn(`_getMyPublicIp() failed: ${error.message}`);
+            }
+        }
+        return null;
+    }
 
     async _getParamsWebGui(guiData) {
         if (guiData == null) {
@@ -450,7 +447,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
 
     /**
      * Handler for Short Poll Cycle: poll parameter values from Wolf server and
-     * additionally getSystemState every 4th poll cycle
+     * additionally, every 4th poll cycle: getSystemState and check for PublicIP changes
      *
      */
     async _ShortPollValueList() {
@@ -462,6 +459,15 @@ class WolfSmartsetAdapter extends utils.Adapter {
         if (this.onlinePoll > 4) {
             this.onlinePoll = 0;
             try {
+                const myPublicIp = await this._getMyPublicIp();
+                if (myPublicIp && this.myPublicIp && myPublicIp != this.myPublicIp) {
+                    this.log.warn(
+                        `_ShortPollValueList(); PubIP changed from ${this.myPublicIp} to ${myPublicIp}: triggering reload...`,
+                    );
+                    await this.main(myPublicIp);
+                    return;
+                }
+
                 const systemStatus = await this.wss.getSystemState(parseInt(this.device.SystemId));
                 if (systemStatus && typeof systemStatus.IsOnline !== 'undefined') {
                     this.setState('info.connection', {
@@ -512,7 +518,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
         if (this.emptyCount >= 10) {
             // no data for long time try a restart
             this.emptyCount = 0;
-            this.main();
+            await this.main(null);
             return;
         }
 
@@ -600,6 +606,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
             // getDeviceList: triggered by adapter instance settings UI object 'deviceSelect'
             if (obj.command === 'getDeviceList') {
                 this.log.debug('getDeviceList ...');
+                let myPublicIp;
                 let devicelist;
                 let getDeviceListResponse;
                 let adminWss;
@@ -608,11 +615,15 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     if (obj.message.username == '' || obj.message.password == '') {
                         throw new Error('Please set username and password');
                     }
+
                     // check if we can use an already existing wss object from running adapter instance, otherwise create one
+                    // Note: Wolf Smartset is IP address aware: if we changed or IP, we have to re-init
+                    myPublicIp = await this._getMyPublicIp();
                     if (
                         !this.wss ||
                         this.wss_user != obj.message.username ||
-                        this.wss_password != obj.message.password
+                        this.wss_password != obj.message.password ||
+                        (myPublicIp && this.myPublicIp && this.myPublicIp != myPublicIp)
                     ) {
                         adminWss = new wolfsmartset(obj.message.username, obj.message.password, this);
                     } else {
@@ -636,6 +647,9 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     this.wss = adminWss;
                     this.wss_user = obj.message.username;
                     this.wss_password = obj.message.password;
+                    if (myPublicIp) {
+                        this.myPublicIp = myPublicIp;
+                    }
                 }
             }
 
@@ -692,7 +706,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 typeof this.device.GatewayId !== 'undefined' &&
                 typeof this.device.SystemId !== 'undefined'
             ) {
-                await this.main();
+                const myPublicIp = await this._getMyPublicIp();
+                await this.main(myPublicIp);
             } else {
                 this.log.warn('Please configure username, password and device in adapter instance settings');
             }
@@ -704,19 +719,33 @@ class WolfSmartsetAdapter extends utils.Adapter {
 
     /**
      * main function is called from onReady(), PollValueList() and in case of an error by itself
+     *
+     * @param myPublicIp - my current public IP or null if unknown
      */
-    async main() {
+    async main(myPublicIp) {
         timeoutHandler['restartTimeout'] && clearTimeout(timeoutHandler['restartTimeout']);
         timeoutHandler['shortPollTimeout'] && clearTimeout(timeoutHandler['shortPollTimeout']);
         timeoutHandler['longPollTimeout'] && clearTimeout(timeoutHandler['longPollTimeout']);
 
         try {
-            // if we have a wss matching our configured u/p then use it ...
-            if (!this.wss || this.wss_user != this.config.username || this.wss_password != this.config.password) {
+            // Note: Wolf Smartset is IP address aware: if we changed or IP, we have to re-init
+            // if we have a wss matching our configured u/p and our current public IP then use it ...
+            if (!myPublicIp) {
+                myPublicIp = this._getMyPublicIp();
+            }
+            if (
+                !this.wss ||
+                this.wss_user != this.config.username ||
+                this.wss_password != this.config.password ||
+                (myPublicIp && this.myPublicIp && this.myPublicIp != myPublicIp)
+            ) {
                 // ... otherwise create a new wss object
                 this.wss = new wolfsmartset(this.config.username, this.config.password, this);
                 this.wss_user = this.config.username;
                 this.wss_password = this.config.password;
+                if (myPublicIp) {
+                    this.myPublicIp = myPublicIp;
+                }
             }
 
             const wssInitialized = await this.wss.init();
@@ -745,7 +774,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
             this.log.warn(error);
             this.log.warn('Trying again in 60 sec...');
             timeoutHandler['restartTimeout'] = setTimeout(async () => {
-                this.main();
+                this.main(null);
             }, 60000);
         }
 

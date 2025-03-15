@@ -183,6 +183,7 @@
     "pollIntervalLong": 60,
     "doExpertLogin": false,
     "expertPassword": "",
+    "doPubIpCheck": true,
     "doApiProfile": false,
     "bundleIdRequestedShort": "Default",
     "bundleIdRequestedLong": "Default",
