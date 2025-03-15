@@ -579,8 +579,10 @@ class WolfSmartsetAdapter extends utils.Adapter {
     }
 
     // /**
-    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
+    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, adminUI...
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
+    //  * The main purpose for this handler is to handle Device Listing and Device Conform from the adapter instance settings UI.
+    //
     //  * @param {ioBroker.Message} obj
     //  */
     async onMessage(obj) {
@@ -595,27 +597,29 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 }
             }
 
-            // getDeviceList: triggered by adapter instance settings UI: 'Get Devices'
+            // getDeviceList: triggered by adapter instance settings UI object 'deviceSelect'
             if (obj.command === 'getDeviceList') {
-                this.log.info('getDeviceList');
+                this.log.debug('getDeviceList ...');
                 let devicelist;
                 let getDeviceListResponse;
+                let adminWss;
+
                 try {
                     if (obj.message.username == '' || obj.message.password == '') {
                         throw new Error('Please set username and password');
                     }
-                    // check if we can use an already existing instance object, otherwise create one
+                    // check if we can use an already existing wss object from running adapter instance, otherwise create one
                     if (
                         !this.wss ||
                         this.wss_user != obj.message.username ||
                         this.wss_password != obj.message.password
                     ) {
-                        this.wss = new wolfsmartset(obj.message.username, obj.message.password, this);
-                        this.wss_user = obj.message.username;
-                        this.wss_password = obj.message.password;
+                        adminWss = new wolfsmartset(obj.message.username, obj.message.password, this);
+                    } else {
+                        adminWss = this.wss;
                     }
 
-                    devicelist = await this.wss.adminGetDevicelist();
+                    devicelist = await adminWss.adminGetDevicelist();
                     if (typeof devicelist !== 'undefined') {
                         getDeviceListResponse = [{ label: devicelist[0].Name, value: JSON.stringify(devicelist[0]) }];
                     } else {
@@ -623,11 +627,19 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     }
                 } catch (error) {
                     getDeviceListResponse = [{ label: error.message, value: '' }];
+                    this.wss = null;
                 }
                 this.sendTo(obj.from, obj.command, getDeviceListResponse, obj.callback);
+                // if getDeviceList was successful and this adapter instance has currently no wss object
+                // then store our wss instance for use by adapter instance
+                if (typeof devicelist !== 'undefined' && devicelist.length > 0 && !this.wss) {
+                    this.wss = adminWss;
+                    this.wss_user = obj.message.username;
+                    this.wss_password = obj.message.password;
+                }
             }
 
-            // confirmDevice: triggered by adapter instance settings UI: 'Confirm Devices'
+            // confirmDevice: triggered by adapter instance settings UI object 'deviceConfirm'
             if (obj.command === 'confirmDevice') {
                 this.log.info('confirmDevice');
                 let myDevice;
@@ -680,11 +692,6 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 typeof this.device.GatewayId !== 'undefined' &&
                 typeof this.device.SystemId !== 'undefined'
             ) {
-                // create a new instance object (do not use an existing one)
-                this.wss = new wolfsmartset(this.config.username, this.config.password, this);
-                this.wss_user = this.config.username;
-                this.wss_password = this.config.password;
-
                 await this.main();
             } else {
                 this.log.warn('Please configure username, password and device in adapter instance settings');
@@ -699,7 +706,19 @@ class WolfSmartsetAdapter extends utils.Adapter {
      * main function is called from onReady(), PollValueList() and in case of an error by itself
      */
     async main() {
+        timeoutHandler['restartTimeout'] && clearTimeout(timeoutHandler['restartTimeout']);
+        timeoutHandler['shortPollTimeout'] && clearTimeout(timeoutHandler['shortPollTimeout']);
+        timeoutHandler['longPollTimeout'] && clearTimeout(timeoutHandler['longPollTimeout']);
+
         try {
+            // if we have a wss matching our configured u/p then use it ...
+            if (!this.wss || this.wss_user != this.config.username || this.wss_password != this.config.password) {
+                // ... otherwise create a new wss object
+                this.wss = new wolfsmartset(this.config.username, this.config.password, this);
+                this.wss_user = this.config.username;
+                this.wss_password = this.config.password;
+            }
+
             const wssInitialized = await this.wss.init();
             if (!wssInitialized) {
                 throw new Error('Could not initialized WSS session');
@@ -720,14 +739,11 @@ class WolfSmartsetAdapter extends utils.Adapter {
             this.objects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
             this.log.debug(JSON.stringify(this.objects));
 
-            await this._ShortPollValueList();
             await this._LongPollValueList();
+            await this._ShortPollValueList();
         } catch (error) {
-            timeoutHandler['shortPollTimeout'] && clearTimeout(timeoutHandler['shortPollTimeout']);
-            timeoutHandler['longPollTimeout'] && clearTimeout(timeoutHandler['longPollTimeout']);
             this.log.warn(error);
             this.log.warn('Trying again in 60 sec...');
-            timeoutHandler['restartTimeout'] && clearTimeout(timeoutHandler['restartTimeout']);
             timeoutHandler['restartTimeout'] = setTimeout(async () => {
                 this.main();
             }, 60000);
@@ -749,6 +765,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
             timeoutHandler['restartTimeout'] && clearTimeout(timeoutHandler['restartTimeout']);
 
             this.wss.stop();
+            this.wss = null;
 
             callback();
         } catch {
