@@ -4,7 +4,7 @@
     "BundleId for Long Poll Cycle": "Bundleid для длительного цикла опросов",
     "BundleId for Short Poll Cycle": "Bundleid для короткого цикла опросов",
     "Configure poll intervals and the set of parameters to poll": "Настроить интервалы опросов и набор параметров для опроса",
-    "Configure Short and Long Poll Cycle interval": "Настройка коротких и длинных интервалов цикла опроса",
+    "Configure Short and Long Poll Cycle Interval": "Настройка коротких и длинных интервалов цикла опроса",
     "Device": "Устройство",
     "Do Expert Login": "Сделайте экспертный вход",
     "donateInformation": "Не стесняйтесь предлагать новые функции или устройства через GitHub или Iobroker Forum. Если вам нравится этот адаптер, вы можете пожертвовать.",
@@ -12,7 +12,6 @@
     "Enable API profiling to track number of parameters requested and returned": "Включите профилирование API для отслеживания количества запрошенных параметров и возвращений",
     "Enter username and password of your Wolf Smartset account": "Введите имя пользователя и пароль своей учетной записи Wolf Smartset",
     "Expert Login": "Экспертный вход",
-    "Expert Login may be required to poll certain expert parameters (see README)": "Экспертный вход может потребоваться для опроса определенных экспертных параметров (см. Readme)",
     "Expert Password": "Экспертный пароль",
     "List of Wolf Devices": "Список устройств волков",
     "Long Poll Cycle Interval (min)": "Длинный интервал цикла опроса (мин)",
@@ -25,5 +24,9 @@
     "Username": "Имя пользователя",
     "Use this Device": "Используйте это устройство",
     "Wolf Device": "Устройство волков",
-    "Wolf Smartset Account": "Учетная запись Wolf Smartset"
+    "Wolf Smartset Account": "Учетная запись Wolf Smartset",
+    "Check for Public IP Changes": "Проверить на наличие изменений публичных IP",
+    "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Включить проверку вашего публичного IP -адреса через ipify.org для более быстрого восстановления сессии после изменения публичного IP",
+    "Enable Public IP Checking": "Включить публичную проверку ИС",
+    "Expert Login is required to poll expert parameters": "Экспертный вход требуется для опроса экспертных параметров"
 }

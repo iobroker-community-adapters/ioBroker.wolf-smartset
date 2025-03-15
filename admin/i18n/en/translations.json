@@ -4,7 +4,7 @@
     "BundleId for Long Poll Cycle": "BundleId for Long Poll Cycle",
     "BundleId for Short Poll Cycle": "BundleId for Short Poll Cycle",
     "Configure poll intervals and the set of parameters to poll": "Configure poll intervals and the set of parameters to poll",
-    "Configure Short and Long Poll Cycle interval": "Configure Short and Long Poll Cycle interval",
+    "Configure Short and Long Poll Cycle Interval": "Configure Short and Long Poll Cycle Interval",
     "Device": "Device",
     "Do Expert Login": "Do Expert Login",
     "donateInformation": "Feel free to suggest new features or devices via Github or ioBroker forum. If you like this adapter, you are very welcome to donate.",
@@ -12,7 +12,6 @@
     "Enable API profiling to track number of parameters requested and returned": "Enable API profiling to track number of parameters requested and returned",
     "Enter username and password of your Wolf Smartset account": "Enter username and password of your Wolf Smartset account",
     "Expert Login": "Expert Login",
-    "Expert Login may be required to poll certain expert parameters (see README)": "Expert Login may be required to poll certain expert parameters (see README)",
     "Expert Password": "Expert Password",
     "List of Wolf Devices": "List of Wolf Devices",
     "Long Poll Cycle Interval (min)": "Long Poll Cycle Interval (min)",
@@ -25,5 +24,9 @@
     "Username": "Username",
     "Use this Device": "Use this Device",
     "Wolf Device": "Wolf Device",
-    "Wolf Smartset Account": "Wolf Smartset Account"
+    "Wolf Smartset Account": "Wolf Smartset Account",
+    "Check for Public IP Changes": "Check for Public IP Changes",
+    "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Enable checking your public IP via ipify.org for faster session recovery after changed public IP",
+    "Enable Public IP Checking": "Enable Public IP Checking",
+    "Expert Login is required to poll expert parameters": "Expert Login is required to poll expert parameters"
 }

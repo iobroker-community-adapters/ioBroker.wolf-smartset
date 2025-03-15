@@ -4,7 +4,7 @@
     "BundleId for Long Poll Cycle": "Bundleid voor een lange pollcyclus",
     "BundleId for Short Poll Cycle": "Bundleid voor een korte pollcyclus",
     "Configure poll intervals and the set of parameters to poll": "Configureer poll -intervallen en de set parameters om te peilen",
-    "Configure Short and Long Poll Cycle interval": "Configureer een korte en lange peilcyclusinterval",
+    "Configure Short and Long Poll Cycle Interval": "Configureer een korte en lange peilcyclusinterval",
     "Device": "Apparaat",
     "Do Expert Login": "Log in deskundige inloggen",
     "donateInformation": "Voel je vrij om nieuwe functies of apparaten voor te stellen via GitHub of Iobroker Forum. Als je deze adapter leuk vindt, ben je van harte welkom om te doneren.",
@@ -12,7 +12,6 @@
     "Enable API profiling to track number of parameters requested and returned": "Schakel API -profilering in om het aantal gevraagde en geretourneerde parameters bij te houden",
     "Enter username and password of your Wolf Smartset account": "Voer de gebruikersnaam en het wachtwoord van uw Wolf Smartset -account in",
     "Expert Login": "Login van deskundige",
-    "Expert Login may be required to poll certain expert parameters (see README)": "Inloggen in deskundigen kan nodig zijn om bepaalde deskundige parameters te bestrijden (zie README)",
     "Expert Password": "Deskundige wachtwoord",
     "List of Wolf Devices": "Lijst met wolfsapparaten",
     "Long Poll Cycle Interval (min)": "Lang poll cyclusinterval (min)",
@@ -25,5 +24,9 @@
     "Username": "Gebruikersnaam",
     "Use this Device": "Gebruik dit apparaat",
     "Wolf Device": "Wolvenapparaat",
-    "Wolf Smartset Account": "Wolf Smartset -account"
+    "Wolf Smartset Account": "Wolf Smartset -account",
+    "Check for Public IP Changes": "Controleer op openbare IP -wijzigingen",
+    "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Schakel uw openbare IP in via iPify.org voor sneller herstel van sessie na veranderd openbaar IP",
+    "Enable Public IP Checking": "Schakel openbare IP -controle in",
+    "Expert Login is required to poll expert parameters": "Inloggen in deskundigen is vereist om deskundige parameters te bestrijden"
 }

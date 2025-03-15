@@ -12,7 +12,6 @@
     "Enable API profiling to track number of parameters requested and returned": "Aktivieren Sie die API-Profiling, um die Anzahl der angeforderten und zurückgegebenen Parameter zu verfolgen",
     "Enter username and password of your Wolf Smartset account": "Geben Sie den Benutzernamen und das Passwort Ihres Wolf Smartset-Kontos ein",
     "Expert Login": "Fachmann Login",
-    "Expert Login may be required to poll certain expert parameters (see README)": "Fachmann-Login kann erforderlich sein, um bestimmte Fachmann-Parameter abfragen zu können(siehe Readme)",
     "Expert Password": "Fachmann-Passwort",
     "List of Wolf Devices": "Liste der Wolf Anlagen",
     "Long Poll Cycle Interval (min)": "Langes Pollzyklus-Intervall (min)",
@@ -26,5 +25,8 @@
     "Use this Device": "Verwende diese Anlage",
     "Wolf Device": "Wolf Anlage",
     "Wolf Smartset Account": "Wolf Smartset-Konto",
-    "Configure Short and Long Poll Cycle interval": "Konfigurieren Sie das kurze und lange Umfragezyklusintervall"
+    "Check for Public IP Changes": "Überprüfen Sie die öffentlichen IP -Änderungen",
+    "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Aktivieren Sie Ihre öffentliche IP über ipify.org für eine schnellere Wiederherstellung der Sitzung nach der geänderten öffentlichen IP über eine schnellere Sitzung",
+    "Enable Public IP Checking": "Aktivieren Sie die öffentliche IP -Überprüfung",
+    "Expert Login is required to poll expert parameters": "Expertenanmeldung ist erforderlich, um Expertenparameter zu befragen"
 }

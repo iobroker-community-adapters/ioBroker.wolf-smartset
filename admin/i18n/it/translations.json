@@ -4,7 +4,7 @@
     "BundleId for Long Poll Cycle": "Bundleid per un lungo ciclo di sondaggio",
     "BundleId for Short Poll Cycle": "Bundleid per breve ciclo di sondaggio",
     "Configure poll intervals and the set of parameters to poll": "Configurare gli intervalli di sondaggio e l'insieme di parametri per il sondaggio",
-    "Configure Short and Long Poll Cycle interval": "Configurare intervallo di ciclo di sondaggio breve e lungo",
+    "Configure Short and Long Poll Cycle Interval": "Configurare intervallo di ciclo di sondaggio breve e lungo",
     "Device": "Dispositivo",
     "Do Expert Login": "Accedi esperti",
     "donateInformation": "Sentiti libero di suggerire nuove funzionalità o dispositivi tramite GitHub o IoBroker Forum. Se ti piace questo adattatore, sei il benvenuto a donare.",
@@ -12,7 +12,6 @@
     "Enable API profiling to track number of parameters requested and returned": "Abilita la profilazione dell'API per tenere traccia del numero di parametri richiesti e restituiti",
     "Enter username and password of your Wolf Smartset account": "Inserisci nome utente e password del tuo account Wolf Smartset",
     "Expert Login": "Accesso esperto",
-    "Expert Login may be required to poll certain expert parameters (see README)": "Il login di esperti potrebbe essere tenuto a sondaggio di determinati parametri di esperti (vedi README)",
     "Expert Password": "Password esperta",
     "List of Wolf Devices": "Elenco dei dispositivi di lupo",
     "Long Poll Cycle Interval (min)": "Intervallo di cicli di sondaggio a lungo (min)",
@@ -25,5 +24,9 @@
     "Username": "Nome utente",
     "Use this Device": "Usa questo dispositivo",
     "Wolf Device": "Dispositivo lupo",
-    "Wolf Smartset Account": "Account Wolf SmartSet"
+    "Wolf Smartset Account": "Account Wolf SmartSet",
+    "Check for Public IP Changes": "Controlla le modifiche all'IP pubblica",
+    "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Abilita il controllo del tuo IP pubblico tramite ipify.org per un recupero di sessione più rapido dopo aver modificato l'IP pubblica",
+    "Enable Public IP Checking": "Abilita il controllo dell'IP pubblico",
+    "Expert Login is required to poll expert parameters": "L'accesso esperto è tenuto a sondaggio dei parametri degli esperti"
 }

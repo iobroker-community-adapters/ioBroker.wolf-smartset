@@ -4,7 +4,7 @@
     "BundleId for Long Poll Cycle": "Pakiet do długiego cyklu ankiet",
     "BundleId for Short Poll Cycle": "Pakiet do krótkiego cyklu ankiety",
     "Configure poll intervals and the set of parameters to poll": "Skonfiguruj interwały ankiet i zestaw parametrów do ankiety",
-    "Configure Short and Long Poll Cycle interval": "Skonfiguruj krótki i długi interwał cyklu ankiet",
+    "Configure Short and Long Poll Cycle Interval": "Skonfiguruj krótki i długi interwał cyklu ankiet",
     "Device": "Urządzenie",
     "Do Expert Login": "Wykonaj logowanie ekspertów",
     "donateInformation": "Zaproponuj nowe funkcje lub urządzenia za pośrednictwem GitHub lub IOBRAKER Forum. Jeśli podoba Ci się ten adapter, możesz przekazać darowiznę.",
@@ -12,7 +12,6 @@
     "Enable API profiling to track number of parameters requested and returned": "Włącz profilowanie API w celu śledzenia liczby żądanych i zwróconych parametrów",
     "Enter username and password of your Wolf Smartset account": "Wprowadź nazwę użytkownika i hasło swojego konta Wolf Smartset",
     "Expert Login": "Login ekspertów",
-    "Expert Login may be required to poll certain expert parameters (see README)": "Login ekspertów może być wymagany do ankietowania niektórych parametrów ekspertów (patrz ReadMe)",
     "Expert Password": "Hasło eksperckie",
     "List of Wolf Devices": "Lista urządzeń wilków",
     "Long Poll Cycle Interval (min)": "Długi przedział cyklu ankiety (min)",
@@ -25,5 +24,9 @@
     "Username": "Nazwa użytkownika",
     "Use this Device": "Użyj tego urządzenia",
     "Wolf Device": "Urządzenie wilka",
-    "Wolf Smartset Account": "Konto Wolf Smartset"
+    "Wolf Smartset Account": "Konto Wolf Smartset",
+    "Check for Public IP Changes": "Sprawdź zmiany IP publicznych",
+    "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Włącz sprawdzanie publicznego adresu IP za pośrednictwem iPify.org w celu szybszego odzyskiwania sesji po zmianie publicznego adresu IP",
+    "Enable Public IP Checking": "Włącz publiczne sprawdzanie IP",
+    "Expert Login is required to poll expert parameters": "Login ekspertów jest wymagany do ankietowania parametrów ekspertów"
 }

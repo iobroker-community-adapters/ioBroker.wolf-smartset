@@ -4,7 +4,7 @@
     "BundleId for Long Poll Cycle": "BundleID para um ciclo de pesquisa longa",
     "BundleId for Short Poll Cycle": "BundleID para ciclo de pesquisa curto",
     "Configure poll intervals and the set of parameters to poll": "Configurar intervalos de pesquisa e o conjunto de parâmetros para pesquisar",
-    "Configure Short and Long Poll Cycle interval": "Configurar intervalo de ciclo de pesquisa curto e longo",
+    "Configure Short and Long Poll Cycle Interval": "Configurar intervalo de ciclo de pesquisa curto e longo",
     "Device": "Dispositivo",
     "Do Expert Login": "Faça login especializado",
     "donateInformation": "Sinta -se à vontade para sugerir novos recursos ou dispositivos via fórum Github ou IoBroker. Se você gosta deste adaptador, é muito bem -vindo doar.",
@@ -12,7 +12,6 @@
     "Enable API profiling to track number of parameters requested and returned": "Ativar o perfil da API para rastrear o número de parâmetros solicitados e retornados",
     "Enter username and password of your Wolf Smartset account": "Digite o nome de usuário e a senha da sua conta do Wolf SmartSet",
     "Expert Login": "Login especializado",
-    "Expert Login may be required to poll certain expert parameters (see README)": "O login de especialistas pode ser obrigado a pesquisar certos parâmetros de especialistas (consulte ReadMe)",
     "Expert Password": "Senha especializada",
     "List of Wolf Devices": "Lista de dispositivos de lobo",
     "Long Poll Cycle Interval (min)": "Intervalo de ciclo de pesquisa longa (min)",
@@ -25,5 +24,9 @@
     "Username": "Nome de usuário",
     "Use this Device": "Use este dispositivo",
     "Wolf Device": "Dispositivo de lobo",
-    "Wolf Smartset Account": "Conta do SmartSet Wolf"
+    "Wolf Smartset Account": "Conta do SmartSet Wolf",
+    "Check for Public IP Changes": "Verifique se há mudanças públicas de IP",
+    "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Habilite a verificação do seu IP público via ipify.org para uma recuperação de sessão mais rápida após alterado IP público",
+    "Enable Public IP Checking": "Habilitar verificação de IP público",
+    "Expert Login is required to poll expert parameters": "O login especialista é necessário para pesquisar parâmetros de especialistas"
 }
