@@ -423,6 +423,52 @@ class WolfSmartsetAdapter extends utils.Adapter {
         this.ValueIdListLongCycle = ValueIdListLongCycle;
     }
 
+    async _setStatesWithDiffTypes(type, id, value) {
+        if (type == null || id == null || value == null) {
+            return;
+        }
+
+        // Wolf ControlTypes:
+        // 0: Unknown
+        // 1: Enum w/ ListItems (simple)
+        // 5: Bool
+        // 6: Number; 'Decimals' = decimal places (accuracy)
+        // 9: Date
+        // 10: Time
+        // 13: list of time programs (1, 2 or 3) (not a Value)
+        // 14: list of time ranges
+        // 19: time program (Mon - Sun) (not a value)
+        // 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
+        // 21: IPv4 addr or netmask
+        // 31: Number of any kind
+        // 35: Enum w/ ListItems (w/ Image, Decription, ...)
+        switch (type) {
+            case 5:
+                this.setState(id, {
+                    val: value === 'True' ? true : false,
+                    ack: true,
+                });
+                break;
+            case 9:
+            case 10:
+            case 14:
+            case 20:
+            case 21:
+                this.setState(id, {
+                    val: value.toString(),
+                    ack: true,
+                });
+                break;
+
+            default:
+                this.setState(id, {
+                    val: parseFloat(value),
+                    ack: true,
+                });
+                break;
+        }
+    }
+
     /**
      * Poll parameter values from Wolf server as configured for the given poll cycle
      *
@@ -464,7 +510,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                     this.log.warn(
                         `_ShortPollValueList(); PubIP changed from ${this.myPublicIp} to ${myPublicIp}: triggering reload...`,
                     );
-                    await this.main(myPublicIp);
+                    await this._mainloop(myPublicIp);
                     return;
                 }
 
@@ -518,7 +564,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
         if (this.emptyCount >= 10) {
             // no data for long time try a restart
             this.emptyCount = 0;
-            await this.main(null);
+            await this._mainloop(null);
             return;
         }
 
@@ -538,50 +584,69 @@ class WolfSmartsetAdapter extends utils.Adapter {
         });
     }
 
-    async _setStatesWithDiffTypes(type, id, value) {
-        if (type == null || id == null || value == null) {
-            return;
+    /**
+     * main loop is called from onReady(), and in case of an error by _ShortPollValueList(), _SetStatesArray() and itself
+     *
+     * @param myPublicIp - my current public IP or null if unknown
+     */
+    async _mainloop(myPublicIp) {
+        timeoutHandler['restartTimeout'] && clearTimeout(timeoutHandler['restartTimeout']);
+        timeoutHandler['shortPollTimeout'] && clearTimeout(timeoutHandler['shortPollTimeout']);
+        timeoutHandler['longPollTimeout'] && clearTimeout(timeoutHandler['longPollTimeout']);
+
+        try {
+            // Note: Wolf Smartset is IP address aware: if we changed or IP, we have to re-init
+            // if we have a wss matching our configured u/p and our current public IP then use it ...
+            if (!myPublicIp) {
+                myPublicIp = this._getMyPublicIp();
+            }
+            if (
+                !this.wss ||
+                this.wss_user != this.config.username ||
+                this.wss_password != this.config.password ||
+                (myPublicIp && this.myPublicIp && this.myPublicIp != myPublicIp)
+            ) {
+                // ... otherwise kill old wss object and create a new one
+                this.wss && this.wss.stop();
+                this.wss = new wolfsmartset(this.config.username, this.config.password, this);
+                this.wss_user = this.config.username;
+                this.wss_password = this.config.password;
+                if (myPublicIp) {
+                    this.myPublicIp = myPublicIp;
+                }
+            }
+
+            const wssInitialized = await this.wss.init();
+            if (!wssInitialized) {
+                throw new Error('Could not initialized WSS session');
+            }
+
+            const GUIDesc = await this.wss.getGUIDescription(this.device.GatewayId, this.device.SystemId);
+            if (GUIDesc) {
+                ParamObjList = (await this._getParamsWebGui(GUIDesc)) || [];
+            } else {
+                throw new Error('Could not get GUIDescription (device might be down)');
+            }
+            if (ParamObjList) {
+                await this._CreateParams(ParamObjList);
+                // create a list of params for each BundleId as defined in the GUI Desc
+                await this._CreateBundleValuesLists(ParamObjList);
+            }
+
+            this.objects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
+            this.log.debug(JSON.stringify(this.objects));
+
+            await this._LongPollValueList();
+            await this._ShortPollValueList();
+        } catch (error) {
+            this.log.warn(error);
+            this.log.warn('Trying again in 60 sec...');
+            timeoutHandler['restartTimeout'] = setTimeout(async () => {
+                this._mainloop(null);
+            }, 60000);
         }
 
-        // Wolf ControlTypes:
-        // 0: Unknown
-        // 1: Enum w/ ListItems (simple)
-        // 5: Bool
-        // 6: Number; 'Decimals' = decimal places (accuracy)
-        // 9: Date
-        // 10: Time
-        // 13: list of time programs (1, 2 or 3) (not a Value)
-        // 14: list of time ranges
-        // 19: time program (Mon - Sun) (not a value)
-        // 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
-        // 21: IPv4 addr or netmask
-        // 31: Number of any kind
-        // 35: Enum w/ ListItems (w/ Image, Decription, ...)
-        switch (type) {
-            case 5:
-                this.setState(id, {
-                    val: value === 'True' ? true : false,
-                    ack: true,
-                });
-                break;
-            case 9:
-            case 10:
-            case 14:
-            case 20:
-            case 21:
-                this.setState(id, {
-                    val: value.toString(),
-                    ack: true,
-                });
-                break;
-
-            default:
-                this.setState(id, {
-                    val: parseFloat(value),
-                    ack: true,
-                });
-                break;
-        }
+        this.subscribeStates('*');
     }
 
     // /**
@@ -707,7 +772,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 typeof this.device.SystemId !== 'undefined'
             ) {
                 const myPublicIp = await this._getMyPublicIp();
-                await this.main(myPublicIp);
+                await this._mainloop(myPublicIp);
             } else {
                 this.log.warn('Please configure username, password and device in adapter instance settings');
             }
@@ -715,71 +780,6 @@ class WolfSmartsetAdapter extends utils.Adapter {
         } catch (error) {
             this.log.warn('Please configure username, password and device in adapter instance settings');
         }
-    }
-
-    /**
-     * main function is called from onReady(), PollValueList() and in case of an error by itself
-     *
-     * @param myPublicIp - my current public IP or null if unknown
-     */
-    async main(myPublicIp) {
-        timeoutHandler['restartTimeout'] && clearTimeout(timeoutHandler['restartTimeout']);
-        timeoutHandler['shortPollTimeout'] && clearTimeout(timeoutHandler['shortPollTimeout']);
-        timeoutHandler['longPollTimeout'] && clearTimeout(timeoutHandler['longPollTimeout']);
-
-        try {
-            // Note: Wolf Smartset is IP address aware: if we changed or IP, we have to re-init
-            // if we have a wss matching our configured u/p and our current public IP then use it ...
-            if (!myPublicIp) {
-                myPublicIp = this._getMyPublicIp();
-            }
-            if (
-                !this.wss ||
-                this.wss_user != this.config.username ||
-                this.wss_password != this.config.password ||
-                (myPublicIp && this.myPublicIp && this.myPublicIp != myPublicIp)
-            ) {
-                // ... otherwise kill old wss object and create a new one
-                this.wss && this.wss.stop();
-                this.wss = new wolfsmartset(this.config.username, this.config.password, this);
-                this.wss_user = this.config.username;
-                this.wss_password = this.config.password;
-                if (myPublicIp) {
-                    this.myPublicIp = myPublicIp;
-                }
-            }
-
-            const wssInitialized = await this.wss.init();
-            if (!wssInitialized) {
-                throw new Error('Could not initialized WSS session');
-            }
-
-            const GUIDesc = await this.wss.getGUIDescription(this.device.GatewayId, this.device.SystemId);
-            if (GUIDesc) {
-                ParamObjList = (await this._getParamsWebGui(GUIDesc)) || [];
-            } else {
-                throw new Error('Could not get GUIDescription (device might be down)');
-            }
-            if (ParamObjList) {
-                await this._CreateParams(ParamObjList);
-                // create a list of params for each BundleId as defined in the GUI Desc
-                await this._CreateBundleValuesLists(ParamObjList);
-            }
-
-            this.objects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
-            this.log.debug(JSON.stringify(this.objects));
-
-            await this._LongPollValueList();
-            await this._ShortPollValueList();
-        } catch (error) {
-            this.log.warn(error);
-            this.log.warn('Trying again in 60 sec...');
-            timeoutHandler['restartTimeout'] = setTimeout(async () => {
-                this.main(null);
-            }, 60000);
-        }
-
-        this.subscribeStates('*');
     }
 
     /**
