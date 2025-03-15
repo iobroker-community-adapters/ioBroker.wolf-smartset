@@ -739,7 +739,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 this.wss_password != this.config.password ||
                 (myPublicIp && this.myPublicIp && this.myPublicIp != myPublicIp)
             ) {
-                // ... otherwise create a new wss object
+                // ... otherwise kill old wss object and create a new one
+                this.wss && this.wss.stop();
                 this.wss = new wolfsmartset(this.config.username, this.config.password, this);
                 this.wss_user = this.config.username;
                 this.wss_password = this.config.password;
