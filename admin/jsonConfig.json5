@@ -241,7 +241,7 @@
                     "sm": 12,
                     "md": 4,
                     "lg": 3,
-                    "xl": 2,
+                    "xl": 2
                 },
                 "bundleIdRequestedLong": {
                     "type": "autocomplete",
@@ -253,7 +253,7 @@
                     "sm": 12,
                     "md": 4,
                     "lg": 3,
-                    "xl": 2,
+                    "xl": 2
                 },
                 "expertHdr": {
                     "newLine": true,
