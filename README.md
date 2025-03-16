@@ -24,11 +24,11 @@ You need a Wolf heating/climate device equipped with a ISM7i WLAN/LAN module (ak
 ### Tab: Main Settings
 
 #### Wolf Smartset Account
-To connect to the Wolf Smartset server you need your `username` and `password` which you use also use to log in to the Wolf Smartset app or the [Wolf Smartset Portal](https://wolf-smartset.com). 
+To connect to the Wolf Smartset server you need your `Username` and `Password` which you also use to log in to the Wolf Smartset app or the [Wolf Smartset Portal](https://wolf-smartset.com). 
 
 #### Wolf Device
 
-Your Wolf account may be associated with multiple Wolf devices. Each device requires an individual ioBroker adapter instance.
+Your Wolf account is associated with one ore more Wolf devices. Each device requires an individual ioBroker adapter instance.
 
 After first-time install you have to select a specific `Device` for each instance. As soon as you entered a valid username and password the `List of Wolf Devices` will be filled with the devices assigned to your account. After selecting the device from the list, click on  `USE THIS DEVICE` to confirm your selection.
 
@@ -39,23 +39,35 @@ Advanced settings allow you to adapt the adpater's operation to your needs. Typi
 #### Poll Cycle Intervals and Parameter Lists
 
 The adapter will - after connecting to the Wolf Smartset server - periodically poll parameter values from the server. It supports two independent poll cycles with different cycle intervals.
-- `Short Poll Cycle Interval`: enter the interval in seconds. The Wolf Smartset server defines an absolute minimum poll interval (currently 60 sec) which you should not undercut. If you configure a value below this minimum interval the server will not respond in the expected way or may even disconnect your session. The adapter requests the current minimum poll interval from the server periodically. If the configured poll interval is below the server-announced poll interval, you will get a warning log from the adapter and you should adjust your poll interval accordingly.
+- `Short Poll Cycle Interval`: enter the interval in seconds. The Wolf Smartset server defines an absolute minimum poll interval (currently 60 sec) which you should not undercut. If you configure a value below this minimum interval the server will not respond in the expected way or may even disconnect your session. The adapter requests the current minimum poll interval from the server periodically. If the configured poll interval is below the minimum poll interval indicated by the server, you will get a warning log from the adapter and you should adjust your poll interval accordingly.
 - `Long Poll Cycle Interval`: enter the interval in minutes for the second poll cycle.
 
-The Wolf Smartset server groups the various device parameter values into different bundles, identified by a numeric BundleId. The adapter will show the BundleIds for the different parameters in the Object view on the channel level. In this section you can define which parameter value group should be polled in which poll cycle. It is a good idea to include fast changing parameter values (e.g. operational states) in the `Short Poll Cycle` and rarely changing parameter values (e.g. device configuration parameters) to the `Long Poll Cycle`.
+The Wolf Smartset server groups the various device parameters into different bundles, identified by a numeric BundleId. In the __ioBroker Admin__ UI  you will find the BundleIds for the different parameter groups in the __Object__ view below the __wolf-smartset__ instance at the channel level. 
 
-- `BundleId for Short Poll Cycle` and `BundleId for Long Poll Cycle`: the Wolf Smartset API requires in each poll request besides a list of parameters to poll also a BundleId. It's not quite clear how the BundleId relates to the actual parameter list, but in most cases 'Default' should be OK: it maps to the largest selected BundleId for the given poll cycle. Any other setting here is for experimental use.
+- `Parameters of Bundle`: Within this table you can define which parameter value group should be polled in which poll cycle. It is a good idea to:
+	- `Include in Short Poll Cycle` all fast changing parameter values (e.g. operational states) and to 
+	- `Include in Long Poll Cycle` rarely changing parameter values (e.g. device configuration parameters).
+
+The Wolf Smartset API requires each poll request to include - besides a list of parameters to poll - also a BundleId. It's not quite clear how the BundleId relates to the actual parameter list, but in most cases 'Default' should be OK: it maps to the largest selected BundleId for the given poll cycle. Any other setting here is for experimental use. Configure the BundleId to be used as:
+- `BundleId for Short Poll Cycle`
+- `BundleId for Long Poll Cycle` 
 
 #### Export Login
 
-Wolf defines two access levels for device parameters: `User` and `Expert`. The adaper shows the associated parameters in the Object view accordingly in the two different subtrees: `Benutzer` and `Fachmann`. Afer initial authentication the adapter is in User mode and will receive only once during initialization all available parameter values. After that, during periodic polls it will receive only updates for User level parameter values (i.e. value in the `Benutzer` tree). If you check `Do Expert Login` and enter the correct `Expert Password`, the adapter will perform an Expert Login during initialization and receive also periodic updates of expert level parameter values (as shown in the `Fachmann` tree) during the poll cylce they are associated with.
+Wolf Smartset API defines two access levels for device parameters: __User__ and __Expert__. Accordingly, you will find in the __Object__ view of the __ioBroker Admin__ UI the corresponding two  subtrees: __Benutzer__ and __Fachmann__. Afer initial authentication the adapter is in User mode and will receive only once during initialization all available parameter values. After that, during periodic polls it will receive only updates for User level parameter values (i.e. value in the __Benutzer__ tree). 
+
+If you check
+- `Do Expert Login` and enter the correct
+- `Expert Password`, 
+
+the adapter will perform an Expert Login during initialization and receive also periodic updates of expert level parameter values (as shown in the __Fachmann__ tree) during the poll cylce they are associated with.
 
 __!!! Important Note on Expert Level: Start !!!__
 
 Expert level seems to be behave like Pandora's box! Tests showed, that it was quite hard to leave the Expert level once you enabled it. Although the adapter will completely logout and remove all locally cached authentication data (openId tokens and session id) when disabling `Do Expert Login` setting and restarting the instance, it looks like this is not good enough for the Wolf Smartset server. 
 
 ```
-In fact, only a change of the adapter's public IP address in combination with an adapter reload might get the adapter back to User level.
+In fact, only a change of the adapter's public IP address in combination with an adapter instance reload might get the adapter back to User level.
 ```
 
 While it doesn't  look too problematic to stay in Expert mode at first sight, there is at least one side effect that might be a real issue for you: 
@@ -77,9 +89,10 @@ __!!! Important Note on Expert Level: End !!!__
 
 #### Check for Public IP Changes
 
-The Wolf Smartset server is IP address aware. This means, it associates some application state information with the public IP address of the application. So, if you configured `Do Expert Login` and the adapter's public IP changes (e.g. after a router reload), the adapter will have to re-authenticate to the Wolf Smartset server in order to enable the Expert mode again. Since the adapter will do a re-authentication only every hour, it may take up to `one hour until the adapter is in Expert mode again`. 
+The Wolf Smartset server is Client IP address aware. This means, it associates some application state information with the public IP address of the client application. So, if you configured `Do Expert Login` and the adapter's public IP changes (e.g. after a router reload), the adapter will have to re-authenticate to the Wolf Smartset server in order to enable the Expert mode again. Since the adapter will do a re-authentication only every hour, it may take up to __one hour until the adapter is in Expert mode again__. 
 
-If this is too long for you, you can check `Enable Public IP Checking`. In this case, the adapter will check your public IP address via [ipify.org](https:ipify.org) `every 4th Short Poll Cycle` and will trigger re-authentication on change. That way, the adapter will be back in Expert mode the latest `after 4 Short Poll Cycles`.
+If this is too long for you, you can check 
+- `Enable Public IP Checking`: In this case, the adapter will check your public IP address via [ipify.org](https:ipify.org) __every 4th Short Poll Cycle__ and will trigger re-authentication on change. That way, the adapter will be back in Expert mode __the latest after 4 Short Poll Cycles__.
 
 #### API Profiling
 
@@ -105,24 +118,24 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. It
 	- Re-ordered and renamed private functions in main.js and admin/wss.js
 	- Reorganized adapter initialization / openIdInit for more robust error handling
 - (flingo64) Bugfix: trigger re-initalization, if API GET GUI DESC returns an error (server might be down temporarily)
-- (flingo64) Bugfix for `issue #242`: 
+- (flingo64) Bugfix for __issue #242__: 
 	- added instance settings `Do Expert Login` and `Expert Password`
-	- do expert login and periodic re-login when 'Do Expert Login' / 'Expert Password' are set
+	- do expert login and periodic re-login when `Do Expert Login` / `Expert Password` are set
 - (flingo64) adapter enhancements:
-	- Poll interval must be at least 60s (`issue #287`)
+	- Poll interval must be at least 60s (__issue #287__)
 	- Added support for level 3 objects: `time programs` / `party mode` / `vacation mode`
-	- Request UserInfo from Wolf server and check whether adpater instance's poll interval meets Wolf's requirement (currently at least 60 sec)
-	- Create ParameterId lists for each Wolf BundleId and show BundleIds for each channel
+	- Request UserInfo from Wolf server and check whether adpater instance's poll interval meets Wolf Smartset's requirement (currently at least 60 sec)
+	- Create ParameterId lists for each Wolf BundleId and show `BundleIds` for each channel
 	- Added openId logout on instance unload to force a fresh AuthN on next adapter start
 	- Added support for two poll cycles to avoid server abuse reactions:
 		- `Short Poll Cycle` for frequently changing values
 		- `Long Poll Cycle` for rarely changing values (e.g. expert settings)
 	- Added `API Profiling` option to track requested BundleId / # of requested params and # of returned params / # of returned values
-	- Switched to jsconConfig (`issue #420`)
+	- Switched AdminUI to `jsconConfig` (__issue #420__)
 	- Migrated translations from words.js to `i18n`
 	- Added complete translation for all adapter instance setting strings
 	- Disabled code for caching of auth data to allow a clean re-auth when required by server or on adapter reload
-	- Added optional `check for public IP changes` for faster Wolf Smartset session recovery
+	- Added optional `Check for public IP changes` for faster Wolf Smartset expert session recovery
 	- README: added descriptions on all instance settings and adpater operation
 - Open issues:
 	- i18n translations will not be installed (at least when adapter is installed from GitHub)
