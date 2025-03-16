@@ -24,13 +24,24 @@ You need a Wolf heating/climate device equipped with a ISM7i WLAN/LAN module (ak
 ### Tab: Main Settings
 
 #### Wolf Smartset Account
-To connect to the Wolf Smartset server you need your `Username` and `Password` which you also use to log in to the Wolf Smartset app or the [Wolf Smartset Portal](https://wolf-smartset.com). 
+To connect to the Wolf Smartset server you need your 
+- `Username` and 
+- `Password`
+
+which you also use to log in to the Wolf Smartset app or the [Wolf Smartset Portal](https://wolf-smartset.com). 
 
 #### Wolf Device
 
 Your Wolf account is associated with one ore more Wolf devices. Each device requires an individual ioBroker adapter instance.
 
-After first-time install you have to select a specific `Device` for each instance. As soon as you entered a valid username and password the `List of Wolf Devices` will be filled with the devices assigned to your account. After selecting the device from the list, click on  `USE THIS DEVICE` to confirm your selection.
+After first-time install you have to select a specific 
+- `Device` for each instance. 
+
+As soon as you entered a valid `Username` and `Password` the 
+- `List of Wolf Devices` will be filled with the devices assigned to your account. 
+
+After selecting the device from the list, click on  
+- `USE THIS DEVICE` to confirm your selection.
 
 ### Tab: Advanced Settings
 
@@ -92,16 +103,17 @@ __!!! Important Note on Expert Level: End !!!__
 The Wolf Smartset server is Client IP address aware. This means, it associates some application state information with the public IP address of the client application. So, if you configured `Do Expert Login` and the adapter's public IP changes (e.g. after a router reload), the adapter will have to re-authenticate to the Wolf Smartset server in order to enable the Expert mode again. Since the adapter will do a re-authentication only every hour, it may take up to __one hour until the adapter is in Expert mode again__. 
 
 If this is too long for you, you can check 
-- `Enable Public IP Checking`: In this case, the adapter will check your public IP address via [ipify.org](https:ipify.org) __every 4th Short Poll Cycle__ and will trigger re-authentication on change. That way, the adapter will be back in Expert mode __the latest after 4 Short Poll Cycles__.
+- `Enable Public IP Checking`: In this case, the adapter will check your public IP address via [ipify.org](https://ipify.org) __every 4th Short Poll Cycle__ and will trigger re-authentication on change. That way, the adapter will be back in Expert mode __the latest after 4 Short Poll Cycles__.
 
 #### API Profiling
 
-API Profiling allows you to track the Wolf Smartset API usage of the adapter. It will update the following objects in the adapter instance object tree for each poll request:
-- info_api
-	- poll_req_bundle_id: the BundleId used in the poll request
-	- poll_req_num_params: the number of parameters requested by the adapter
-	- poll_resp_num_params: the number of parameters returned from the server
-	- poll_resp_num_params: the number of parameters values returned from the server (returned parameters may or may not have an associated value)
+API Profiling allows you to track the Wolf Smartset API usage of the adapter. if you 
+- `Enable API Profiling`, the adaptert will update the following objects in the __adapter instance object tree__ for each poll request:
+	- info_api
+		- poll_req_bundle_id: the BundleId used in the poll request
+		- poll_req_num_params: the number of parameters requested by the adapter
+		- poll_resp_num_params: the number of parameters returned from the server
+		- poll_resp_num_params: the number of parameters values returned from the server (returned parameters may or may not have an associated value)
 
 ## Changelog
 <!--
@@ -131,7 +143,7 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. It
 		- `Short Poll Cycle` for frequently changing values
 		- `Long Poll Cycle` for rarely changing values (e.g. expert settings)
 	- Added `API Profiling` option to track requested BundleId / # of requested params and # of returned params / # of returned values
-	- Switched AdminUI to `jsconConfig` (__issue #420__)
+	- Switched AdminUI to `jsconConfig` (__issue #420__): settings are grouped in two tabs: `Main settings` and `Advanced Settings`
 	- Migrated translations from words.js to `i18n`
 	- Added complete translation for all adapter instance setting strings
 	- Disabled code for caching of auth data to allow a clean re-auth when required by server or on adapter reload
