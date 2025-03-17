@@ -598,7 +598,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
             // Note: Wolf Smartset is IP address aware: if we changed or IP, we have to re-init
             // if we have a wss matching our configured u/p and our current public IP then use it ...
             if (!myPublicIp) {
-                myPublicIp = this._getMyPublicIp();
+                myPublicIp = await this._getMyPublicIp();
             }
             if (
                 !this.wss ||
@@ -607,7 +607,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 (myPublicIp && this.myPublicIp && this.myPublicIp != myPublicIp)
             ) {
                 // ... otherwise kill old wss object and create a new one
-                this.wss && this.wss.stop();
+                this.wss && (await this.wss.stop());
                 this.wss = new wolfsmartset(this.config.username, this.config.password, this);
                 this.wss_user = this.config.username;
                 this.wss_password = this.config.password;
