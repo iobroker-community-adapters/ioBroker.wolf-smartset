@@ -1,0 +1,355 @@
+{
+    "i18n": true,
+    "type": "tabs",
+    "tabsStyle": {
+        "width": "calc(100% - 100px)"
+    },
+    "items": {
+        "tab_1":{
+            "type": "panel",
+            "label": "Main Settings",
+            "items": {
+                "accountHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "Wolf Smartset Account",
+                    "size": 2
+                },
+                "accountTxt": {
+                    "type": "staticText",
+                    "text": "Enter username and password of your Wolf Smartset account",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "username": {
+                    "type": "text",
+                    "label": "Username",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "password": {
+                    "type": "password",
+                    "label": "Password",
+                    "repeat": true,
+                    "visible": true,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 8,
+                    "lg": 6,
+                    "xl": 4
+                },
+                "deviceHeader": {
+                    "type": "header",
+                    "text": "Wolf Device",
+                    "size": 2
+                },
+                "deviceName": {
+                    "type": "text",
+                    "label": "Device",
+                    "newLine": true,
+                    "readOnly": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "device": {
+                    "type": "text",
+                    "label": "Device Info",
+                    "newLine": false,
+                    "readOnly": true,
+                    "hidden": "true",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "deviceDivider": {
+                    "type": "divider",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "deviceTxt": {
+                    "type": "staticText",
+                    "text": "Select a different Wolf device for this adapter instance",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                   "deviceSelect": {
+                    "type": "selectSendTo",
+                    "label": "List of Wolf Devices",
+                    "command": "getDeviceList",
+                    "jsonData": "{ \"username\": \"${data.username}\", \"password\": \"${data.password}\" }",
+                    "newLine": true,
+                    "manual": false,
+                    "alsoDependsOn": ["username", "password"],
+                    "noTranslation": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                   "deviceConfirm": {
+                    "type": "sendTo",
+                    "label": "Use this device",
+                    "jsonData": "{ \"deviceObject\": \"${data.deviceSelect}\" }",
+                    "command": "confirmDevice",
+                    "useNative": true,
+                    "variant": "outlined",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                }
+            }
+           },
+        "tab_2":{
+            "type": "panel",
+            "label": "Advanced Settings",
+            "items": {
+                "pollHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "Poll Cycle Intervals and Parameter Lists",
+                    "size": 2
+                },
+                "pollTxt": {
+                    "type": "staticText",
+                    "text": "Configure poll intervals and the set of parameters to poll",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "pollIntervalTxt": {
+                    "type": "staticText",
+                    "text": "Configure Short and Long Poll Cycle Interval",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "pollIntervalShort": {
+                    "type": "number",
+                    "label": "Short Poll Cycle Interval (sec)",
+                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
+                    // "help": "Help text possible",
+                    "min": 60,
+                    "step": 15,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "pollIntervalLong": {
+                    "type": "number",
+                    "label": "Long Poll Cycle Interval (min)",
+                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
+                    // "help": "Help text possible",
+                    "min": 15,
+                    "step": 15,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "bundleIdTable": {
+                    "type": "table",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 9,
+                    "xl": 6,
+                    "label": "",
+                    "noDelete": true,
+                    "items": [
+                        {
+                            "type": "text",
+                            "attr": "bundleIdName",
+                            "title": "Parameters of Bundle",
+                            "tooltip": "BundleId of Parameters from Wolf SmartSet API",
+                            "filter": false,
+                            "sort": false,
+                            "readOnly": true,
+                            "default": ""
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "bundleIdUseShort",
+                            "title": "Include in Short Poll Cycle",
+                            "tooltip": "Request Params with this BundleId in Short Poll Cylce",
+                            "filter": false,
+                            "sort": false,
+                            "default": false
+                        },
+                        {
+                            "type": "checkbox",
+                            "attr": "bundleIdUseLong",
+                            "title": "Include in Long Poll Cycle",
+                            "tooltip": "Request Params with this BundleId in Long Poll Cycle",
+                            "filter": false,
+                            "sort": false,
+                            "default": false
+                        }
+                    ]
+                },
+                "bundleIdRequestedText": {
+                    "type": "staticText",
+                    "text": "Set the BundleId to be used in poll requests",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "bundleIdRequestedShort": {
+                    "type": "autocomplete",
+                    "label": "BundleId for Short Poll Cycle",
+                    "options":["Default", "1000", "3100", "3500", "6300", "7100", "7600"],
+                    "freeSolo": true,
+                    "default": "Default",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "bundleIdRequestedLong": {
+                    "type": "autocomplete",
+                    "label": "BundleId for Long Poll Cycle",
+                    "options":["Default", "1000", "3100", "3500", "6300", "7100", "7600"],
+                    "freeSolo": true,
+                    "default": "Default",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "expertHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "Expert Login",
+                    "size": 2
+                },
+                "expertTxt": {
+                    "type": "staticText",
+                    "text": "Expert Login is required to poll expert parameters",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "doExpertLogin": {
+                    "type": "checkbox",
+                    "label": "Do Expert Login",
+                    "default": false,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "expertPassword": {
+                    "type": "password",
+                    "label": "Expert Password",
+                    "visible": true,
+                    "disabled": "data.doExpertLogin === false",
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "pubIpCheckHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "Check for Public IP Changes",
+                    "size": 2
+                },
+                "pubIpCheckTxt": {
+                    "type": "staticText",
+                    "text": "Enable checking your public IP via ipify.org for faster session recovery after changed public IP",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "doPubIpCheck": {
+                    "type": "checkbox",
+                    "label": "Enable Public IP Checking",
+                    "default": false,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
+                "profilingHdr": {
+                    "newLine": true,
+                    "type": "header",
+                    "text": "API Profiling",
+                    "size": 2
+                },
+                "profilingTxt": {
+                    "type": "staticText",
+                    "text": "Enable API profiling to track number of parameters requested and returned",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 6,
+                    "xl": 6
+                },
+                "doApiProfile": {
+                    "type": "checkbox",
+                    "label": "Enable API Profiling",
+                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
+                    // "help": "Help text possible",
+                    "default": false,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                }
+            }
+        }
+    }
+}
