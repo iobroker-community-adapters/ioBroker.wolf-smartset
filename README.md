@@ -125,14 +125,12 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
 - (flingo64) BREAKING CHANGE: Please reenter your login credentials.
 - (mcm1957) Adapter requires node.js 20, js-controller 6 and admin 7 now.
 - (flingo64) A general code cleanup and partial rewrite has been done.
-- (flingo64) Bugfix: trigger re-initalization has been added, if api returns an error (server might be down temporarily).
+- (flingo64) Trigger re-initalization has been added, if api returns an error (server might be down temporarily).
 - (flingo64) Expert login and periodic re-login have been added (#242).
 - (flingo64) Support for level 3 objects `time programs` / `party mode` / `vacation mode` has been added.
-- (flingo64) Request UserInfo from Wolf server and check whether adpater instance's poll interval meets Wolf Smartset's requirement (currently at least 60 sec) added.
+- (flingo64) Request UserInfo from Wolf server, check whether adapter instance's poll interval meets requirements (60 sec) added.
 - (flingo64) ParameterId lists for each Wolf BundleId created and show `BundleIds` for each channel added
-- (flingo64) Added support for two poll cycles to avoid server abuse reactions:  
-		- `Short Poll Cycle` for frequently changing values  
-		- `Long Poll Cycle` for rarely changing values (e.g. expert settings)
+- (flingo64) Support for two sepearate poll cycles to avoid server abuse reactions has been added. 
 - (flingo64) Switched AdminUI to `jsconConfig`.
 - (mcm1957) dependencies have been updated.
 
