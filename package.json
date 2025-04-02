@@ -7,9 +7,9 @@
     "email": "meistertr.smarthome@gmail.com"
   },
   "contributors": [
-    {
-      "name": "MeisterTR"
-    }
+    "MeisterTR <meistertr.smarthome@gmail.com>",
+    "flingo64 <github@messmer-online.de>",
+    "mcm1957 <mcm57@gmx.at>"
   ],
   "homepage": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "url": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.2.3",
