@@ -122,35 +122,36 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
 -->
 
 ### **WORK IN PROGRESS**
-- (flingo64) code cleanups:
+- (flingo64) BREAKING CHANGE: Please reenter your login credentials.
+- (mcm1957) Adapter requires node.js 20, js-controller 6 and admin 7 now.
+- (flingo64) A general code cleanup and partial rewrite has been done.
+- (flingo64) Bugfix: trigger re-initalization has been added, if api returns an error (server might be down temporarily).
+- (flingo64) Expert login and periodic re-login have been added (#242).
+- (flingo64) Support for level 3 objects `time programs` / `party mode` / `vacation mode` has been added.
+- (flingo64) Request UserInfo from Wolf server and check whether adpater instance's poll interval meets Wolf Smartset's requirement (currently at least 60 sec) added.
+- (flingo64) ParameterId lists for each Wolf BundleId created and show `BundleIds` for each channel added
+- (flingo64) Added support for two poll cycles to avoid server abuse reactions:
+		- `Short Poll Cycle` for frequently changing values
+		- `Long Poll Cycle` for rarely changing values (e.g. expert settings)
+- (flingo64) Switched AdminUI to `jsconConfig`.
+- (mcm1957) dependencies have been updated.
+
+<!--
+- (flingo64) further internal changes omitted from news section due to size limitations
 	- Demystified (decoded) API constants (array _021a[])
 	- All API strings (URL, paths, params) as constants
 	- Fixed various typechecker and eslint/prettier warnings
 	- Replaced deprecated ioBroker async functions by sync function equivalents
 	- Re-ordered and renamed private functions in main.js and admin/wss.js
 	- Reorganized adapter initialization / openIdInit for more robust error handling
-- (flingo64) Bugfix: trigger re-initalization, if API GET GUI DESC returns an error (server might be down temporarily)
-- (flingo64) Bugfix for __issue #242__: 
-	- added instance settings `Do Expert Login` and `Expert Password`
-	- do expert login and periodic re-login when `Do Expert Login` / `Expert Password` are set
-- (flingo64) adapter enhancements:
-	- Poll interval must be at least 60s (__issue #287__)
-	- Added support for level 3 objects: `time programs` / `party mode` / `vacation mode`
-	- Request UserInfo from Wolf server and check whether adpater instance's poll interval meets Wolf Smartset's requirement (currently at least 60 sec)
-	- Create ParameterId lists for each Wolf BundleId and show `BundleIds` for each channel
 	- Added openId logout on instance unload to force a fresh AuthN on next adapter start
-	- Added support for two poll cycles to avoid server abuse reactions:
-		- `Short Poll Cycle` for frequently changing values
-		- `Long Poll Cycle` for rarely changing values (e.g. expert settings)
 	- Added `API Profiling` option to track requested BundleId / # of requested params and # of returned params / # of returned values
-	- Switched AdminUI to `jsconConfig` (__issue #420__): settings are grouped in two tabs: `Main settings` and `Advanced Settings`
 	- Migrated translations from words.js to `i18n`
 	- Added complete translation for all adapter instance setting strings
 	- Disabled code for caching of auth data to allow a clean re-auth when required by server or on adapter reload
 	- Added optional `Check for public IP changes` for faster Wolf Smartset expert session recovery
 	- README: added descriptions on all instance settings and adpater operation
-- Open issues:
-	- i18n translations will not be installed (at least when adapter is installed from GitHub)
+-->
 
 ### 1.2.4 (2024-12-22)
 - (flingo64) Bugfix for issues #281, #329, #365, #406: ioBroker object limits min/max use Wolf Smartset Min/MaxValueCondition if available, otherwise use Min/MaxValue now.
