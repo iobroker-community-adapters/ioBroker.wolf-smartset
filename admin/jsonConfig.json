@@ -157,8 +157,6 @@
                 "pollIntervalShort": {
                     "type": "number",
                     "label": "Short Poll Cycle Interval (sec)",
-                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
-                    // "help": "Help text possible",
                     "min": 60,
                     "step": 15,
                     "xs": 12,
@@ -170,8 +168,6 @@
                 "pollIntervalLong": {
                     "type": "number",
                     "label": "Long Poll Cycle Interval (min)",
-                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
-                    // "help": "Help text possible",
                     "min": 15,
                     "step": 15,
                     "xs": 12,
@@ -339,8 +335,6 @@
                 "doApiProfile": {
                     "type": "checkbox",
                     "label": "Enable API Profiling",
-                    // "tooltip": "click to enable or disable checkbox, check tooltip by hovering over checkbox",
-                    // "help": "Help text possible",
                     "default": false,
                     "newLine": true,
                     "xs": 12,
