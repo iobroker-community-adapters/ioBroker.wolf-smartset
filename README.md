@@ -120,7 +120,7 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 2.0.0 (2025-04-02)
 - (flingo64) BREAKING CHANGE: Please reenter your login credentials.
 - (mcm1957) Adapter requires node.js 20, js-controller 6 and admin 7 now.
 - (flingo64) A general code cleanup and partial rewrite has been done.
@@ -147,7 +147,7 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
   - Disabled code for caching of auth data to allow a clean re-auth when required by server or on adapter reload
   - Added optional Check for public IP changes for faster Wolf Smartset expert session recovery
   - README: added descriptions on all instance settings and adpater operation
-    
+
 ### 1.2.4 (2024-12-22)
 - (flingo64) Bugfix for issues #281, #329, #365, #406: ioBroker object limits min/max use Wolf Smartset Min/MaxValueCondition if available, otherwise use Min/MaxValue now.
 - (flingo64) Added some comments on Wolf Smartset ControlTypes
