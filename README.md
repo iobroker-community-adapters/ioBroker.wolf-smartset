@@ -132,9 +132,8 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
 - (flingo64) ParameterId lists for each Wolf BundleId created and show `BundleIds` for each channel added
 - (flingo64) Support for two sepearate poll cycles to avoid server abuse reactions has been added. 
 - (flingo64) Switched AdminUI to `jsconConfig`.
-- (mcm1957) dependencies have been updated.
 
-<!--
+### 2.x.x internal changes
 - (flingo64) further internal changes omitted from news section due to size limitations
 	- Demystified (decoded) API constants (array _021a[])
 	- All API strings (URL, paths, params) as constants
@@ -149,7 +148,6 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
 	- Disabled code for caching of auth data to allow a clean re-auth when required by server or on adapter reload
 	- Added optional `Check for public IP changes` for faster Wolf Smartset expert session recovery
 	- README: added descriptions on all instance settings and adpater operation
--->
 
 ### 1.2.4 (2024-12-22)
 - (flingo64) Bugfix for issues #281, #329, #365, #406: ioBroker object limits min/max use Wolf Smartset Min/MaxValueCondition if available, otherwise use Min/MaxValue now.
