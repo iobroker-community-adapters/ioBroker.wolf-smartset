@@ -120,7 +120,7 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 2.0.0-alpha.0 (2025-04-02)
+### **WORK IN PROGRESS**
 - (flingo64) BREAKING CHANGE: Please reenter your login credentials.
 - (mcm1957) Adapter requires node.js 20, js-controller 6 and admin 7 now.
 - (flingo64) A general code cleanup and partial rewrite has been done.
@@ -132,6 +132,7 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
 - (flingo64) Support for two sepearate poll cycles to avoid server abuse reactions has been added. 
 - (flingo64) Switched AdminUI to `jsconConfig`.
 
+### 2.0.0-internal
 - (flingo64) further internal changes omitted from news section due to size limitations
   - Demystified (decoded) API constants (array _021a[])
   - All API strings (URL, paths, params) as constants
