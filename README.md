@@ -130,8 +130,8 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
 - (flingo64) Support for level 3 objects `time programs` / `party mode` / `vacation mode` has been added.
 - (flingo64) Request UserInfo from Wolf server and check whether adpater instance's poll interval meets Wolf Smartset's requirement (currently at least 60 sec) added.
 - (flingo64) ParameterId lists for each Wolf BundleId created and show `BundleIds` for each channel added
-- (flingo64) Added support for two poll cycles to avoid server abuse reactions:
-		- `Short Poll Cycle` for frequently changing values
+- (flingo64) Added support for two poll cycles to avoid server abuse reactions:  
+		- `Short Poll Cycle` for frequently changing values  
 		- `Long Poll Cycle` for rarely changing values (e.g. expert settings)
 - (flingo64) Switched AdminUI to `jsconConfig`.
 - (mcm1957) dependencies have been updated.
