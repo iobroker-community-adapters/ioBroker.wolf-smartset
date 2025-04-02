@@ -120,8 +120,7 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 2.0.0-alpha.0 (2025-04-02)
 - (flingo64) BREAKING CHANGE: Please reenter your login credentials.
 - (mcm1957) Adapter requires node.js 20, js-controller 6 and admin 7 now.
 - (flingo64) A general code cleanup and partial rewrite has been done.
@@ -132,22 +131,6 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
 - (flingo64) ParameterId lists for each Wolf BundleId created and show `BundleIds` for each channel added
 - (flingo64) Support for two sepearate poll cycles to avoid server abuse reactions has been added. 
 - (flingo64) Switched AdminUI to `jsconConfig`.
-
-### 2.x.x internal changes
-- (flingo64) further internal changes omitted from news section due to size limitations
-	- Demystified (decoded) API constants (array _021a[])
-	- All API strings (URL, paths, params) as constants
-	- Fixed various typechecker and eslint/prettier warnings
-	- Replaced deprecated ioBroker async functions by sync function equivalents
-	- Re-ordered and renamed private functions in main.js and admin/wss.js
-	- Reorganized adapter initialization / openIdInit for more robust error handling
-	- Added openId logout on instance unload to force a fresh AuthN on next adapter start
-	- Added `API Profiling` option to track requested BundleId / # of requested params and # of returned params / # of returned values
-	- Migrated translations from words.js to `i18n`
-	- Added complete translation for all adapter instance setting strings
-	- Disabled code for caching of auth data to allow a clean re-auth when required by server or on adapter reload
-	- Added optional `Check for public IP changes` for faster Wolf Smartset expert session recovery
-	- README: added descriptions on all instance settings and adpater operation
 
 ### 1.2.4 (2024-12-22)
 - (flingo64) Bugfix for issues #281, #329, #365, #406: ioBroker object limits min/max use Wolf Smartset Min/MaxValueCondition if available, otherwise use Min/MaxValue now.
