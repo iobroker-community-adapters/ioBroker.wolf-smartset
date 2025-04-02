@@ -3,15 +3,28 @@
 const utils = require('@iobroker/adapter-core');
 const wolfsmartset = require('./lib/wss');
 
+// ipify.org REST API: get your public IP
+const axios = require('axios').default;
+const _GET_MY_PUBLIC_IP_URL = 'https://api.ipify.org?format=json';
+
 const timeoutHandler = [];
-let device = {};
-const ValList = [];
 let ParamObjList = [];
 //const objects = {};
 
-class WolfSmartset extends utils.Adapter {
+class WolfSmartsetAdapter extends utils.Adapter {
+    wss;
+    wss_user;
+    wss_password;
+    myPublicIp;
+    device;
+    onlinePoll;
+    emptyCount;
+    BundleIdShortCycle;
+    ValueIdListShortCycle;
+    BundleIdLongCycle;
+    ValueIdListLongCycle;
     /**
-     * @param [options]
+     * @param [options] - adapter options
      */
     constructor(options) {
         super({
@@ -26,283 +39,184 @@ class WolfSmartset extends utils.Adapter {
     }
 
     /**
-     * Is called when databases are connected and adapter received configuration.
+     * Get our public IP from ipify.org
+     *
      */
-    async onReady() {
-        this.onlinePoll = 4;
-        this.emptyCount = 0;
+    async _getMyPublicIp() {
+        if (this.config.doPubIpCheck) {
+            try {
+                const myIpDataResponse = await axios.get(_GET_MY_PUBLIC_IP_URL);
 
-        try {
-            device = JSON.parse(this.config.devices);
-
-            //parseWebFormat
-            if (typeof device.Id !== 'undefined') {
-                device.SystemId = device.Id;
+                if (myIpDataResponse.status == 200 && myIpDataResponse.data && myIpDataResponse.data.ip) {
+                    return myIpDataResponse.data.ip;
+                }
+            } catch (error) {
+                this.log.warn(`_getMyPublicIp() failed: ${error.message}`);
             }
-
-            if (
-                this.config.user &&
-                this.config.password &&
-                this.config.user !== '' &&
-                this.config.password !== '' &&
-                typeof device.GatewayId !== 'undefined' &&
-                typeof device.SystemId !== 'undefined'
-            ) {
-                this.wss = new wolfsmartset(this.config.user, this.config.password, this);
-                await this.wss.openIdInit();
-
-                await this.main();
-            } else {
-                this.wss = new wolfsmartset('', '', this);
-                this.log.warn('Please configure user, password and device in config');
-            }
-        } catch (error) {
-            this.wss = new wolfsmartset('', '', this);
-            this.log.error('Please configure user, password and device in config');
-            this.log.error(error.stack);
         }
+        return null;
     }
-    async main() {
-        this.config.pingInterval = parseInt(this.config.pingInterval, 10) || 15;
 
-        // Abfrageintervall mindestens 15 sec.
-        if (this.config.pingInterval < 15) {
-            this.config.pingInterval = 15;
+    async _getParamsWebGui(guiData) {
+        if (guiData == null) {
+            return;
         }
+        const param = [];
 
-        await this.wss.init();
+        guiData.MenuItems.forEach(MenuItem => {
+            const tabName = MenuItem.Name;
 
-        try {
-            const GUIdesk = await this.wss.getGUIDescription(device.GatewayId, device.SystemId);
-            if (GUIdesk) {
-                ParamObjList = (await getParamsWebGui(GUIdesk)) || [];
-            }
-            if (ParamObjList) {
-                await this.CreateParams(ParamObjList);
-            }
+            // Benutzerebene: iterate over MenuItems
+            MenuItem.TabViews.forEach(TabView => {
+                const tabName2 = `${tabName}.${TabView.TabName}`;
+                // BundleId and GuiId of TabView are required in each param below thie TabView
+                const TabViewBundleId = TabView.BundleId;
+                const TabViewGuiId = TabView.GuiId;
 
-            this.objects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
-            this.log.debug(JSON.stringify(this.objects));
+                TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
+                    var tabName3;
+                    if (typeof ParameterDescriptor.Group !== 'undefined') {
+                        tabName3 = `${tabName2}.${ParameterDescriptor.Group.replace(' ', '_')}`;
+                    } else {
+                        tabName3 = tabName2;
+                    }
 
-            await this.PollValueList();
-        } catch (error) {
-            this.log.warn(error);
-            this.log.warn('Try again in 60 sek.');
-            if (timeoutHandler['restartTimeout']) {
-                clearTimeout(timeoutHandler['restartTimeout']);
-            }
-            timeoutHandler['restartTimeout'] = setTimeout(async () => {
-                this.main();
-            }, 60000);
-        }
+                    // ignore pseudo or intermediate/complex parameters (e.g list of time programs)
+                    if (ParameterDescriptor.ParameterId > 0) {
+                        const paramInfo = ParameterDescriptor;
+                        paramInfo.BundleId = TabViewBundleId;
+                        paramInfo.GuiId = TabViewGuiId;
 
-        // //find Parameter for App Objects
-        // async function getParams(guiData) {
-        //     if (guiData == null) {
-        //         return;
-        //     }
-        //     const param = [];
-
-        //     guiData.UserSystemOverviewData.forEach(UserSystemOverviewData => {
-        //         const tabName = UserSystemOverviewData.TabName;
-
-        //         UserSystemOverviewData.ParameterDescriptors.forEach(ParameterDescriptors => {
-        //             const paramInfo = ParameterDescriptors;
-
-        //             //search duplicate
-        //             const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
-
-        //             if (find) {
-        //                 //this.log.debug('find double: ' + paramInfo.Name)
-        //             } else {
-        //                 paramInfo.TabName = tabName;
-        //                 param.push(paramInfo);
-        //             }
-        //         });
-        //     });
-        //     return param;
-        // }
-
-        async function getParamsWebGui(guiData) {
-            if (guiData == null) {
-                return;
-            }
-            const param = [];
-
-            guiData.MenuItems.forEach(MenuItems => {
-                const tabName = MenuItems.Name;
-
-                MenuItems.TabViews.forEach(TabViews => {
-                    const tabName2 = `${tabName}.${TabViews.TabName}`;
-
-                    TabViews.ParameterDescriptors.forEach(ParameterDescriptors => {
-                        const paramInfo = ParameterDescriptors;
                         //search duplicate
                         const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
                         if (!find) {
-                            paramInfo.TabName = tabName2.replace(' ', '_');
+                            paramInfo.TabName = tabName3;
+                            // remove subtree if exists
+                            // delete paramInfo.ChildParameterDescriptors;
                             param.push(paramInfo);
                         }
-                    });
-                });
-                //Fachmannebene
-                MenuItems.SubMenuEntries.forEach(SubMenuEntry => {
-                    const tab = SubMenuEntry.Name;
-                    SubMenuEntry.TabViews.forEach(TabViews => {
-                        const tabName2 = `${tabName}.${tab}.${TabViews.TabName}`;
+                    }
 
-                        TabViews.ParameterDescriptors.forEach(ParameterDescriptors => {
-                            const paramInfo = ParameterDescriptors;
+                    // Check for ChildParameterDescriptors (e.g. time program)
+                    if (typeof ParameterDescriptor.ChildParameterDescriptors !== 'undefined') {
+                        ParameterDescriptor.ChildParameterDescriptors.forEach(ChildParameterDescriptor => {
+                            var tabName4 = `${tabName3}.${ParameterDescriptor.Name}`;
+
+                            // ignore pseudo or intermediate/complex parameters (e.g time program)
+                            if (
+                                ChildParameterDescriptor.NoDataPoint == false &&
+                                ChildParameterDescriptor.ParameterId > 0
+                            ) {
+                                const paramInfo = ChildParameterDescriptor;
+                                paramInfo.BundleId = TabViewBundleId;
+                                paramInfo.GuiId = TabViewGuiId;
+
+                                //search duplicate
+                                const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
+
+                                if (!find) {
+                                    paramInfo.TabName = tabName4.replace(' ', '_');
+                                    param.push(paramInfo);
+                                }
+                            }
+
+                            if (typeof ChildParameterDescriptor.ChildParameterDescriptors !== 'undefined') {
+                                ChildParameterDescriptor.ChildParameterDescriptors.forEach(
+                                    ChildChildParameterDescriptor => {
+                                        const tabName5 = `${tabName4}.${ChildParameterDescriptor.Name}`;
+
+                                        if (ChildChildParameterDescriptor.ParameterId > 0) {
+                                            const paramInfo = ChildChildParameterDescriptor;
+                                            paramInfo.BundleId = TabViewBundleId;
+                                            paramInfo.GuiId = TabViewGuiId;
+
+                                            //search duplicate
+                                            const find = param.find(
+                                                element => element.ParameterId === paramInfo.ParameterId,
+                                            );
+
+                                            if (!find) {
+                                                paramInfo.TabName = tabName5.replace(' ', '_');
+                                                param.push(paramInfo);
+                                            }
+                                        }
+                                    },
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Fachmannebene: interate over SubMenuEntries
+            MenuItem.SubMenuEntries.forEach(SubMenuEntry => {
+                const tabName2 = `${tabName}.${SubMenuEntry.Name}`;
+                SubMenuEntry.TabViews.forEach(TabView => {
+                    const tabName3 = `${tabName2}.${TabView.TabName}`.replace(' ', '_');
+                    // BundleId and GuiId of TabView are required in each param below thie TabView
+                    const TabViewBundleId = TabView.BundleId;
+                    const TabViewGuiId = TabView.GuiId;
+
+                    TabView.ParameterDescriptors.forEach(ParameterDescriptor => {
+                        var tabName4;
+                        if (typeof ParameterDescriptor.Group !== 'undefined') {
+                            tabName4 = `${tabName3}.${ParameterDescriptor.Group.replace(' ', '_')}`;
+                        } else {
+                            tabName4 = tabName3;
+                        }
+
+                        // ignore pseudo or intermediate/complex parameters (e.g list of time programs)
+                        if (ParameterDescriptor.ParameterId > 0) {
+                            const paramInfo = ParameterDescriptor;
+                            paramInfo.BundleId = TabViewBundleId;
+                            paramInfo.GuiId = TabViewGuiId;
+
                             //search duplicate
                             const find = param.find(element => element.ParameterId === paramInfo.ParameterId);
 
                             if (!find) {
-                                paramInfo.TabName = tabName2.replace(' ', '_');
+                                paramInfo.TabName = tabName4;
                                 param.push(paramInfo);
                             }
-                        });
+                        }
                     });
                 });
             });
-            return param;
-        }
-        this.subscribeStates('*');
-    }
-
-    async PollValueList() {
-        this.onlinePoll++;
-
-        if (timeoutHandler['pollTimeout']) {
-            clearTimeout(timeoutHandler['pollTimeout']);
-        }
-
-        try {
-            const recValList = await this.wss.getValList(device.GatewayId, device.SystemId, ValList);
-            if (recValList) {
-                await this.SetStatesArray(recValList);
-            }
-
-            if (this.onlinePoll > 4) {
-                this.onlinePoll = 0;
-
-                const systemStatus = await this.wss.getSystemState(parseInt(device.SystemId));
-                if (systemStatus && typeof systemStatus.IsOnline !== 'undefined') {
-                    await this.setStateAsync('info.connection', {
-                        val: systemStatus.IsOnline,
-                        ack: true,
-                    });
-                } else {
-                    await this.setStateAsync('info.connection', {
-                        val: false,
-                        ack: true,
-                    });
-                }
-            }
-        } catch (error) {
-            this.log.warn(error);
-        }
-        timeoutHandler['pollTimeout'] = setTimeout(() => {
-            this.PollValueList();
-        }, this.config.pingInterval * 1000);
-    }
-
-    async SetStatesArray(array) {
-        if (array.Values.length === 0) {
-            this.emptyCount++;
-        } else {
-            this.emptyCount = 0;
-        }
-
-        if (this.emptyCount >= 10) {
-            // no data for long time try a restart
-            this.emptyCount = 0;
-            this.main();
-            return;
-        }
-
-        array.Values.forEach(recVal => {
-            //this.log.debug("search:" + JSON.stringify(recVal));
-
-            //find ParamId for ValueId
-            const findParamObj = ParamObjList.find(element => element.ValueId === recVal.ValueId);
-
-            if (findParamObj) {
-                for (const key in this.objects) {
-                    if (this.objects[key].native && this.objects[key].native.ParameterId === findParamObj.ParameterId) {
-                        this.setStatesWithDiffTypes(this.objects[key].native.ControlType, key, recVal.Value);
-                    }
-                }
-            }
         });
+
+        return param;
     }
 
-    async setStatesWithDiffTypes(type, id, value) {
-        if (type == null || id == null || value == null) {
-            return;
-        }
-
-        // Wolf ControlTypes:
-        // 0: Unknown
-        // 1: Enum w/ ListItems (simple)
-        // 5: Bool
-        // 6: Number; 'Decimals' = decimal places (accuracy)
-        // 9: Date
-        // 10: Time
-        // 13: list of time programs (1, 2 or 3)
-        // 14: list of time ranges
-        // 19: time program (Mon - Sun)
-        // 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
-        // 21: IPv4 addr or netmask
-        // 31: Number range
-        // 35: Enum w/ ListItems (w/ Image, Decription, ...)
-        switch (type) {
-            case 5:
-                this.setStateAsync(id, {
-                    val: value === 'True' ? true : false,
-                    ack: true,
-                });
-                break;
-            case 20:
-            case 21:
-            case 10:
-            case 9:
-                this.setStateAsync(id, {
-                    val: value.toString(),
-                    ack: true,
-                });
-                break;
-
-            default:
-                this.setStateAsync(id, {
-                    val: parseFloat(value),
-                    ack: true,
-                });
-                break;
-        }
-    }
-
-    async CreateParams(paramArry) {
+    /**
+     * Generates folders, channels and adapter object states for each param in WolfParamDescriptions.
+     *
+     * @param WolfParamDescriptions - flat list of ParamDescriptions for each state returned by getParamsWebGui()
+     */
+    async _CreateObjects(WolfParamDescriptions) {
+        // get list of instance objects before fetching new list of params from Wolf server
+        const oldInstanceObjects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
         const collectedChannels = {};
 
-        for (const WolfObj of paramArry) {
-            let group = '';
-            let id = '';
-
-            if (WolfObj.Group) {
-                group = `${WolfObj.Group.replace(' ', '_')}.`;
-            }
-            collectedChannels[`${WolfObj.TabName}.${group}`] = true;
-            id = `${WolfObj.TabName}.${group}${WolfObj.ParameterId}`;
+        // 1.: Create states
+        for (const WolfParamDescription of WolfParamDescriptions) {
+            // export BundleId of object to associated channel
+            collectedChannels[`${WolfParamDescription.TabName}`] = WolfParamDescription.BundleId;
+            const id = `${WolfParamDescription.TabName}.${WolfParamDescription.ParameterId.toString()}`;
 
             const common = {
                 name:
-                    typeof WolfObj.NamePrefix !== 'undefined' ? `${WolfObj.NamePrefix}: ${WolfObj.Name}` : WolfObj.Name,
-                type: 'number',
-                role: 'value',
+                    typeof WolfParamDescription.NamePrefix !== 'undefined'
+                        ? `${WolfParamDescription.NamePrefix}: ${WolfParamDescription.Name}`
+                        : WolfParamDescription.Name,
+                // do not declare type and role here to avoid typecheck errors in setObjectNotExists()
+                // type: 'number',
+                // role: 'value',
                 read: true,
-                write: !WolfObj.IsReadOnly,
+                write: !WolfParamDescription.IsReadOnly,
             };
+            common.type = 'number';
+            common.role = 'value';
 
             // Wolf ControlTypes:
             // 0: Unknown
@@ -311,83 +225,118 @@ class WolfSmartset extends utils.Adapter {
             // 6: Number; 'Decimals' = decimal places (accuracy)
             // 9: Date
             // 10: Time
-            // 13: list of time programs (1, 2 or 3)
+            // 13: list of time programs (1, 2 or 3) (not a Value)
             // 14: list of time ranges
-            // 19: time program (Mon - Sun)
+            // 19: time program (Mon - Sun) (not a value)
             // 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
             // 21: IPv4 addr or netmask
-            // 31: Number range
+            // 31: Number of any kind
             // 35: Enum w/ ListItems (w/ Image, Decription, ...)
 
-            if (WolfObj.ControlType === 5) {
+            if (WolfParamDescription.ControlType === 5) {
                 //Boolean text
                 common.type = 'boolean';
-                common.role = WolfObj.IsReadOnly ? 'indicator' : 'switch';
+                common.role = WolfParamDescription.IsReadOnly ? 'indicator' : 'switch';
             } else if (
-                WolfObj.ControlType === 20 ||
-                WolfObj.ControlType === 9 ||
-                WolfObj.ControlType === 10 ||
-                WolfObj.ControlType === 21
+                WolfParamDescription.ControlType === 9 ||
+                WolfParamDescription.ControlType === 10 ||
+                WolfParamDescription.ControlType === 14 ||
+                WolfParamDescription.ControlType === 20 ||
+                WolfParamDescription.ControlType === 21
             ) {
                 common.type = 'string';
                 common.role = 'text';
             } else {
-                if (typeof WolfObj.Unit !== 'undefined') {
-                    common.unit = WolfObj.Unit;
+                if (typeof WolfParamDescription.Unit !== 'undefined') {
+                    common.unit = WolfParamDescription.Unit;
                 }
 
                 // thresholds min/max : use Min/MaxValueCondition if available, otherwise use MinValue/MaxValue
                 // Min/MaxValue might be wrong in case of floats, whereas Min/MaxValueCondition seem to be always correct
-                if (typeof WolfObj.MinValue !== 'undefined') {
-                    common.min = WolfObj.MinValue;
+                if (typeof WolfParamDescription.MinValue !== 'undefined') {
+                    common.min = WolfParamDescription.MinValue;
                 }
-                if (typeof WolfObj.MinValueCondition !== 'undefined') {
-                    common.min = parseFloat(WolfObj.MinValueCondition);
+                if (typeof WolfParamDescription.MinValueCondition !== 'undefined') {
+                    common.min = parseFloat(WolfParamDescription.MinValueCondition);
                 }
-                if (typeof WolfObj.MaxValue !== 'undefined') {
-                    common.max = WolfObj.MaxValue;
+                if (typeof WolfParamDescription.MaxValue !== 'undefined') {
+                    common.max = WolfParamDescription.MaxValue;
                 }
-                if (typeof WolfObj.MaxValueCondition !== 'undefined') {
-                    common.max = parseFloat(WolfObj.MaxValueCondition);
+                if (typeof WolfParamDescription.MaxValueCondition !== 'undefined') {
+                    common.max = parseFloat(WolfParamDescription.MaxValueCondition);
                 }
 
-                if (typeof WolfObj.StepWidth !== 'undefined') {
-                    common.step = WolfObj.StepWidth;
+                if (typeof WolfParamDescription.StepWidth !== 'undefined') {
+                    common.step = WolfParamDescription.StepWidth;
                 }
-                if (typeof WolfObj.ListItems !== 'undefined') {
+                if (typeof WolfParamDescription.ListItems !== 'undefined') {
                     const states = {};
-                    WolfObj.ListItems.forEach(ListItems => {
+                    WolfParamDescription.ListItems.forEach(ListItems => {
                         states[ListItems.Value] = ListItems.DisplayText;
                     });
                     common.states = states;
                 }
             }
 
-            // gereate ValueList for Polling
-            ValList.push(WolfObj.ValueId);
+            this.log.debug(
+                `WolfParamDescription ${JSON.stringify(WolfParamDescription)} --> ioBrokerObj.common ${JSON.stringify(common)}`,
+            );
 
-            this.log.debug(`WolfObj ${JSON.stringify(WolfObj)} --> ioBrokerObj.common ${JSON.stringify(common)}`);
+            //  if this is a new object, create it first
+            const fullId = `${this.namespace}.${id}`;
+            if (typeof oldInstanceObjects[`${fullId}`] == 'undefined') {
+                // create object w/ minimum set of attributes
+                this.setObjectNotExists(id, {
+                    type: 'state',
+                    common: {
+                        name: common.name,
+                        type: common.type,
+                        role: common.role,
+                        read: common.read,
+                        write: common.write,
+                    },
+                    native: {},
+                });
+            } else {
+                oldInstanceObjects[fullId].common.desc = 'active';
+            }
 
-            await this.extendObjectAsync(id, {
+            // set all attributes for object
+            this.extendObject(id, {
                 type: 'state',
-                common,
+                common: common,
                 native: {
-                    ValueId: WolfObj.ValueId,
-                    ParameterId: WolfObj.ParameterId,
-                    ControlType: WolfObj.ControlType,
+                    ValueId: WolfParamDescription.ValueId,
+                    ParameterId: WolfParamDescription.ParameterId,
+                    ControlType: WolfParamDescription.ControlType,
                 },
             });
-            await this.setStatesWithDiffTypes(WolfObj.ControlType, id, WolfObj.Value);
+
+            // 2.: Update object states
+            await this._setStatesWithDiffTypes(WolfParamDescription.ControlType, id, WolfParamDescription.Value);
         }
 
+        // 3.: mark obsoleted objects
+        for (const fullId in oldInstanceObjects) {
+            let re = new RegExp(String.raw`^${this.namespace}.info`, 'g');
+            if (
+                !fullId.match(re) &&
+                typeof oldInstanceObjects[fullId].common != 'undefined' &&
+                typeof oldInstanceObjects[fullId].common.desc == 'undefined'
+            ) {
+                oldInstanceObjects[fullId].common.desc = 'obsoleted';
+                this.extendObject(fullId, oldInstanceObjects[fullId]);
+            }
+        }
+
+        // 4.: Create folders and channels
         const createdObjects = {};
-        for (let channel of Object.keys(collectedChannels)) {
-            channel = channel.substring(0, channel.length - 1);
-            const name = channel.split('.').pop();
-            await this.extendObjectAsync(channel, {
+        for (const [channel, bundleId] of Object.entries(collectedChannels)) {
+            const name = `${channel.split('.').pop()} (Bundle: ${bundleId})`;
+            this.extendObject(channel, {
                 type: 'channel',
                 common: {
-                    name,
+                    name: name,
                 },
                 native: {},
             });
@@ -398,7 +347,7 @@ class WolfSmartset extends utils.Adapter {
             let folderName = id;
             while (id && channelParts.length > 0) {
                 if (!createdObjects[id]) {
-                    await this.extendObjectAsync(id, {
+                    await this.extendObject(id, {
                         type: 'folder',
                         common: {
                             name: folderName,
@@ -416,75 +365,295 @@ class WolfSmartset extends utils.Adapter {
             }
         }
 
-        this.log.debug('create states DONE');
+        this.log.debug('createParams DONE');
     }
 
     /**
-     * Is called when adapter shuts down - callback has to be called under any circumstances!
+     * Creates a list of ParameterId for each BundleId defined in WolfParamDescriptions and
+     * From that create ValueIdListShortCycle and ValueIdListLongCycle
      *
-     * @param callback
+     * @param WolfParamDescriptions - list of extended WolfParamDescriptions returned by getParamsWebGui()
      */
-    onUnload(callback) {
-        try {
-            if (timeoutHandler['pollTimeout']) {
-                clearTimeout(timeoutHandler['pollTimeout']);
-            }
-            if (timeoutHandler['startTimeout']) {
-                clearTimeout(timeoutHandler['startTimeout']);
-            }
-            if (timeoutHandler['restartTimeout']) {
-                clearTimeout(timeoutHandler['restartTimeout']);
-            }
-            this.wss.stop();
+    async _CreateBundleValuesLists(WolfParamDescriptions) {
+        let BundleValuesList = {};
+        let DefaultBundleIdShortCycle = 0;
+        let ValueIdListShortCycle = [];
+        let DefaultBundleIdLongCycle = 0;
+        let ValueIdListLongCycle = [];
 
-            callback();
-        } catch {
-            callback();
+        for (const WolfParamDescription of WolfParamDescriptions) {
+            const bundleId = WolfParamDescription.BundleId;
+            if (typeof BundleValuesList[bundleId] == 'undefined') {
+                BundleValuesList[bundleId] = [];
+            }
+
+            // De-duplicate ParamterIds for bundleId: they might be at multiple locations in the tree
+            if (typeof BundleValuesList[bundleId][WolfParamDescription.ParameterId] == 'undefined') {
+                BundleValuesList[bundleId].push(WolfParamDescription.ParameterId);
+            }
+        }
+
+        for (const bundleId of this.config.bundleIdTable) {
+            if (bundleId.bundleIdUseShort && typeof BundleValuesList[bundleId.bundleIdName] != 'undefined') {
+                ValueIdListShortCycle = ValueIdListShortCycle.concat(BundleValuesList[bundleId.bundleIdName]);
+                DefaultBundleIdShortCycle =
+                    Number(bundleId.bundleIdName) > DefaultBundleIdShortCycle
+                        ? Number(bundleId.bundleIdName)
+                        : DefaultBundleIdShortCycle;
+            }
+            if (bundleId.bundleIdUseLong && typeof BundleValuesList[bundleId.bundleIdName] != 'undefined') {
+                ValueIdListLongCycle = ValueIdListLongCycle.concat(BundleValuesList[bundleId.bundleIdName]);
+                DefaultBundleIdLongCycle =
+                    Number(bundleId.bundleIdName) > DefaultBundleIdLongCycle
+                        ? Number(bundleId.bundleIdName)
+                        : DefaultBundleIdLongCycle;
+            }
+        }
+
+        this.BundleIdShortCycle =
+            this.config.bundleIdRequestedShort == 'Default'
+                ? DefaultBundleIdShortCycle
+                : this.config.bundleIdRequestedShort;
+        this.ValueIdListShortCycle = ValueIdListShortCycle;
+
+        this.BundleIdLongCycle =
+            this.config.bundleIdRequestedLong == 'Default'
+                ? DefaultBundleIdLongCycle
+                : this.config.bundleIdRequestedLong;
+        this.ValueIdListLongCycle = ValueIdListLongCycle;
+    }
+
+    async _setStatesWithDiffTypes(type, id, value) {
+        if (type == null || id == null || value == null) {
+            return;
+        }
+
+        // Wolf ControlTypes:
+        // 0: Unknown
+        // 1: Enum w/ ListItems (simple)
+        // 5: Bool
+        // 6: Number; 'Decimals' = decimal places (accuracy)
+        // 9: Date
+        // 10: Time
+        // 13: list of time programs (1, 2 or 3) (not a Value)
+        // 14: list of time ranges
+        // 19: time program (Mon - Sun) (not a value)
+        // 20: Name, SerialNo, MacAddr, SW-Version, HW-Version
+        // 21: IPv4 addr or netmask
+        // 31: Number of any kind
+        // 35: Enum w/ ListItems (w/ Image, Decription, ...)
+        switch (type) {
+            case 5:
+                this.setState(id, {
+                    val: value === 'True' ? true : false,
+                    ack: true,
+                });
+                break;
+            case 9:
+            case 10:
+            case 14:
+            case 20:
+            case 21:
+                this.setState(id, {
+                    val: value.toString(),
+                    ack: true,
+                });
+                break;
+
+            default:
+                this.setState(id, {
+                    val: parseFloat(value),
+                    ack: true,
+                });
+                break;
         }
     }
 
     /**
-     * Is called if a subscribed state changes
+     * Poll parameter values from Wolf server as configured for the given poll cycle
      *
-     * @param id
-     * @param state
+     * @param pollCycle - 'short or 'long'
      */
-    async onStateChange(id, state) {
-        if (state && !state.ack) {
-            //const ParamId = id.split('.').pop();
-            const obj = await this.getObjectAsync(id);
-            if (obj) {
-                const findParamObj = ParamObjList.find(element => element.ParameterId === obj.native.ParameterId);
+    async _PollValueList(pollCycle) {
+        try {
+            const recValList = await this.wss.getValList(
+                this.device.GatewayId,
+                this.device.SystemId,
+                pollCycle == 'short' ? this.BundleIdShortCycle : this.BundleIdLongCycle,
+                pollCycle == 'short' ? this.ValueIdListShortCycle : this.ValueIdListLongCycle,
+                pollCycle,
+            );
+            if (recValList) {
+                await this._SetStatesArray(recValList);
+            }
+        } catch (error) {
+            this.log.warn(error);
+        }
+    }
 
-                this.log.info(`Change value for: ${obj.common.name}: ${JSON.stringify(state)}`);
+    /**
+     * Handler for Short Poll Cycle: poll parameter values from Wolf server and
+     * additionally, every 4th poll cycle: getSystemState and check for PublicIP changes
+     *
+     */
+    async _ShortPollValueList() {
+        timeoutHandler['shortPollTimeout'] && clearTimeout(timeoutHandler['shortPollTimeout']);
 
-                try {
-                    const answer = await this.wss.setParameter(device.GatewayId, device.SystemId, [
-                        {
-                            ValueId: findParamObj.ValueId,
-                            ParameterId: obj.native.ParameterId,
-                            Value: String(state.val),
-                            ParameterName: obj.common.name,
-                        },
-                    ]);
-                    if (typeof answer.Values !== 'undefined') {
-                        await this.setStateAsync(id, {
-                            val: state.val,
-                            ack: true,
-                        });
-                        await this.SetStatesArray(answer);
+        await this._PollValueList('short');
+
+        this.onlinePoll++;
+        if (this.onlinePoll > 4) {
+            this.onlinePoll = 0;
+            try {
+                const myPublicIp = await this._getMyPublicIp();
+                if (myPublicIp && this.myPublicIp && myPublicIp != this.myPublicIp) {
+                    this.log.warn(
+                        `_ShortPollValueList(); PubIP changed from ${this.myPublicIp} to ${myPublicIp}: triggering reload...`,
+                    );
+                    await this._mainloop(myPublicIp);
+                    return;
+                }
+
+                const systemStatus = await this.wss.getSystemState(parseInt(this.device.SystemId));
+                if (systemStatus && typeof systemStatus.IsOnline !== 'undefined') {
+                    this.setState('info.connection', {
+                        val: systemStatus.IsOnline,
+                        ack: true,
+                    });
+                } else {
+                    this.setState('info.connection', {
+                        val: false,
+                        ack: true,
+                    });
+                }
+            } catch (error) {
+                this.log.warn(error);
+            }
+        }
+
+        timeoutHandler['shortPollTimeout'] = setTimeout(() => {
+            this._ShortPollValueList();
+        }, this.config.pollIntervalShort * 1000);
+    }
+
+    /**
+     * Handler for Lhort Poll Cycle: poll parameter values from Wolf server
+     *
+     */
+    async _LongPollValueList() {
+        timeoutHandler['longPollTimeout'] && clearTimeout(timeoutHandler['longPollTimeout']);
+
+        await this._PollValueList('long');
+
+        timeoutHandler['longPollTimeout'] = setTimeout(
+            () => {
+                this._LongPollValueList();
+            },
+            // pollIntervalLong is given in minutes; add 5 seconds to avoid parallel execution w/ _ShortPollValueList()
+            this.config.pollIntervalLong * 60 * 1000 + 5000,
+        );
+    }
+
+    async _SetStatesArray(array) {
+        if (array.Values.length === 0) {
+            this.emptyCount++;
+        } else {
+            this.emptyCount = 0;
+        }
+
+        if (this.emptyCount >= 10) {
+            // no data for long time try a restart
+            this.emptyCount = 0;
+            await this._mainloop(null);
+            return;
+        }
+
+        array.Values.forEach(recVal => {
+            //this.log.debug("search:" + JSON.stringify(recVal));
+
+            //find ParamId for ValueId
+            const findParamObj = ParamObjList.find(element => element.ValueId === recVal.ValueId);
+
+            if (findParamObj) {
+                for (const key in this.objects) {
+                    if (this.objects[key].native && this.objects[key].native.ParameterId === findParamObj.ParameterId) {
+                        this._setStatesWithDiffTypes(this.objects[key].native.ControlType, key, recVal.Value);
                     }
-                } catch (err) {
-                    this.log.error(err);
                 }
             }
-        }
+        });
     }
 
-    // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
+    /**
+     * main loop is called from onReady(), and in case of an error by _ShortPollValueList(), _SetStatesArray() and itself
+     *
+     * @param myPublicIp - my current public IP or null if unknown
+     */
+    async _mainloop(myPublicIp) {
+        timeoutHandler['restartTimeout'] && clearTimeout(timeoutHandler['restartTimeout']);
+        timeoutHandler['shortPollTimeout'] && clearTimeout(timeoutHandler['shortPollTimeout']);
+        timeoutHandler['longPollTimeout'] && clearTimeout(timeoutHandler['longPollTimeout']);
+
+        try {
+            // Note: Wolf Smartset is IP address aware: if we changed or IP, we have to re-init
+            // if we have a wss matching our configured u/p and our current public IP then use it ...
+            if (!myPublicIp) {
+                myPublicIp = await this._getMyPublicIp();
+            }
+            if (
+                !this.wss ||
+                this.wss_user != this.config.username ||
+                this.wss_password != this.config.password ||
+                (myPublicIp && this.myPublicIp && this.myPublicIp != myPublicIp)
+            ) {
+                // ... otherwise kill old wss object and create a new one
+                this.wss && (await this.wss.stop());
+                this.wss = new wolfsmartset(this.config.username, this.config.password, this);
+                this.wss_user = this.config.username;
+                this.wss_password = this.config.password;
+                if (myPublicIp) {
+                    this.myPublicIp = myPublicIp;
+                }
+            }
+
+            const wssInitialized = await this.wss.init();
+            if (!wssInitialized) {
+                throw new Error('Could not initialized WSS session');
+            }
+
+            const GUIDesc = await this.wss.getGUIDescription(this.device.GatewayId, this.device.SystemId);
+            if (GUIDesc) {
+                ParamObjList = (await this._getParamsWebGui(GUIDesc)) || [];
+            } else {
+                throw new Error('Could not get GUIDescription (device might be down)');
+            }
+            if (ParamObjList) {
+                await this._CreateObjects(ParamObjList);
+                // create a list of params for each BundleId as defined in the GUI Desc
+                await this._CreateBundleValuesLists(ParamObjList);
+            }
+
+            this.objects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
+            this.log.debug(JSON.stringify(this.objects));
+
+            await this._LongPollValueList();
+            await this._ShortPollValueList();
+        } catch (error) {
+            this.log.warn(error);
+            this.log.warn('Trying again in 60 sec...');
+            timeoutHandler['restartTimeout'] = setTimeout(async () => {
+                this._mainloop(null);
+            }, 60000);
+        }
+
+        this.subscribeStates('*');
+    }
+
     // /**
-    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
+    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, adminUI...
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
+    //  * The main purpose for this handler is to handle Device Listing and Device Conform from the adapter instance settings UI.
+    //
     //  * @param {ioBroker.Message} obj
     //  */
     async onMessage(obj) {
@@ -498,26 +667,175 @@ class WolfSmartset extends utils.Adapter {
                     this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
                 }
             }
-            if (obj.command === 'getDeviceList') {
-                this.log.info('getDeviceList');
-                let devicelist;
-                try {
-                    devicelist = await this.wss.adminGetDevicelist(obj.message.username, obj.message.password);
 
-                    if (obj.callback) {
-                        this.sendTo(obj.from, obj.command, devicelist, obj.callback);
+            // getDeviceList: triggered by adapter instance settings UI object 'deviceSelect'
+            if (obj.command === 'getDeviceList') {
+                this.log.debug('getDeviceList ...');
+                let myPublicIp;
+                let devicelist;
+                let getDeviceListResponse;
+                let adminWss;
+
+                try {
+                    if (obj.message.username == '' || obj.message.password == '') {
+                        throw new Error('Please set username and password');
+                    }
+
+                    // check if we can use an already existing wss object from running adapter instance, otherwise create one
+                    // Note: Wolf Smartset is IP address aware: if we changed or IP, we have to re-init
+                    myPublicIp = await this._getMyPublicIp();
+                    if (
+                        !this.wss ||
+                        this.wss_user != obj.message.username ||
+                        this.wss_password != obj.message.password ||
+                        (myPublicIp && this.myPublicIp && this.myPublicIp != myPublicIp)
+                    ) {
+                        adminWss = new wolfsmartset(obj.message.username, obj.message.password, this);
+                    } else {
+                        adminWss = this.wss;
+                    }
+
+                    devicelist = await adminWss.adminGetDevicelist();
+                    if (typeof devicelist !== 'undefined') {
+                        getDeviceListResponse = [{ label: devicelist[0].Name, value: JSON.stringify(devicelist[0]) }];
+                    } else {
+                        getDeviceListResponse = [{ label: 'No devices found', value: '' }];
                     }
                 } catch (error) {
-                    if (obj.callback) {
-                        this.sendTo(
-                            obj.from,
-                            obj.command,
-                            {
-                                error: error,
-                            },
-                            obj.callback,
-                        );
+                    getDeviceListResponse = [{ label: error.message, value: '' }];
+                    this.wss = null;
+                }
+                this.sendTo(obj.from, obj.command, getDeviceListResponse, obj.callback);
+                // if getDeviceList was successful and this adapter instance has currently no wss object
+                // then store our wss instance for use by adapter instance
+                if (typeof devicelist !== 'undefined' && devicelist.length > 0 && !this.wss) {
+                    this.wss = adminWss;
+                    this.wss_user = obj.message.username;
+                    this.wss_password = obj.message.password;
+                    if (myPublicIp) {
+                        this.myPublicIp = myPublicIp;
                     }
+                }
+            }
+
+            // confirmDevice: triggered by adapter instance settings UI object 'deviceConfirm'
+            if (obj.command === 'confirmDevice') {
+                this.log.info('confirmDevice');
+                let myDevice;
+                let confirmDeviceResponse;
+
+                try {
+                    myDevice = JSON.parse(obj.message.deviceObject);
+
+                    if (
+                        typeof myDevice.Name !== 'undefined' &&
+                        typeof myDevice.Id !== 'undefined' &&
+                        typeof myDevice.GatewayId !== 'undefined'
+                    ) {
+                        confirmDeviceResponse = {
+                            native: {
+                                deviceName: `${myDevice.Name}`,
+                                device: obj.message.deviceObject,
+                            },
+                        };
+                    } else {
+                        confirmDeviceResponse = { error: 'No device selected' };
+                    }
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                } catch (error) {
+                    confirmDeviceResponse = { error: 'No device selected' };
+                }
+                this.sendTo(obj.from, obj.command, confirmDeviceResponse, obj.callback);
+            }
+        }
+    }
+
+    /**
+     * Is called when databases are connected and adapter received configuration.
+     */
+    async onReady() {
+        this.onlinePoll = 4;
+        this.emptyCount = 0;
+
+        try {
+            this.device = JSON.parse(this.config.device);
+
+            if (typeof this.device.Id !== 'undefined') {
+                this.device.SystemId = this.device.Id;
+            }
+
+            if (
+                this.config.username !== '' &&
+                this.config.password !== '' &&
+                this.config.deviceName !== '' &&
+                typeof this.device.GatewayId !== 'undefined' &&
+                typeof this.device.SystemId !== 'undefined'
+            ) {
+                const myPublicIp = await this._getMyPublicIp();
+                await this._mainloop(myPublicIp);
+            } else {
+                this.log.warn('Please configure username, password and device in adapter instance settings');
+            }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            this.log.warn('Please configure username, password and device in adapter instance settings');
+        }
+    }
+
+    /**
+     * Is called when adapter shuts down - callback has to be called under any circumstances!
+     *
+     * @param callback - callback function
+     */
+    onUnload(callback) {
+        try {
+            timeoutHandler['shortPollTimeout'] && clearTimeout(timeoutHandler['shortPollTimeout']);
+            timeoutHandler['longPollTimeout'] && clearTimeout(timeoutHandler['longPollTimeout']);
+
+            timeoutHandler['restartTimeout'] && clearTimeout(timeoutHandler['restartTimeout']);
+
+            this.wss.stop();
+            this.wss = null;
+
+            callback();
+        } catch {
+            callback();
+        }
+    }
+
+    /**
+     * Is called if a subscribed state changes
+     *
+     * @param id - value id
+     * @param state - value state
+     */
+    async onStateChange(id, state) {
+        if (state && !state.ack) {
+            //const ParamId = id.split('.').pop();
+            const obj = await this.getObjectAsync(id);
+            if (obj) {
+                const findParamObj = ParamObjList.find(element => element.ParameterId === obj.native.ParameterId);
+
+                this.log.info(`Change value for: ${obj.common.name}: ${JSON.stringify(state)}`);
+
+                try {
+                    const answer = await this.wss.setValList(this.device.GatewayId, this.device.SystemId, [
+                        {
+                            ValueId: findParamObj.ValueId,
+                            ParameterId: obj.native.ParameterId,
+                            Value: String(state.val),
+                            ParameterName: obj.common.name,
+                        },
+                    ]);
+                    if (typeof answer.Values !== 'undefined') {
+                        this.setState(id, {
+                            val: state.val,
+                            ack: true,
+                        });
+                        await this._SetStatesArray(answer);
+                    }
+                } catch (err) {
+                    this.log.error(err);
                 }
             }
         }
@@ -527,11 +845,8 @@ class WolfSmartset extends utils.Adapter {
 // @ts-expect-error parent is a valid property on module
 if (module.parent) {
     // Export the constructor in compact mode
-    /**
-     * @param [options]
-     */
-    module.exports = options => new WolfSmartset(options);
+    module.exports = options => new WolfSmartsetAdapter(options);
 } else {
     // otherwise start the instance directly
-    new WolfSmartset();
+    new WolfSmartsetAdapter();
 }

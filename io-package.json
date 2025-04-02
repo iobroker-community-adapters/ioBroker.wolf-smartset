@@ -122,7 +122,8 @@
       "uk": "Підключіть Wolf cloud до IoBroker"
     },
     "authors": [
-      "MeisterTR <meistertr.smarthome@gmail.com>"
+      "MeisterTR <meistertr.smarthome@gmail.com>",
+      "flingo64 <github@messmer-online.de>"
     ],
     "keywords": [
       "wolf",
@@ -136,6 +137,7 @@
     "platform": "Javascript/Node.js",
     "icon": "wolf-smartset.png",
     "enabled": true,
+    "messagebox": true,
     "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wolf-smartset/master/admin/wolf-smartset.png",
     "readme": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset/blob/master/README.md",
     "loglevel": "info",
@@ -145,8 +147,9 @@
     "compact": true,
     "connectionType": "cloud",
     "dataSource": "poll",
-    "materialize": true,
-    "messagebox": true,
+    "adminUI": {
+      "config": "json"
+    },
     "plugins": {
       "sentry": {
         "dsn": "https://a9218dbd5539461fae687736e804c590@sentry.iobroker.net/129"
@@ -164,15 +167,58 @@
     ]
   },
   "encryptedNative": [
-    "password"
+    "password",
+    "expertPassword"
   ],
   "protectedNative": [
-    "password"
+    "password",
+    "expertPassword"
   ],
   "native": {
-    "user": "",
+    "username": "",
     "password": "",
-    "pingInterval": 15
+    "device": "",
+    "deviceName": "No device selected",
+    "pollIntervalShort": 120,
+    "pollIntervalLong": 60,
+    "doExpertLogin": false,
+    "expertPassword": "",
+    "doPubIpCheck": true,
+    "doApiProfile": false,
+    "bundleIdRequestedShort": "Default",
+    "bundleIdRequestedLong": "Default",
+    "bundleIdTable": [
+      {
+        "bundleIdName": "1000",
+        "bundleIdUseShort": true,
+        "bundleIdUseLong": false
+      },
+      {
+        "bundleIdName": "3100",
+        "bundleIdUseShort": true,
+        "bundleIdUseLong": false
+      },
+      {
+        "bundleIdName": "3500",
+        "bundleIdUseShort": false,
+        "bundleIdUseLong": true
+      },
+      {
+        "bundleIdName": "6300",
+        "bundleIdUseShort": false,
+        "bundleIdUseLong": true
+      },
+      {
+        "bundleIdName": "7100",
+        "bundleIdUseShort": false,
+        "bundleIdUseLong": true
+      },
+      {
+        "bundleIdName": "7600",
+        "bundleIdUseShort": false,
+        "bundleIdUseLong": true
+      }
+    ]
   },
   "objects": [],
   "instanceObjects": [
@@ -194,6 +240,66 @@
         "read": true,
         "write": false,
         "def": false
+      },
+      "native": {}
+    },
+    {
+      "_id": "info_api",
+      "type": "channel",
+      "common": {
+        "name": "API Profile Info"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info_api.poll_req_bundle_id",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Polled BundleId",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info_api.poll_req_num_params",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Number of requested parameter values",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info_api.poll_resp_num_params",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Number of returned parameters",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
+      },
+      "native": {}
+    },
+    {
+      "_id": "info_api.poll_resp_num_values",
+      "type": "state",
+      "common": {
+        "role": "value",
+        "name": "Number of returned parameters having a value",
+        "type": "number",
+        "read": true,
+        "write": false,
+        "def": 0
       },
       "native": {}
     }
