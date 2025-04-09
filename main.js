@@ -701,12 +701,15 @@ class WolfSmartsetAdapter extends utils.Adapter {
                             return { label: value.Name, value: JSON.stringify(value) };
                         }
                         getDeviceListResponse = devicelist.map(convertToSelectEntry);
+                        this.log.debug(`getDeviceList: returning '${JSON.stringify(getDeviceListResponse)}`);
                     } else {
                         getDeviceListResponse = [{ label: 'No devices found', value: '' }];
+                        this.log.debug(`getDeviceList: got no devicelist`);
                     }
                 } catch (error) {
                     getDeviceListResponse = [{ label: error.message, value: '' }];
                     this.wss = null;
+                    this.log.debug(`getDeviceList: got error '${error.message}'`);
                 }
                 this.sendTo(obj.from, obj.command, getDeviceListResponse, obj.callback);
                 // if getDeviceList was successful and this adapter instance has currently no wss object
