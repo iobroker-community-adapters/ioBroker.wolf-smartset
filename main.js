@@ -697,7 +697,10 @@ class WolfSmartsetAdapter extends utils.Adapter {
 
                     devicelist = await adminWss.adminGetDevicelist();
                     if (typeof devicelist !== 'undefined') {
-                        getDeviceListResponse = [{ label: devicelist[0].Name, value: JSON.stringify(devicelist[0]) }];
+                        function convertToSelectEntry(value) {
+                            return { label: value.Name, value: JSON.stringify(value) };
+                        }
+                        getDeviceListResponse = devicelist.map(convertToSelectEntry);
                     } else {
                         getDeviceListResponse = [{ label: 'No devices found', value: '' }];
                     }
@@ -740,12 +743,12 @@ class WolfSmartsetAdapter extends utils.Adapter {
                         };
                     } else {
                         confirmDeviceResponse = {
-                            error: `No valid device discovered, got '${obj.message.deviceObject}'`,
+                            error: `No valid device selected: got '${obj.message.deviceObject}'`,
                         };
                     }
                 } catch (error) {
                     confirmDeviceResponse = {
-                        error: `No device dicovered, got '${obj.message.deviceObject}', error: ${error.message}`,
+                        error: `No device selected: got '${obj.message.deviceObject}', error: ${error.message}`,
                     };
                 }
                 this.sendTo(obj.from, obj.command, confirmDeviceResponse, obj.callback);
