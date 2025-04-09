@@ -739,11 +739,14 @@ class WolfSmartsetAdapter extends utils.Adapter {
                             },
                         };
                     } else {
-                        confirmDeviceResponse = { error: 'No device selected' };
+                        confirmDeviceResponse = {
+                            error: `No valid device discovered, got '${obj.message.deviceObject}'`,
+                        };
                     }
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 } catch (error) {
-                    confirmDeviceResponse = { error: 'No device selected' };
+                    confirmDeviceResponse = {
+                        error: `No device dicovered, got '${obj.message.deviceObject}', error: ${error.message}`,
+                    };
                 }
                 this.sendTo(obj.from, obj.command, confirmDeviceResponse, obj.callback);
             }
