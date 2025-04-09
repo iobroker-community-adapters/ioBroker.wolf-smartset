@@ -5,7 +5,7 @@
         "width": "calc(100% - 100px)"
     },
     "items": {
-        "tab_1":{
+        "tab_1": {
             "type": "panel",
             "label": "Main Settings",
             "items": {
@@ -94,14 +94,17 @@
                     "lg": 3,
                     "xl": 2
                 },
-                   "deviceSelect": {
+                "deviceSelect": {
                     "type": "selectSendTo",
                     "label": "List of Wolf Devices",
                     "command": "getDeviceList",
                     "jsonData": "{ \"username\": \"${data.username}\", \"password\": \"${data.password}\" }",
                     "newLine": true,
                     "manual": false,
-                    "alsoDependsOn": ["username", "password"],
+                    "alsoDependsOn": [
+                        "username",
+                        "password"
+                    ],
                     "noTranslation": true,
                     "xs": 12,
                     "sm": 6,
@@ -109,9 +112,9 @@
                     "lg": 3,
                     "xl": 2
                 },
-                   "deviceConfirm": {
+                "deviceConfirm": {
                     "type": "sendTo",
-                    "label": "Use this device",
+                    "label": "Use this Device",
                     "jsonData": "{ \"deviceObject\": \"${data.deviceSelect}\" }",
                     "command": "confirmDevice",
                     "useNative": true,
@@ -123,8 +126,8 @@
                     "xl": 2
                 }
             }
-           },
-        "tab_2":{
+        },
+        "tab_2": {
             "type": "panel",
             "label": "Advanced Settings",
             "items": {
@@ -230,7 +233,15 @@
                 "bundleIdRequestedShort": {
                     "type": "autocomplete",
                     "label": "BundleId for Short Poll Cycle",
-                    "options":["Default", "1000", "3100", "3500", "6300", "7100", "7600"],
+                    "options": [
+                        "Default",
+                        "1000",
+                        "3100",
+                        "3500",
+                        "6300",
+                        "7100",
+                        "7600"
+                    ],
                     "freeSolo": true,
                     "default": "Default",
                     "xs": 12,
@@ -242,7 +253,15 @@
                 "bundleIdRequestedLong": {
                     "type": "autocomplete",
                     "label": "BundleId for Long Poll Cycle",
-                    "options":["Default", "1000", "3100", "3500", "6300", "7100", "7600"],
+                    "options": [
+                        "Default",
+                        "1000",
+                        "3100",
+                        "3500",
+                        "6300",
+                        "7100",
+                        "7600"
+                    ],
                     "freeSolo": true,
                     "default": "Default",
                     "xs": 12,
