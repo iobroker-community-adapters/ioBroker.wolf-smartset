@@ -28,5 +28,8 @@
     "Check for Public IP Changes": "Controleer op openbare IP -wijzigingen",
     "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Schakel uw openbare IP in via iPify.org voor sneller herstel van sessie na veranderd openbaar IP",
     "Enable Public IP Checking": "Schakel openbare IP -controle in",
-    "Expert Login is required to poll expert parameters": "Inloggen in deskundigen is vereist om deskundige parameters te bestrijden"
+    "Expert Login is required to poll expert parameters": "Inloggen in deskundigen is vereist om deskundige parameters te bestrijden",
+    "Parameters of Bundle": "Parameters van bundel",
+    "Include in Short Poll Cycle": "Neem in korte peilcyclus op",
+    "Include in Long Poll Cycle": "Inclusief in een lange pollcyclus"
 }
