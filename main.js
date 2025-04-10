@@ -742,7 +742,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
                         confirmDeviceResponse = {
                             native: {
                                 deviceName: `${myDevice.Name}`,
-                                device: obj.message.deviceObject,
+                                device: jsonStringNoCrNl,
                             },
                         };
                     } else {
