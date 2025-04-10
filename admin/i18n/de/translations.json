@@ -27,9 +27,9 @@
     "Wolf Smartset Account": "Wolf Smartset-Konto",
     "Check for Public IP Changes": "Änderung der öffentlichen IP-Adresse überwachen",
     "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Aktivieren Sie die Überwachung Ihrer öffentliche IP-Adresse über ipify.org für eine schnellere Wiederherstellung der Sitzung nach Änderung der öffentlichen IP-Adresse",
-    "Enable Public IP Checking": "Aktivieren Sie die Überwachung der öffentliche IP-Adresse",
-    "Expert Login is required to poll expert parameters": "Expertenanmeldung ist erforderlich, um Expertenparameter abzufragen",
-    "Parameters of Bundle": "Parameter des Bundle ...",
+    "Enable Public IP Checking": "Überwachung der öffentliche IP-Adresse aktivieren",
+    "Expert Login is required to poll expert parameters": "Die Fachmann-Anmeldung ist erforderlich, um Fachmann-Parameter abzufragen",
+    "Parameters of Bundle": "Parameter des Bundles ...",
     "Include in Short Poll Cycle": "... im kurzen Pollzyklus einbeziehen",
-    "Include in Long Poll Cycle": "... im kurzen Pollzyklus einbeziehen"
+    "Include in Long Poll Cycle": "... im langen Pollzyklus einbeziehen"
 }
