@@ -731,7 +731,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 let confirmDeviceResponse;
 
                 try {
-                    myDevice = JSON.parse(obj.message.deviceObject);
+                    let jsonStringNoCrNl = obj.message.deviceObject.replace(/[\r\n]/g, ' ');
+                    myDevice = JSON.parse(jsonStringNoCrNl);
 
                     if (
                         typeof myDevice.Name !== 'undefined' &&
