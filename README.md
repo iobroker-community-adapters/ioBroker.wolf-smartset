@@ -122,8 +122,8 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
 -->
 ### **WORK IN PROGRESS**
 - (flingo64) Bugfix: fixed various typos in Readme and translations
-- (flingo64) Bugfix: Fixed an AdminUI issue ('No device selected') when the device information contained line break (e.g. in ContactInformation, Description or Comment )
-- (flingo64) Enhancement for AdminUI: support for more than one device in list of devices return form Wolf Smartset server
+- (flingo64) Bugfix: Fixed an AdminUI issue (#450 - 'No device selected') when the device information contained line break (e.g. in ContactInformation, Description or Comment )
+- (flingo64) Enhancement for AdminUI: support for more than one device in list of devices returned from Wolf Smartset server
 
 ### 2.0.0 (2025-04-02)
 - (flingo64) BREAKING CHANGE: Please reenter your login credentials.
