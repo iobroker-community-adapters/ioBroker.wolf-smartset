@@ -28,5 +28,8 @@
     "Check for Public IP Changes": "Controlla le modifiche all'IP pubblica",
     "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Abilita il controllo del tuo IP pubblico tramite ipify.org per un recupero di sessione più rapido dopo aver modificato l'IP pubblica",
     "Enable Public IP Checking": "Abilita il controllo dell'IP pubblico",
-    "Expert Login is required to poll expert parameters": "L'accesso esperto è tenuto a sondaggio dei parametri degli esperti"
+    "Expert Login is required to poll expert parameters": "L'accesso esperto è tenuto a sondaggio dei parametri degli esperti",
+    "Parameters of Bundle": "Parametri del pacchetto",
+    "Include in Short Poll Cycle": "Includere in breve ciclo di sondaggio",
+    "Include in Long Poll Cycle": "Includere nel ciclo di sondaggio lungo"
 }

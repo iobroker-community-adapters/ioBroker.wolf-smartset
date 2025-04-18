@@ -652,7 +652,7 @@ class WolfSmartsetAdapter extends utils.Adapter {
     // /**
     //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, adminUI...
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-    //  * The main purpose for this handler is to handle Device Listing and Device Conform from the adapter instance settings UI.
+    //  * The main purpose for this handler is to handle Device Listing and Device Confirm from the adapter instance settings UI.
     //
     //  * @param {ioBroker.Message} obj
     //  */
@@ -697,13 +697,19 @@ class WolfSmartsetAdapter extends utils.Adapter {
 
                     devicelist = await adminWss.adminGetDevicelist();
                     if (typeof devicelist !== 'undefined') {
-                        getDeviceListResponse = [{ label: devicelist[0].Name, value: JSON.stringify(devicelist[0]) }];
+                        function convertToSelectEntry(value) {
+                            return { label: value.Name, value: JSON.stringify(value) };
+                        }
+                        getDeviceListResponse = devicelist.map(convertToSelectEntry);
+                        this.log.debug(`getDeviceList: returning '${JSON.stringify(getDeviceListResponse)}`);
                     } else {
                         getDeviceListResponse = [{ label: 'No devices found', value: '' }];
+                        this.log.debug(`getDeviceList: got no devicelist`);
                     }
                 } catch (error) {
                     getDeviceListResponse = [{ label: error.message, value: '' }];
                     this.wss = null;
+                    this.log.debug(`getDeviceList: got error '${error.message}'`);
                 }
                 this.sendTo(obj.from, obj.command, getDeviceListResponse, obj.callback);
                 // if getDeviceList was successful and this adapter instance has currently no wss object
@@ -725,7 +731,8 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 let confirmDeviceResponse;
 
                 try {
-                    myDevice = JSON.parse(obj.message.deviceObject);
+                    let jsonStringNoCrNl = obj.message.deviceObject.replace(/[\r\n]/g, ' ');
+                    myDevice = JSON.parse(jsonStringNoCrNl);
 
                     if (
                         typeof myDevice.Name !== 'undefined' &&
@@ -735,15 +742,18 @@ class WolfSmartsetAdapter extends utils.Adapter {
                         confirmDeviceResponse = {
                             native: {
                                 deviceName: `${myDevice.Name}`,
-                                device: obj.message.deviceObject,
+                                device: jsonStringNoCrNl,
                             },
                         };
                     } else {
-                        confirmDeviceResponse = { error: 'No device selected' };
+                        confirmDeviceResponse = {
+                            error: `No valid device selected: got '${obj.message.deviceObject}'`,
+                        };
                     }
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 } catch (error) {
-                    confirmDeviceResponse = { error: 'No device selected' };
+                    confirmDeviceResponse = {
+                        error: `No device selected: got '${obj.message.deviceObject}', error: ${error.message}`,
+                    };
                 }
                 this.sendTo(obj.from, obj.command, confirmDeviceResponse, obj.callback);
             }

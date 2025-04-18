@@ -28,5 +28,8 @@
     "Check for Public IP Changes": "检查公共IP更改",
     "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "启用通过ipify.org检查您的公共IP，以便更换公共IP后更快的会话恢复",
     "Enable Public IP Checking": "启用公共IP检查",
-    "Expert Login is required to poll expert parameters": "需要专家登录到民意调查专家参数"
+    "Expert Login is required to poll expert parameters": "需要专家登录到民意调查专家参数",
+    "Parameters of Bundle": "捆绑包的参数",
+    "Include in Short Poll Cycle": "在简短的民意调查周期中包括",
+    "Include in Long Poll Cycle": "包括长期民意调查周期"
 }

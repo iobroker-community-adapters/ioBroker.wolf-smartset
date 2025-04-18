@@ -28,5 +28,8 @@
     "Check for Public IP Changes": "Проверить на наличие изменений публичных IP",
     "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Включить проверку вашего публичного IP -адреса через ipify.org для более быстрого восстановления сессии после изменения публичного IP",
     "Enable Public IP Checking": "Включить публичную проверку ИС",
-    "Expert Login is required to poll expert parameters": "Экспертный вход требуется для опроса экспертных параметров"
+    "Expert Login is required to poll expert parameters": "Экспертный вход требуется для опроса экспертных параметров",
+    "Parameters of Bundle": "Параметры пакета",
+    "Include in Short Poll Cycle": "Включите в короткий цикл опроса",
+    "Include in Long Poll Cycle": "Включите в длительный цикл опроса"
 }

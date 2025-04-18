@@ -3,7 +3,7 @@
     "API Profiling": "API-Profiling",
     "BundleId for Long Poll Cycle": "BundleId für langen Pollzyklus",
     "BundleId for Short Poll Cycle": "BundleId für kurzen Pollzyklus",
-    "Configure poll intervals and the set of parameters to poll": "Konfigurieren Sie die Pollzyklus-Intervalle und den Satz der abzufragenden Parametern",
+    "Configure poll intervals and the set of parameters to poll": "Konfigurieren Sie die Pollzyklus-Intervalle und den Satz der abzufragenden Parameter",
     "Configure Short and Long Poll Cycle Interval": "Konfigurieren Sie das kurze und lange Pollzyklus-Intervall",
     "Device": "Anlage",
     "Do Expert Login": "Einloggen als Fachmann",
@@ -25,8 +25,11 @@
     "Use this Device": "Verwende diese Anlage",
     "Wolf Device": "Wolf Anlage",
     "Wolf Smartset Account": "Wolf Smartset-Konto",
-    "Check for Public IP Changes": "Überprüfen Sie die öffentlichen IP -Änderungen",
-    "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Aktivieren Sie Ihre öffentliche IP über ipify.org für eine schnellere Wiederherstellung der Sitzung nach der geänderten öffentlichen IP über eine schnellere Sitzung",
-    "Enable Public IP Checking": "Aktivieren Sie die öffentliche IP -Überprüfung",
-    "Expert Login is required to poll expert parameters": "Expertenanmeldung ist erforderlich, um Expertenparameter zu befragen"
+    "Check for Public IP Changes": "Änderung der öffentlichen IP-Adresse überwachen",
+    "Enable checking your public IP via ipify.org for faster session recovery after changed public IP": "Aktivieren Sie die Überwachung Ihrer öffentliche IP-Adresse über ipify.org für eine schnellere Wiederherstellung der Sitzung nach Änderung der öffentlichen IP-Adresse",
+    "Enable Public IP Checking": "Überwachung der öffentliche IP-Adresse aktivieren",
+    "Expert Login is required to poll expert parameters": "Die Fachmann-Anmeldung ist erforderlich, um Fachmann-Parameter abzufragen",
+    "Parameters of Bundle": "Parameter des Bundles ...",
+    "Include in Short Poll Cycle": "... im kurzen Pollzyklus einbeziehen",
+    "Include in Long Poll Cycle": "... im langen Pollzyklus einbeziehen"
 }
