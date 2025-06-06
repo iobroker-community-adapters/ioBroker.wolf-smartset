@@ -137,6 +137,18 @@
                     "text": "Poll Cycle Intervals and Parameter Lists",
                     "size": 2
                 },
+                "doPollAllParams": {
+                    "type": "checkbox",
+                    "label": "Poll all Parameters",
+                    "tooltip": "This poll strategy is backward compatible with adpater version 1.x",
+                    "default": true,
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 3,
+                    "xl": 2
+                },
                 "pollTxt": {
                     "type": "staticText",
                     "text": "Configure poll intervals and the set of parameters to poll",
@@ -169,6 +181,7 @@
                     "xl": 2
                 },
                 "pollIntervalLong": {
+                    "hidden": "data.doPollAllParams === true",
                     "type": "number",
                     "label": "Long Poll Cycle Interval (min)",
                     "min": 15,
@@ -189,6 +202,7 @@
                     "xl": 6,
                     "label": "",
                     "noDelete": true,
+                    "hidden": "data.doPollAllParams === true",
                     "items": [
                         {
                             "type": "text",
@@ -221,6 +235,7 @@
                     ]
                 },
                 "bundleIdRequestedText": {
+                    "hidden": "data.doPollAllParams === true",
                     "type": "staticText",
                     "text": "Set the BundleId to be used in poll requests",
                     "newLine": true,
@@ -231,6 +246,7 @@
                     "xl": 2
                 },
                 "bundleIdRequestedShort": {
+                    "hidden": "data.doPollAllParams === true",
                     "type": "autocomplete",
                     "label": "BundleId for Short Poll Cycle",
                     "options": [
@@ -240,7 +256,14 @@
                         "3500",
                         "6300",
                         "7100",
-                        "7600"
+                        "7600",
+                        "10000",
+                        "10700",
+                        "14000",
+                        "14700",
+                        "15600",
+                        "15700",
+                        "15800"
                     ],
                     "freeSolo": true,
                     "default": "Default",
@@ -251,6 +274,7 @@
                     "xl": 2
                 },
                 "bundleIdRequestedLong": {
+                    "hidden": "data.doPollAllParams === true",
                     "type": "autocomplete",
                     "label": "BundleId for Long Poll Cycle",
                     "options": [
@@ -260,7 +284,14 @@
                         "3500",
                         "6300",
                         "7100",
-                        "7600"
+                        "7600",
+                        "10000",
+                        "10700",
+                        "14000",
+                        "14700",
+                        "15600",
+                        "15700",
+                        "15800"
                     ],
                     "freeSolo": true,
                     "default": "Default",

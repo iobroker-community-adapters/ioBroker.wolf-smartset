@@ -31,5 +31,7 @@
     "Expert Login is required to poll expert parameters": "Die Fachmann-Anmeldung ist erforderlich, um Fachmann-Parameter abzufragen",
     "Parameters of Bundle": "Parameter des Bundles ...",
     "Include in Short Poll Cycle": "... im kurzen Pollzyklus einbeziehen",
-    "Include in Long Poll Cycle": "... im langen Pollzyklus einbeziehen"
+    "Include in Long Poll Cycle": "... im langen Pollzyklus einbeziehen",
+    "Poll all Parameters": "Alle Parameter abfragen",
+    "This poll strategy is backward compatible with adpater version 1.x": "Diese Abfragestrategie ist abwärtskompatibel mit Adpater Version 1.x"
 }

@@ -31,5 +31,7 @@
     "Expert Login is required to poll expert parameters": "Login ekspertów jest wymagany do ankietowania parametrów ekspertów",
     "Parameters of Bundle": "Parametry pakietu",
     "Include in Short Poll Cycle": "Uwzględnij w krótkim cyklu ankiet",
-    "Include in Long Poll Cycle": "Uwzględnij w długim cyklu ankiet"
+    "Include in Long Poll Cycle": "Uwzględnij w długim cyklu ankiet",
+    "Poll all Parameters": "Sondaż wszystkie parametry",
+    "This poll strategy is backward compatible with adpater version 1.x": "Ta strategia parolowa jest zgodna wstecz z adpaterką w wersji 1.x"
 }

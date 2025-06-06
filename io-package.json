@@ -1,307 +1,343 @@
 {
-  "common": {
-    "name": "wolf-smartset",
-    "version": "2.0.1",
-    "news": {
-      "2.0.1": {
-        "en": "Bugfix: fixed various typos in Readme and translations\nBugfix: Fixed an AdminUI issue (#450 - 'No device selected') when the device information contained line break (e.g. in ContactInformation, Description or Comment )\nEnhancement for AdminUI: support for more than one device in list of devices returned from Wolf Smartset server",
-        "de": "Bugfix: verschiedene Tippfehler in Readme und Übersetzungen behoben\nBugfix: AdminUI-Problem behoben (#450 - 'No device select') wenn die Geräteinformationen einen Zeilenumbruch enthalten (z.B. in ContactInformation, Beschreibung oder Kommentar)\nVerbesserung für AdminUI: Unterstützung für mehr als ein Gerät in der Liste der von Wolf Smartset Server zurückgegebenen Geräte",
-        "ru": "Bugfix: исправлены различные опечатки в Readme и переводах\nBugfix: Исправлена проблема AdminUI (#450 - «Не выбрано устройство»), когда информация об устройстве содержала разрыв линии (например, в контактной информации, описании или комментарии)\nПоддержка более чем одного устройства в списке устройств, возвращенных с сервера Wolf Smartset",
-        "pt": "Bugfix: corrigido vários typos em Readme e traduções\nBugfix: Corrigido um problema AdminUI (#450 - 'No device selected') quando as informações do dispositivo continham quebra de linha (por exemplo, em ContactInformation, Description or Comment )\nMelhoria para AdminUI: suporte para mais de um dispositivo na lista de dispositivos retornados do servidor Wolf Smartset",
-        "nl": "Bugfix: verschillende typefouten opgelost in Readme en vertalingen\nBugfix: Vast een AdminUI probleem (#450 - 'Geen apparaat geselecteerd') wanneer het apparaat informatie bevatte lijn breken (bijvoorbeeld in Contactinformatie, beschrijving of opmerking)\nEnhancement for AdminUI: ondersteuning voor meer dan één apparaat in de lijst van apparaten die van Wolf Smartset server zijn teruggestuurd",
-        "fr": "Bugfix : a corrigé différentes typos dans Readme et traductions\nCorrection d'un problème AdminUI (#450 - 'Aucun périphérique sélectionné') lorsque l'information de l'appareil contenait une rupture de ligne (par exemple dans ContactInformation, Description ou Commentaire )\nAmélioration pour AdminUI: prise en charge de plus d'un périphérique dans la liste des périphériques retournés depuis le serveur Wolf Smartset",
-        "it": "Bugfix: diversi tipi fissi in Readme e traduzioni\nBugfix: Risolto un problema AdminUI (#450 - 'Nessun dispositivo selezionato') quando le informazioni del dispositivo contenevano l'interruzione della linea (ad esempio in ContactInformation, Descrizione o Commento)\nMiglioramento per AdminUI: supporto per più di un dispositivo nell'elenco dei dispositivi restituiti dal server Wolf Smartset",
-        "es": "Bugfix: fijo varios tipos en Readme y traducciones\nBugfix: Se corrigió un número de AdminUI (#450 - 'No seleccionó ningún dispositivo') cuando la información del dispositivo contenía la interrupción de la línea (por ejemplo, en contactoInformación, descripción o comentario)\nMejora para AdminUI: soporte para más de un dispositivo en la lista de dispositivos devueltos desde el servidor Wolf Smartset",
-        "pl": "Bugfix: stałe różne literówki w Readme i tłumaczenia\nBugfix: Naprawiono emisję administracyjną (# 450 - \"Nie wybrano urządzenia\"), gdy informacja o urządzeniu zawierała pęknięcie linii (np. w ContactInformation, Opis lub Komentarz)\nUlepszenie dla Administracji: obsługa więcej niż jednego urządzenia z listy urządzeń zwróconych z serwera Wolf Smartset",
-        "uk": "Виправлено помилку: виправлено різні типограми в перекладі\nВиправлено помилку: Виправлено проблему AdminUI (#450 - 'Не вибрано пристрій') коли інформація про пристрій, що міститься в рядку (наприклад, в Контактній Інформації, опис або коментар )\nРозширення для AdminUI: підтримка більш ніж одного пристрою в списку пристроїв, що поставляються з сервера Wolf Smartset",
-        "zh-cn": "Bugfix:在Readme和翻译中固定各种打字符\nBugfix: 当设备信息包含换行符( 如联系人信息、 描述或注释) 时, 固定一个 AdminUI 问题( # 450 - “ 没有选中设备 ” ) \n增强管理UI:支持从 Wolf Smartset 服务器返回的设备列表中的多个设备"
-      },
-      "2.0.0": {
-        "en": "BREAKING CHANGE: Please reenter your login credentials.\nAdapter requires node.js 20, js-controller 6 and admin 7 now.\nA general code cleanup and partial rewrite has been done.\nTrigger re-initalization has been added, if api returns an error (server might be down temporarily).\nExpert login and periodic re-login have been added (#242).\nSupport for level 3 objects `time programs` / `party mode` / `vacation mode` has been added.\nRequest UserInfo from Wolf server, check whether adapter instance's poll interval meets requirements (60 sec) added.\nParameterId lists for each Wolf BundleId created and show `BundleIds` for each channel added\nSupport for two sepearate poll cycles to avoid server abuse reactions has been added. \nSwitched AdminUI to `jsconConfig`.",
-        "de": "BREAKING CHANGE: Bitte geben Sie Ihre Anmeldeinformationen neu ein.\nAdapter benötigt jetzt node.js 20, js-controller 6 und admin 7.\nEs wurde eine allgemeine Code-Reinigung und ein Teil-Rewrite durchgeführt.\nTrigger-Re-initalization wurde hinzugefügt, wenn api einen Fehler zurückgibt (Server kann vorübergehend herunter sein).\nExperten-Login und regelmäßiges Re-Login wurden hinzugefügt (#242).\nUnterstützung für Level 3 Objekte `time Programme` / `party mode` / `vacation mode` wurde hinzugefügt.\nFordern Sie UserInfo vom Wolf-Server an, ob das Umfrageintervall der Adapterinstanz den Anforderungen (60 sec) entspricht.\nParameter Id Listen für jeden Wolf Bundle Id erstellt und zeigen `BundleIds` für jeden Kanal hinzugefügt\nEs wurde eine Unterstützung für zwei sepearate Umfragezyklen zur Vermeidung von Server-Missbrauchreaktionen hinzugefügt.\nSchaltete AdminUI auf `jsconConfig`.",
-        "ru": "Изменить дыхание: Пожалуйста, введите свои учетные данные для входа.\nАдаптер требует node.js 20, js-контроллер 6 и админ 7.\nПроведена генеральная очистка кода и частичная переписка.\nДобавлена реинитализация триггера, если api возвращает ошибку (сервер может временно упасть).\nДобавлен вход эксперта и периодический повторный вход (#242).\nДобавлена поддержка объектов уровня 3 «временные программы» / «партийный режим» / «режим отпуска».\nЗапросить UserInfo с сервера Wolf, проверить, соответствует ли интервал опроса адаптера требованиям (60 сек).\nПараметр Список для каждого волка Id создал и показал «BundleIds» для каждого добавленного канала\nДобавлена поддержка двух циклов опросов, чтобы избежать реакции злоупотребления сервером.\nПереключил AdminUI на jsconConfig.",
-        "pt": "Muita coisa: Por favor, insira suas credenciais de login.\nAdaptador requer node.js 20, js-controller 6 e admin 7 agora.\nFoi feita uma limpeza geral e reescrita parcial.\nA reinicialização do gatilho foi adicionada, se o api retornar um erro (o servidor pode estar em baixo temporariamente).\nO login e o re-login periódico foram adicionados (#242).\nSuporte para o nível 3 objetos `programas de tempo` / 'modo de partido` / 'modo de educação` foi adicionado.\nSolicite UserInfo do servidor Wolf, verifique se o intervalo de pesquisa da instância do adaptador atende aos requisitos (60 sec) adicionados.\nParâmetro Listas de identificação para cada Wolf Bundle Id criado e mostrar `BundleIds` para cada canal adicionado\nO suporte para dois ciclos de pesquisa sepearate para evitar reações de abuso de servidor foi adicionado.\nAdminUI comutado para `jsconConfig`.",
-        "nl": "Breaking VERANDERING: Voer uw aanmeldgegevens in.\nAdapter vereist node.js 20, js-controller 6 en admin 7.\nEen algemene code opruiming en gedeeltelijke herschrijven is gedaan.\nTrigger re-initalisatie is toegevoegd, als api een fout teruggeeft (server kan tijdelijk zijn uitgeschakeld).\nExpert login en periodieke re-login zijn toegevoegd (#242).\nOndersteuning voor niveau 3 objecten .\nVraag UserInfo van Wolf server, controleer of de poll interval van adapter instantie voldoet aan de eisen (60 sec) toegevoegd.\nParameter Id lijsten voor elke Wolf Bundle Id creëerde en show BundleIds voor elk kanaal toegevoegd\nEr is steun voor twee aparte pollcycli toegevoegd om servermisbruikreacties te voorkomen.\nSchakelde AdminUI naar .",
-        "fr": "CHANGEMENT DE BREAING: Veuillez entrer de nouveau vos identifiants de connexion.\nAdaptateur nécessite node.js 20, js-controller 6 et admin 7 maintenant.\nUn nettoyage général du code et une réécriture partielle ont été effectués.\nLa ré-initalisation de déclenchement a été ajoutée, si api renvoie une erreur (le serveur peut être temporairement désactivé).\nUne connexion experte et une nouvelle connexion périodique ont été ajoutées (#242).\nLa prise en charge des objets de niveau 3 `time programs` / `part mode` / `vacation mode` a été ajoutée.\nDemander UserInfo au serveur Wolf, vérifier si l'intervalle de sondage de l'instance adaptateur répond aux exigences (60 sec) ajoutées.\nParamètre Id listes pour chaque Wolf Bundle Id créé et afficher `BundleIds` pour chaque canal ajouté\nOn a ajouté le support de deux cycles de sondage séparés pour éviter les réactions d'abus de serveur.\nA commuté AdminUI en `jsconConfig`.",
-        "it": "CAMBIO DI BREAKING: Si prega di reinserire le credenziali di accesso.\nAdattatore richiede node.js 20, js-controller 6 e admin 7 ora.\nÈ stata fatta una pulizia generale del codice e una riscrittura parziale.\nTrigger ri-initalization è stato aggiunto, se api restituisce un errore (il server potrebbe essere giù temporaneamente).\nSono stati aggiunti login esperto e re-login periodico (#242).\nSupporto per livello 3 oggetti `programmi di tempo` / `modalità di partito` / `modalità di vacanza` è stato aggiunto.\nRichiedi informazioni sull'utente dal server Wolf, controlla se l'intervallo di sondaggio dell'istanza dell'adattatore soddisfa i requisiti (60 sec) aggiunti.\nParametro Elenchi Id per ogni Wolf Bundle Id ha creato e mostrare `BundleIds` per ogni canale aggiunto\nÈ stato aggiunto il supporto per due cicli di sondaggio sepearate per evitare reazioni di abuso del server.\nAdminUI commutato a `jsconConfig`.",
-        "es": "Cambiando: Por favor vuelva a introducir sus credenciales de inicio de sesión.\nAdaptador requiere node.js 20, js-controller 6 y admin 7 ahora.\nSe ha hecho una limpieza general de códigos y una reescritura parcial.\nSe ha añadido la reinitalización del desencadenante, si api devuelve un error (el servidor podría bajar temporalmente).\nSe ha añadido el inicio de sesión de expertos y el reinicio periódico (#242).\nSe ha añadido soporte para el nivel 3 objetos `programas de tiempo` / `modo de partido` / `modo de vacunación'.\nSolicite a UserInfo del servidor Wolf, compruebe si el intervalo de encuesta de instancia de adaptador cumple con los requisitos (60 segundos) añadido.\nParámetro Listas de Id para cada Wolf Bundle Id creó y mostró `BundleIds` para cada canal añadido\nSe ha añadido soporte para dos ciclos de encuestas de secuencias para evitar reacciones de abuso del servidor.\nSwitched AdminUI to `jsconConfig`.",
-        "pl": "ZMIANA ZBIORCZA: Proszę ponownie podać swoje dane logowania.\nAdapter wymaga node.js 20, js- kontroler 6 i admin 7 teraz.\nWykonano ogólne czyszczenie kodu i częściową korektę.\nDodano reinitalizację Trigger, jeśli api zwraca błąd (serwer może być tymczasowo w dół).\nDodano logowanie ekspertów i okresowe ponowne logowanie (# 242).\nDodano obsługę 'programów czasowych' / 'stron' / 'wakacji' poziomu 3.\nPoproś UserInfo z serwera Wolf, sprawdź, czy interwał ankiety instancji adaptera spełnia wymagania (60 sekund) dodane.\nParametr Lista Id dla każdego Wolf Bundle Id stworzył i pokazał 'BundleIds' dla każdego dodanego kanału\nDodano wsparcie dla dwóch cyklów ankietowych, aby uniknąć nadużyć serwera.\nPrzełączono administrację na 'jsconConfig'.",
-        "uk": "БРЕАКІНГ ЗМІН: Будь ласка, перейменуйте свої облікові дані.\nАдаптер вимагає node.js 20, js-controller 6 і admin 7 тепер.\nЗдійснено очистку коду та частковий перезапис.\nДодана реінсталяція, якщо апі повертає помилку (сервер може бути тимчасовою).\nДодано експертний логін та періодичний релогін (#242).\nДодано підтримку рівня 3 об’єктів `time програм` / `party mode` / `vacation mode```.\nЗапитайте UserInfo від сервера Wolf, перевірте, чи відповідає інтервал опитування адаптера (60 сек).\nПараметр Списки Id для кожного Wolf Bundle Id створив і показати `BundleIds` для кожного каналу\nДодана підтримка двох циклів сепаратного опитування, щоб уникнути реакції зловживання сервером.\nУвімкнено AdminUI до `jsconConfig`.",
-        "zh-cn": "打破变化: 请重新输入您的登录证书 .\n适配器需要节点.js 20,js控制器 6和现在的admin 7.\n一般代码清理和部分重写已经完成.\n已添加触发重命名, 如果 api 返回一个错误( 服务器可能暂时下调) .\n增加了专家登录和定期重新登录(# 242).\n增加了对 \" 时间程序 \" / \" 政党模式 \" / \" 退出模式 \" 3级对象的支持.\n从 Wolf 服务器请求用户Info,检查适配器实例的民调间隔是否符合要求(60秒)添加.\n参数 每个 Wolf 包的 Id 列表 Id 为每个频道创建并显示“ BundleIds ” \n增加了支持两个sepearate民意调查周期以避免服务器滥用反应.\n已切换为“jsconConfig”."
-      },
-      "1.2.4": {
-        "en": "Bugfix for issues #281, #329, #365, #406: ioBroker object limits min/max use Wolf Smartset Min/MaxValueCondition if available, otherwise use Min/MaxValue now.\nAdded some comments on Wolf Smartset ControlTypes\nModified misspelled variable name to 'SubMenuEntry'\nAdd NamePrefix, if exists, to object names (e.g. 'A1: ', 'WP001: ') for better parameter identification\nAdapter has been adapted to @iobroker/eslint-config and eslint 9.x.\nDependencies have been updated",
-        "de": "Bugfix für Probleme #281, #329, #365, #406: ioBroker-Objektlimits min/max verwenden Wolf Smartset Min/MaxValueCondition, falls verfügbar, andernfalls Min/MaxValue jetzt verwenden.\nEinige Kommentare zu Wolf Smartset ControlTyps hinzugefügt\nModified misspelled variable name to 'SubMenuEntry'\nNamePrefix, falls vorhanden, zu Objektnamen hinzufügen (z.B. 'A1: ', 'WP001: ') zur besseren Parameteridentifikation\nAdapter wurde an @iobroker/eslint-config und eslint 9.x angepasst.\nAbhängigkeiten wurden aktualisiert",
-        "ru": "Bugfix for issues #281, #329, #365, #406: ioBroker object limits min/max use Wolf Smartset Min/MaxValueCondition if available, otherwise use Min/MaxValue now.\nДобавлены некоторые комментарии на Wolf Smartset ControlTypes\nМодифицированное имя 'SubMenuEntry'\nДобавить NamePrefix, если он существует, для обозначения объектов (например, 'A1:', 'WP001:') для лучшей идентификации параметров\nАдаптер был адаптирован к @iobroker/eslint-config и eslint 9.x.\nЗависимость обновлена",
-        "pt": "Bugfix para problemas #281, #329, #365, #406: ioBroker objeto limita min/max usar Wolf Smartset Min/MaxValueCondition se disponível, de outra forma usar Min/MaxValue agora.\nAdicionado alguns comentários em Wolf Smartset ControlTypes\nNome de variável desviado modificado para 'SubMenuEntry'\nAdicionar NamePrefix, se existir, para nomes de objetos (por exemplo, 'A1: ', 'WP001: ') para melhor identificação de parâmetros\nAdapter foi adaptado para @iobroker/eslint-config e eslint 9.x.\nAs dependências foram atualizadas",
-        "nl": "Bugfix voor problemen #281, #329, #365, #406: ioBroker object limieten min/max gebruik Wolf Smartset Min/MaxValueCondition indien beschikbaar, anders gebruik Min/MaxValue nu.\nToegevoegd enkele opmerkingen over Wolf Smartset ControlTypes\nVeranderde fout gespelde variabelenaam naar 'SubMenuEntry'\nNaamVoorvoegsel toevoegen aan objectnamen (bijv. 'A1:', 'WP001:') voor een betere parameteridentificatie\nAdapter is aangepast aan @iobroker/eslint-config en eslint 9.x.\nAfhankelijkheden zijn bijgewerkt",
-        "fr": "Bugfix pour les numéros #281, #329, #365, #406: ioBroker limite les objets min/max utiliser Wolf Smartset Min/MaxValueCondition si disponible, sinon utiliser Min/MaxValue maintenant.\nAjouté quelques commentaires sur Wolf Smartset ControlTypes\nNom de variable mal orthographiée modifié pour 'SubMenuEntry'\nAjouter NamePrefix, s'il existe, aux noms des objets (par exemple 'A1: ', 'WP001: ') pour une meilleure identification des paramètres\nAdaptateur a été adapté à @iobroker/eslint-config et eslint 9.x.\nLes dépendances ont été actualisées",
-        "it": "Bugfix per i numeri #281, #329, #365, #406: l'oggetto ioBroker limita l'uso minimo/max Wolf Smartset Min/MaxValueCondition se disponibile, altrimenti usare Min/MaxValue ora.\nAggiunto alcuni commenti su Wolf Smartset ControlTypes\nModificato nome variabile misspelled a 'SubMenuEntry'\nAggiungi NamePrefix, se esiste, ai nomi degli oggetti (ad esempio 'A1: ', 'WP001: ') per una migliore identificazione dei parametri\nL'adattatore è stato adattato a @iobroker/eslint-config ed eslint 9.x.\nLe dipendenze sono state aggiornate",
-        "es": "Bugfix para problemas #281, #329, #365, #406: ioBroker límite de objetos min/max uso Wolf Smartset Min/MaxValueCondición si está disponible, de lo contrario use Min/MaxValue ahora.\nAñadido algunos comentarios sobre Wolf Smartset ControlTypes\nNombre de variable desperdiciado modificado a 'SubMenuEntry'\nAñadir NombrePrefix, si existe, a los nombres de objetos (por ejemplo, 'A1: ', 'WP001: ') para una mejor identificación del parámetro\nAdaptador ha sido adaptado a @iobroker/eslint-config y eslint 9.x.\nSe han actualizado las dependencias",
-        "pl": "Bugfix for issues # 281, # 329, # 365, # 406: joBroker object limits min / max use Wolf Smartset Min / MaxValueCondition if available, other use Min / MaxValue now.\nDodano kilka komentarzy do Wolf Smartset ControlTypes\nZmodyfikowana błędna nazwa zmiennej do 'SubMenuEntry'\nDodaj NamePrefix, jeśli istnieje, do nazw obiektów (np. 'A1:', 'WP001:') dla lepszej identyfikacji parametrów\nAdapter został dostosowany do @ iobroker / eslint- config i eslint 9.x.\nZaktualizowano zależności",
-        "uk": "Виправлення помилок для питань #281, #329, #365, #406: ioBroker межі об'єктів min/max використання Wolf Smartset Min/MaxValueCondition, якщо це можливо, інакше використовуйте Min/MaxValue зараз.\nДодано деякі коментарі на Wolf Smartset ControlTypes\nМодифіковане ім'я пропущених змінних імен до 'SubMenuEntry'\nДодати ім'яПрефікс, якщо існує, для імен об'єктів (наприклад, 'A1: ', 'WP001: ') для визначення кращого параметра\nАдаптер був адаптований до @iobroker/eslint-config та eslint 9.x.\nЗалежність було оновлено",
-        "zh-cn": "281,#329,#365,#406期的bugfix:ioBroker对象限制 min/max 如果可用的话使用Wolf Smartset Min/MaxValue Content,否则现在使用Min/MaxValue.\n添加一些关于 Wolf Smartset 控制模式的评论\n修改错误的可变名称为“ SubMenu Entry ”\n添加名称前缀, 如果存在的话, 用于对象名称( 例如“ A1: ” , “ WP001: ” ) , 以更好地识别参数\n适配器已改编为@iobroduc/eslint-config和eslint 9.x.\n依赖关系已更新"
-      },
-      "1.2.3": {
-        "en": "Dependencies have been updated",
-        "de": "Abhängigkeiten wurden aktualisiert",
-        "ru": "Зависимость обновлена",
-        "pt": "As dependências foram atualizadas",
-        "nl": "Afhankelijkheden zijn bijgewerkt",
-        "fr": "Les dépendances ont été actualisées",
-        "it": "Le dipendenze sono state aggiornate",
-        "es": "Se han actualizado las dependencias",
-        "pl": "Zaktualizowano zależności",
-        "uk": "Залежність було оновлено",
-        "zh-cn": "依赖关系已更新"
-      },
-      "1.2.2": {
-        "en": "A crash during re-authentication has been fixed. OpenIdInit will be called only once to avoid endless loop during re-authentication.",
-        "de": "Ein Absturz während der Neuauthentifizierung wurde behoben. OpenIdInit wird nur einmal aufgerufen, um endlose Schleife während der Neuauthentifizierung zu vermeiden.",
-        "ru": "Сбой во время повторного вскрытия был зафиксирован. OpenIdInit будет называться только один раз, чтобы избежать бесконечной петли во время повторного открытия.",
-        "pt": "Um acidente durante a reautenticação foi corrigido. OpenIdInit será chamado apenas uma vez para evitar loop sem fim durante a re-autenticação.",
-        "nl": "Een crash tijdens herauthenticatie is opgelost. OpenIdInit wordt maar één keer gebeld om eindeloze lus tijdens herauthenticatie te vermijden.",
-        "fr": "Un accident lors de la réauthentification a été corrigé. OpenIdInit ne sera appelé qu'une seule fois pour éviter une boucle sans fin pendant la réauthentification.",
-        "it": "Un incidente durante la ricognizione è stato fissato. OpenIdInit sarà chiamato solo una volta per evitare l'anello infinito durante la ri-authentication.",
-        "es": "Se ha fijado un accidente durante la reauténticación. OpenIdInit se llamará sólo una vez para evitar un bucle interminable durante la reauthenticación.",
-        "pl": "Katastrofa podczas ponownego uwierzytelniania została naprawiona. OpenIdInit będzie wywoływany tylko raz, aby uniknąć niekończącej się pętli podczas ponownego uwierzytelniania.",
-        "uk": "Зафіксовано аварійну аварію під час переобладнання. OpenIdInit буде називатися тільки один раз, щоб уникнути нескінченної петлі під час реабілітації.",
-        "zh-cn": "重新校验时的坠机已被修复 。 OpenIdInit只会被调用一次,以避免在重新验证时出现无尽的循环."
-      },
-      "1.2.1": {
-        "en": "Initialization added to openId. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "de": "Initialisierung zu openId hinzugefügt. Dies behebt GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "ru": "Инициализация добавлена к открытию Ид. Это исправляет GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "pt": "Inicialização adicionada para abrir Id. Isso corrige GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "nl": "Initialisatie toegevoegd aan openen Id. Dit lost GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "fr": "Initialisation ajoutée à ouverte Id. Cela corrige GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "it": "Inizializzazione aggiunta ad aprire Id. Questo risolve GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "es": "Iniciación agregada para abrir Id. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "pl": "Inicjalizacja dodana do otwartego Id. To naprawia GET _ AUTH _ TOKEN _ ERROR [# 304, # 330]",
-        "uk": "Початкова обробка додано до відкриття Id. Це фіксує GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "zh-cn": "初始化添加到打开 Id. 此修正 [# 304, # 330]"
-      },
-      "1.2.0": {
-        "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nDependencies have been updated",
-        "de": "Adapter benötigt node.js >= 18 und js-controller >= 5 jetzt\nAbhängigkeiten wurden aktualisiert",
-        "ru": "Адаптер требует node.js >= 18 и js-контроллер >= 5 сейчас\nЗависимость обновлена",
-        "pt": "Adapter requer node.js >= 18 e js-controller >= 5 agora\nAs dependências foram atualizadas",
-        "nl": "Voor adaptor zijn node.js < 18 en js-controller > Nu 5\nAfhankelijkheden zijn bijgewerkt",
-        "fr": "L'adaptateur nécessite node.js >= 18 et js-controller >= 5 maintenant\nLes dépendances ont été actualisées",
-        "it": "Adattatore richiede node.js >= 18 e js-controller >= 5 ora\nLe dipendenze sono state aggiornate",
-        "es": "Adaptador requiere node.js √≥= 18 y js-controller 5 ahora\nSe han actualizado las dependencias",
-        "pl": "Adapter wymaga node.js > = 18 i kontroler js- > = 5 teraz\nZaktualizowano zależności",
-        "uk": "Адаптер вимагає node.js >= 18 і js-controller >= 5 тепер\nЗалежність було оновлено",
-        "zh-cn": "适配器需要节点.js QQ18和js控制器 QQ 现在5号\n依赖关系已更新"
-      }
+    "common": {
+        "name": "wolf-smartset",
+        "version": "2.0.1",
+        "news": {
+            "2.0.1": {
+                "en": "Bugfix: fixed various typos in Readme and translations\nBugfix: Fixed an AdminUI issue (#450 - 'No device selected') when the device information contained line break (e.g. in ContactInformation, Description or Comment )\nEnhancement for AdminUI: support for more than one device in list of devices returned from Wolf Smartset server",
+                "de": "Bugfix: verschiedene Tippfehler in Readme und Übersetzungen behoben\nBugfix: AdminUI-Problem behoben (#450 - 'No device select') wenn die Geräteinformationen einen Zeilenumbruch enthalten (z.B. in ContactInformation, Beschreibung oder Kommentar)\nVerbesserung für AdminUI: Unterstützung für mehr als ein Gerät in der Liste der von Wolf Smartset Server zurückgegebenen Geräte",
+                "ru": "Bugfix: исправлены различные опечатки в Readme и переводах\nBugfix: Исправлена проблема AdminUI (#450 - «Не выбрано устройство»), когда информация об устройстве содержала разрыв линии (например, в контактной информации, описании или комментарии)\nПоддержка более чем одного устройства в списке устройств, возвращенных с сервера Wolf Smartset",
+                "pt": "Bugfix: corrigido vários typos em Readme e traduções\nBugfix: Corrigido um problema AdminUI (#450 - 'No device selected') quando as informações do dispositivo continham quebra de linha (por exemplo, em ContactInformation, Description or Comment )\nMelhoria para AdminUI: suporte para mais de um dispositivo na lista de dispositivos retornados do servidor Wolf Smartset",
+                "nl": "Bugfix: verschillende typefouten opgelost in Readme en vertalingen\nBugfix: Vast een AdminUI probleem (#450 - 'Geen apparaat geselecteerd') wanneer het apparaat informatie bevatte lijn breken (bijvoorbeeld in Contactinformatie, beschrijving of opmerking)\nEnhancement for AdminUI: ondersteuning voor meer dan één apparaat in de lijst van apparaten die van Wolf Smartset server zijn teruggestuurd",
+                "fr": "Bugfix : a corrigé différentes typos dans Readme et traductions\nCorrection d'un problème AdminUI (#450 - 'Aucun périphérique sélectionné') lorsque l'information de l'appareil contenait une rupture de ligne (par exemple dans ContactInformation, Description ou Commentaire )\nAmélioration pour AdminUI: prise en charge de plus d'un périphérique dans la liste des périphériques retournés depuis le serveur Wolf Smartset",
+                "it": "Bugfix: diversi tipi fissi in Readme e traduzioni\nBugfix: Risolto un problema AdminUI (#450 - 'Nessun dispositivo selezionato') quando le informazioni del dispositivo contenevano l'interruzione della linea (ad esempio in ContactInformation, Descrizione o Commento)\nMiglioramento per AdminUI: supporto per più di un dispositivo nell'elenco dei dispositivi restituiti dal server Wolf Smartset",
+                "es": "Bugfix: fijo varios tipos en Readme y traducciones\nBugfix: Se corrigió un número de AdminUI (#450 - 'No seleccionó ningún dispositivo') cuando la información del dispositivo contenía la interrupción de la línea (por ejemplo, en contactoInformación, descripción o comentario)\nMejora para AdminUI: soporte para más de un dispositivo en la lista de dispositivos devueltos desde el servidor Wolf Smartset",
+                "pl": "Bugfix: stałe różne literówki w Readme i tłumaczenia\nBugfix: Naprawiono emisję administracyjną (# 450 - \"Nie wybrano urządzenia\"), gdy informacja o urządzeniu zawierała pęknięcie linii (np. w ContactInformation, Opis lub Komentarz)\nUlepszenie dla Administracji: obsługa więcej niż jednego urządzenia z listy urządzeń zwróconych z serwera Wolf Smartset",
+                "uk": "Виправлено помилку: виправлено різні типограми в перекладі\nВиправлено помилку: Виправлено проблему AdminUI (#450 - 'Не вибрано пристрій') коли інформація про пристрій, що міститься в рядку (наприклад, в Контактній Інформації, опис або коментар )\nРозширення для AdminUI: підтримка більш ніж одного пристрою в списку пристроїв, що поставляються з сервера Wolf Smartset",
+                "zh-cn": "Bugfix:在Readme和翻译中固定各种打字符\nBugfix: 当设备信息包含换行符( 如联系人信息、 描述或注释) 时, 固定一个 AdminUI 问题( # 450 - “ 没有选中设备 ” ) \n增强管理UI:支持从 Wolf Smartset 服务器返回的设备列表中的多个设备"
+            },
+            "2.0.0": {
+                "en": "BREAKING CHANGE: Please reenter your login credentials.\nAdapter requires node.js 20, js-controller 6 and admin 7 now.\nA general code cleanup and partial rewrite has been done.\nTrigger re-initalization has been added, if api returns an error (server might be down temporarily).\nExpert login and periodic re-login have been added (#242).\nSupport for level 3 objects `time programs` / `party mode` / `vacation mode` has been added.\nRequest UserInfo from Wolf server, check whether adapter instance's poll interval meets requirements (60 sec) added.\nParameterId lists for each Wolf BundleId created and show `BundleIds` for each channel added\nSupport for two sepearate poll cycles to avoid server abuse reactions has been added. \nSwitched AdminUI to `jsconConfig`.",
+                "de": "BREAKING CHANGE: Bitte geben Sie Ihre Anmeldeinformationen neu ein.\nAdapter benötigt jetzt node.js 20, js-controller 6 und admin 7.\nEs wurde eine allgemeine Code-Reinigung und ein Teil-Rewrite durchgeführt.\nTrigger-Re-initalization wurde hinzugefügt, wenn api einen Fehler zurückgibt (Server kann vorübergehend herunter sein).\nExperten-Login und regelmäßiges Re-Login wurden hinzugefügt (#242).\nUnterstützung für Level 3 Objekte `time Programme` / `party mode` / `vacation mode` wurde hinzugefügt.\nFordern Sie UserInfo vom Wolf-Server an, ob das Umfrageintervall der Adapterinstanz den Anforderungen (60 sec) entspricht.\nParameter Id Listen für jeden Wolf Bundle Id erstellt und zeigen `BundleIds` für jeden Kanal hinzugefügt\nEs wurde eine Unterstützung für zwei sepearate Umfragezyklen zur Vermeidung von Server-Missbrauchreaktionen hinzugefügt.\nSchaltete AdminUI auf `jsconConfig`.",
+                "ru": "Изменить дыхание: Пожалуйста, введите свои учетные данные для входа.\nАдаптер требует node.js 20, js-контроллер 6 и админ 7.\nПроведена генеральная очистка кода и частичная переписка.\nДобавлена реинитализация триггера, если api возвращает ошибку (сервер может временно упасть).\nДобавлен вход эксперта и периодический повторный вход (#242).\nДобавлена поддержка объектов уровня 3 «временные программы» / «партийный режим» / «режим отпуска».\nЗапросить UserInfo с сервера Wolf, проверить, соответствует ли интервал опроса адаптера требованиям (60 сек).\nПараметр Список для каждого волка Id создал и показал «BundleIds» для каждого добавленного канала\nДобавлена поддержка двух циклов опросов, чтобы избежать реакции злоупотребления сервером.\nПереключил AdminUI на jsconConfig.",
+                "pt": "Muita coisa: Por favor, insira suas credenciais de login.\nAdaptador requer node.js 20, js-controller 6 e admin 7 agora.\nFoi feita uma limpeza geral e reescrita parcial.\nA reinicialização do gatilho foi adicionada, se o api retornar um erro (o servidor pode estar em baixo temporariamente).\nO login e o re-login periódico foram adicionados (#242).\nSuporte para o nível 3 objetos `programas de tempo` / 'modo de partido` / 'modo de educação` foi adicionado.\nSolicite UserInfo do servidor Wolf, verifique se o intervalo de pesquisa da instância do adaptador atende aos requisitos (60 sec) adicionados.\nParâmetro Listas de identificação para cada Wolf Bundle Id criado e mostrar `BundleIds` para cada canal adicionado\nO suporte para dois ciclos de pesquisa sepearate para evitar reações de abuso de servidor foi adicionado.\nAdminUI comutado para `jsconConfig`.",
+                "nl": "Breaking VERANDERING: Voer uw aanmeldgegevens in.\nAdapter vereist node.js 20, js-controller 6 en admin 7.\nEen algemene code opruiming en gedeeltelijke herschrijven is gedaan.\nTrigger re-initalisatie is toegevoegd, als api een fout teruggeeft (server kan tijdelijk zijn uitgeschakeld).\nExpert login en periodieke re-login zijn toegevoegd (#242).\nOndersteuning voor niveau 3 objecten .\nVraag UserInfo van Wolf server, controleer of de poll interval van adapter instantie voldoet aan de eisen (60 sec) toegevoegd.\nParameter Id lijsten voor elke Wolf Bundle Id creëerde en show BundleIds voor elk kanaal toegevoegd\nEr is steun voor twee aparte pollcycli toegevoegd om servermisbruikreacties te voorkomen.\nSchakelde AdminUI naar .",
+                "fr": "CHANGEMENT DE BREAING: Veuillez entrer de nouveau vos identifiants de connexion.\nAdaptateur nécessite node.js 20, js-controller 6 et admin 7 maintenant.\nUn nettoyage général du code et une réécriture partielle ont été effectués.\nLa ré-initalisation de déclenchement a été ajoutée, si api renvoie une erreur (le serveur peut être temporairement désactivé).\nUne connexion experte et une nouvelle connexion périodique ont été ajoutées (#242).\nLa prise en charge des objets de niveau 3 `time programs` / `part mode` / `vacation mode` a été ajoutée.\nDemander UserInfo au serveur Wolf, vérifier si l'intervalle de sondage de l'instance adaptateur répond aux exigences (60 sec) ajoutées.\nParamètre Id listes pour chaque Wolf Bundle Id créé et afficher `BundleIds` pour chaque canal ajouté\nOn a ajouté le support de deux cycles de sondage séparés pour éviter les réactions d'abus de serveur.\nA commuté AdminUI en `jsconConfig`.",
+                "it": "CAMBIO DI BREAKING: Si prega di reinserire le credenziali di accesso.\nAdattatore richiede node.js 20, js-controller 6 e admin 7 ora.\nÈ stata fatta una pulizia generale del codice e una riscrittura parziale.\nTrigger ri-initalization è stato aggiunto, se api restituisce un errore (il server potrebbe essere giù temporaneamente).\nSono stati aggiunti login esperto e re-login periodico (#242).\nSupporto per livello 3 oggetti `programmi di tempo` / `modalità di partito` / `modalità di vacanza` è stato aggiunto.\nRichiedi informazioni sull'utente dal server Wolf, controlla se l'intervallo di sondaggio dell'istanza dell'adattatore soddisfa i requisiti (60 sec) aggiunti.\nParametro Elenchi Id per ogni Wolf Bundle Id ha creato e mostrare `BundleIds` per ogni canale aggiunto\nÈ stato aggiunto il supporto per due cicli di sondaggio sepearate per evitare reazioni di abuso del server.\nAdminUI commutato a `jsconConfig`.",
+                "es": "Cambiando: Por favor vuelva a introducir sus credenciales de inicio de sesión.\nAdaptador requiere node.js 20, js-controller 6 y admin 7 ahora.\nSe ha hecho una limpieza general de códigos y una reescritura parcial.\nSe ha añadido la reinitalización del desencadenante, si api devuelve un error (el servidor podría bajar temporalmente).\nSe ha añadido el inicio de sesión de expertos y el reinicio periódico (#242).\nSe ha añadido soporte para el nivel 3 objetos `programas de tiempo` / `modo de partido` / `modo de vacunación'.\nSolicite a UserInfo del servidor Wolf, compruebe si el intervalo de encuesta de instancia de adaptador cumple con los requisitos (60 segundos) añadido.\nParámetro Listas de Id para cada Wolf Bundle Id creó y mostró `BundleIds` para cada canal añadido\nSe ha añadido soporte para dos ciclos de encuestas de secuencias para evitar reacciones de abuso del servidor.\nSwitched AdminUI to `jsconConfig`.",
+                "pl": "ZMIANA ZBIORCZA: Proszę ponownie podać swoje dane logowania.\nAdapter wymaga node.js 20, js- kontroler 6 i admin 7 teraz.\nWykonano ogólne czyszczenie kodu i częściową korektę.\nDodano reinitalizację Trigger, jeśli api zwraca błąd (serwer może być tymczasowo w dół).\nDodano logowanie ekspertów i okresowe ponowne logowanie (# 242).\nDodano obsługę 'programów czasowych' / 'stron' / 'wakacji' poziomu 3.\nPoproś UserInfo z serwera Wolf, sprawdź, czy interwał ankiety instancji adaptera spełnia wymagania (60 sekund) dodane.\nParametr Lista Id dla każdego Wolf Bundle Id stworzył i pokazał 'BundleIds' dla każdego dodanego kanału\nDodano wsparcie dla dwóch cyklów ankietowych, aby uniknąć nadużyć serwera.\nPrzełączono administrację na 'jsconConfig'.",
+                "uk": "БРЕАКІНГ ЗМІН: Будь ласка, перейменуйте свої облікові дані.\nАдаптер вимагає node.js 20, js-controller 6 і admin 7 тепер.\nЗдійснено очистку коду та частковий перезапис.\nДодана реінсталяція, якщо апі повертає помилку (сервер може бути тимчасовою).\nДодано експертний логін та періодичний релогін (#242).\nДодано підтримку рівня 3 об’єктів `time програм` / `party mode` / `vacation mode```.\nЗапитайте UserInfo від сервера Wolf, перевірте, чи відповідає інтервал опитування адаптера (60 сек).\nПараметр Списки Id для кожного Wolf Bundle Id створив і показати `BundleIds` для кожного каналу\nДодана підтримка двох циклів сепаратного опитування, щоб уникнути реакції зловживання сервером.\nУвімкнено AdminUI до `jsconConfig`.",
+                "zh-cn": "打破变化: 请重新输入您的登录证书 .\n适配器需要节点.js 20,js控制器 6和现在的admin 7.\n一般代码清理和部分重写已经完成.\n已添加触发重命名, 如果 api 返回一个错误( 服务器可能暂时下调) .\n增加了专家登录和定期重新登录(# 242).\n增加了对 \" 时间程序 \" / \" 政党模式 \" / \" 退出模式 \" 3级对象的支持.\n从 Wolf 服务器请求用户Info,检查适配器实例的民调间隔是否符合要求(60秒)添加.\n参数 每个 Wolf 包的 Id 列表 Id 为每个频道创建并显示“ BundleIds ” \n增加了支持两个sepearate民意调查周期以避免服务器滥用反应.\n已切换为“jsconConfig”."
+            },
+            "1.2.4": {
+                "en": "Bugfix for issues #281, #329, #365, #406: ioBroker object limits min/max use Wolf Smartset Min/MaxValueCondition if available, otherwise use Min/MaxValue now.\nAdded some comments on Wolf Smartset ControlTypes\nModified misspelled variable name to 'SubMenuEntry'\nAdd NamePrefix, if exists, to object names (e.g. 'A1: ', 'WP001: ') for better parameter identification\nAdapter has been adapted to @iobroker/eslint-config and eslint 9.x.\nDependencies have been updated",
+                "de": "Bugfix für Probleme #281, #329, #365, #406: ioBroker-Objektlimits min/max verwenden Wolf Smartset Min/MaxValueCondition, falls verfügbar, andernfalls Min/MaxValue jetzt verwenden.\nEinige Kommentare zu Wolf Smartset ControlTyps hinzugefügt\nModified misspelled variable name to 'SubMenuEntry'\nNamePrefix, falls vorhanden, zu Objektnamen hinzufügen (z.B. 'A1: ', 'WP001: ') zur besseren Parameteridentifikation\nAdapter wurde an @iobroker/eslint-config und eslint 9.x angepasst.\nAbhängigkeiten wurden aktualisiert",
+                "ru": "Bugfix for issues #281, #329, #365, #406: ioBroker object limits min/max use Wolf Smartset Min/MaxValueCondition if available, otherwise use Min/MaxValue now.\nДобавлены некоторые комментарии на Wolf Smartset ControlTypes\nМодифицированное имя 'SubMenuEntry'\nДобавить NamePrefix, если он существует, для обозначения объектов (например, 'A1:', 'WP001:') для лучшей идентификации параметров\nАдаптер был адаптирован к @iobroker/eslint-config и eslint 9.x.\nЗависимость обновлена",
+                "pt": "Bugfix para problemas #281, #329, #365, #406: ioBroker objeto limita min/max usar Wolf Smartset Min/MaxValueCondition se disponível, de outra forma usar Min/MaxValue agora.\nAdicionado alguns comentários em Wolf Smartset ControlTypes\nNome de variável desviado modificado para 'SubMenuEntry'\nAdicionar NamePrefix, se existir, para nomes de objetos (por exemplo, 'A1: ', 'WP001: ') para melhor identificação de parâmetros\nAdapter foi adaptado para @iobroker/eslint-config e eslint 9.x.\nAs dependências foram atualizadas",
+                "nl": "Bugfix voor problemen #281, #329, #365, #406: ioBroker object limieten min/max gebruik Wolf Smartset Min/MaxValueCondition indien beschikbaar, anders gebruik Min/MaxValue nu.\nToegevoegd enkele opmerkingen over Wolf Smartset ControlTypes\nVeranderde fout gespelde variabelenaam naar 'SubMenuEntry'\nNaamVoorvoegsel toevoegen aan objectnamen (bijv. 'A1:', 'WP001:') voor een betere parameteridentificatie\nAdapter is aangepast aan @iobroker/eslint-config en eslint 9.x.\nAfhankelijkheden zijn bijgewerkt",
+                "fr": "Bugfix pour les numéros #281, #329, #365, #406: ioBroker limite les objets min/max utiliser Wolf Smartset Min/MaxValueCondition si disponible, sinon utiliser Min/MaxValue maintenant.\nAjouté quelques commentaires sur Wolf Smartset ControlTypes\nNom de variable mal orthographiée modifié pour 'SubMenuEntry'\nAjouter NamePrefix, s'il existe, aux noms des objets (par exemple 'A1: ', 'WP001: ') pour une meilleure identification des paramètres\nAdaptateur a été adapté à @iobroker/eslint-config et eslint 9.x.\nLes dépendances ont été actualisées",
+                "it": "Bugfix per i numeri #281, #329, #365, #406: l'oggetto ioBroker limita l'uso minimo/max Wolf Smartset Min/MaxValueCondition se disponibile, altrimenti usare Min/MaxValue ora.\nAggiunto alcuni commenti su Wolf Smartset ControlTypes\nModificato nome variabile misspelled a 'SubMenuEntry'\nAggiungi NamePrefix, se esiste, ai nomi degli oggetti (ad esempio 'A1: ', 'WP001: ') per una migliore identificazione dei parametri\nL'adattatore è stato adattato a @iobroker/eslint-config ed eslint 9.x.\nLe dipendenze sono state aggiornate",
+                "es": "Bugfix para problemas #281, #329, #365, #406: ioBroker límite de objetos min/max uso Wolf Smartset Min/MaxValueCondición si está disponible, de lo contrario use Min/MaxValue ahora.\nAñadido algunos comentarios sobre Wolf Smartset ControlTypes\nNombre de variable desperdiciado modificado a 'SubMenuEntry'\nAñadir NombrePrefix, si existe, a los nombres de objetos (por ejemplo, 'A1: ', 'WP001: ') para una mejor identificación del parámetro\nAdaptador ha sido adaptado a @iobroker/eslint-config y eslint 9.x.\nSe han actualizado las dependencias",
+                "pl": "Bugfix for issues # 281, # 329, # 365, # 406: joBroker object limits min / max use Wolf Smartset Min / MaxValueCondition if available, other use Min / MaxValue now.\nDodano kilka komentarzy do Wolf Smartset ControlTypes\nZmodyfikowana błędna nazwa zmiennej do 'SubMenuEntry'\nDodaj NamePrefix, jeśli istnieje, do nazw obiektów (np. 'A1:', 'WP001:') dla lepszej identyfikacji parametrów\nAdapter został dostosowany do @ iobroker / eslint- config i eslint 9.x.\nZaktualizowano zależności",
+                "uk": "Виправлення помилок для питань #281, #329, #365, #406: ioBroker межі об'єктів min/max використання Wolf Smartset Min/MaxValueCondition, якщо це можливо, інакше використовуйте Min/MaxValue зараз.\nДодано деякі коментарі на Wolf Smartset ControlTypes\nМодифіковане ім'я пропущених змінних імен до 'SubMenuEntry'\nДодати ім'яПрефікс, якщо існує, для імен об'єктів (наприклад, 'A1: ', 'WP001: ') для визначення кращого параметра\nАдаптер був адаптований до @iobroker/eslint-config та eslint 9.x.\nЗалежність було оновлено",
+                "zh-cn": "281,#329,#365,#406期的bugfix:ioBroker对象限制 min/max 如果可用的话使用Wolf Smartset Min/MaxValue Content,否则现在使用Min/MaxValue.\n添加一些关于 Wolf Smartset 控制模式的评论\n修改错误的可变名称为“ SubMenu Entry ”\n添加名称前缀, 如果存在的话, 用于对象名称( 例如“ A1: ” , “ WP001: ” ) , 以更好地识别参数\n适配器已改编为@iobroduc/eslint-config和eslint 9.x.\n依赖关系已更新"
+            },
+            "1.2.3": {
+                "en": "Dependencies have been updated",
+                "de": "Abhängigkeiten wurden aktualisiert",
+                "ru": "Зависимость обновлена",
+                "pt": "As dependências foram atualizadas",
+                "nl": "Afhankelijkheden zijn bijgewerkt",
+                "fr": "Les dépendances ont été actualisées",
+                "it": "Le dipendenze sono state aggiornate",
+                "es": "Se han actualizado las dependencias",
+                "pl": "Zaktualizowano zależności",
+                "uk": "Залежність було оновлено",
+                "zh-cn": "依赖关系已更新"
+            },
+            "1.2.2": {
+                "en": "A crash during re-authentication has been fixed. OpenIdInit will be called only once to avoid endless loop during re-authentication.",
+                "de": "Ein Absturz während der Neuauthentifizierung wurde behoben. OpenIdInit wird nur einmal aufgerufen, um endlose Schleife während der Neuauthentifizierung zu vermeiden.",
+                "ru": "Сбой во время повторного вскрытия был зафиксирован. OpenIdInit будет называться только один раз, чтобы избежать бесконечной петли во время повторного открытия.",
+                "pt": "Um acidente durante a reautenticação foi corrigido. OpenIdInit será chamado apenas uma vez para evitar loop sem fim durante a re-autenticação.",
+                "nl": "Een crash tijdens herauthenticatie is opgelost. OpenIdInit wordt maar één keer gebeld om eindeloze lus tijdens herauthenticatie te vermijden.",
+                "fr": "Un accident lors de la réauthentification a été corrigé. OpenIdInit ne sera appelé qu'une seule fois pour éviter une boucle sans fin pendant la réauthentification.",
+                "it": "Un incidente durante la ricognizione è stato fissato. OpenIdInit sarà chiamato solo una volta per evitare l'anello infinito durante la ri-authentication.",
+                "es": "Se ha fijado un accidente durante la reauténticación. OpenIdInit se llamará sólo una vez para evitar un bucle interminable durante la reauthenticación.",
+                "pl": "Katastrofa podczas ponownego uwierzytelniania została naprawiona. OpenIdInit będzie wywoływany tylko raz, aby uniknąć niekończącej się pętli podczas ponownego uwierzytelniania.",
+                "uk": "Зафіксовано аварійну аварію під час переобладнання. OpenIdInit буде називатися тільки один раз, щоб уникнути нескінченної петлі під час реабілітації.",
+                "zh-cn": "重新校验时的坠机已被修复 。 OpenIdInit只会被调用一次,以避免在重新验证时出现无尽的循环."
+            },
+            "1.2.1": {
+                "en": "Initialization added to openId. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]",
+                "de": "Initialisierung zu openId hinzugefügt. Dies behebt GET_AUTH_TOKEN_ERROR [#304, #330]",
+                "ru": "Инициализация добавлена к открытию Ид. Это исправляет GET_AUTH_TOKEN_ERROR [#304, #330]",
+                "pt": "Inicialização adicionada para abrir Id. Isso corrige GET_AUTH_TOKEN_ERROR [#304, #330]",
+                "nl": "Initialisatie toegevoegd aan openen Id. Dit lost GET_AUTH_TOKEN_ERROR [#304, #330]",
+                "fr": "Initialisation ajoutée à ouverte Id. Cela corrige GET_AUTH_TOKEN_ERROR [#304, #330]",
+                "it": "Inizializzazione aggiunta ad aprire Id. Questo risolve GET_AUTH_TOKEN_ERROR [#304, #330]",
+                "es": "Iniciación agregada para abrir Id. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]",
+                "pl": "Inicjalizacja dodana do otwartego Id. To naprawia GET _ AUTH _ TOKEN _ ERROR [# 304, # 330]",
+                "uk": "Початкова обробка додано до відкриття Id. Це фіксує GET_AUTH_TOKEN_ERROR [#304, #330]",
+                "zh-cn": "初始化添加到打开 Id. 此修正 [# 304, # 330]"
+            },
+            "1.2.0": {
+                "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nDependencies have been updated",
+                "de": "Adapter benötigt node.js >= 18 und js-controller >= 5 jetzt\nAbhängigkeiten wurden aktualisiert",
+                "ru": "Адаптер требует node.js >= 18 и js-контроллер >= 5 сейчас\nЗависимость обновлена",
+                "pt": "Adapter requer node.js >= 18 e js-controller >= 5 agora\nAs dependências foram atualizadas",
+                "nl": "Voor adaptor zijn node.js < 18 en js-controller > Nu 5\nAfhankelijkheden zijn bijgewerkt",
+                "fr": "L'adaptateur nécessite node.js >= 18 et js-controller >= 5 maintenant\nLes dépendances ont été actualisées",
+                "it": "Adattatore richiede node.js >= 18 e js-controller >= 5 ora\nLe dipendenze sono state aggiornate",
+                "es": "Adaptador requiere node.js √≥= 18 y js-controller 5 ahora\nSe han actualizado las dependencias",
+                "pl": "Adapter wymaga node.js > = 18 i kontroler js- > = 5 teraz\nZaktualizowano zależności",
+                "uk": "Адаптер вимагає node.js >= 18 і js-controller >= 5 тепер\nЗалежність було оновлено",
+                "zh-cn": "适配器需要节点.js QQ18和js控制器 QQ 现在5号\n依赖关系已更新"
+            }
+        },
+        "titleLang": {
+            "en": "Wolf SmartSet",
+            "de": "Wolf SmartSet",
+            "ru": "Wolf SmartSet",
+            "pt": "Wolf SmartSet",
+            "nl": "Wolf SmartSet",
+            "fr": "Wolf SmartSet",
+            "it": "Wolf SmartSet",
+            "es": "Wolf SmartSet",
+            "pl": "Wolf SmartSet",
+            "zh-cn": "狼SmartSet",
+            "uk": "Wolf SmartSet"
+        },
+        "desc": {
+            "en": "Connect Wolf cloud to IoBroker",
+            "de": "Verbinden Sie die Wolf Cloud mit IoBroker",
+            "ru": "Подключите облако Wolf к IoBroker",
+            "pt": "Conecte a nuvem Wolf ao IoBroker",
+            "nl": "Verbind Wolf-cloud met IoBroker",
+            "fr": "Connectez Wolf Cloud à IoBroker",
+            "it": "Connetti il ​​cloud Wolf a IoBroker",
+            "es": "Conecte la nube Wolf a IoBroker",
+            "pl": "Połącz chmurę Wolfa z IoBrokerem",
+            "zh-cn": "将Wolf云连接到IoBroker",
+            "uk": "Підключіть Wolf cloud до IoBroker"
+        },
+        "authors": [
+            "MeisterTR <meistertr.smarthome@gmail.com>",
+            "flingo64 <github@messmer-online.de>"
+        ],
+        "keywords": [
+            "wolf",
+            "heating",
+            "cloud"
+        ],
+        "licenseInformation": {
+            "license": "MIT",
+            "type": "free"
+        },
+        "platform": "Javascript/Node.js",
+        "icon": "wolf-smartset.png",
+        "enabled": true,
+        "messagebox": true,
+        "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wolf-smartset/master/admin/wolf-smartset.png",
+        "readme": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset/blob/master/README.md",
+        "loglevel": "info",
+        "tier": 2,
+        "mode": "daemon",
+        "type": "climate-control",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "adminUI": {
+            "config": "json"
+        },
+        "plugins": {
+            "sentry": {
+                "dsn": "https://a9218dbd5539461fae687736e804c590@sentry.iobroker.net/129"
+            }
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=7.4.10"
+            }
+        ]
     },
-    "titleLang": {
-      "en": "Wolf SmartSet",
-      "de": "Wolf SmartSet",
-      "ru": "Wolf SmartSet",
-      "pt": "Wolf SmartSet",
-      "nl": "Wolf SmartSet",
-      "fr": "Wolf SmartSet",
-      "it": "Wolf SmartSet",
-      "es": "Wolf SmartSet",
-      "pl": "Wolf SmartSet",
-      "zh-cn": "狼SmartSet",
-      "uk": "Wolf SmartSet"
-    },
-    "desc": {
-      "en": "Connect Wolf cloud to IoBroker",
-      "de": "Verbinden Sie die Wolf Cloud mit IoBroker",
-      "ru": "Подключите облако Wolf к IoBroker",
-      "pt": "Conecte a nuvem Wolf ao IoBroker",
-      "nl": "Verbind Wolf-cloud met IoBroker",
-      "fr": "Connectez Wolf Cloud à IoBroker",
-      "it": "Connetti il ​​cloud Wolf a IoBroker",
-      "es": "Conecte la nube Wolf a IoBroker",
-      "pl": "Połącz chmurę Wolfa z IoBrokerem",
-      "zh-cn": "将Wolf云连接到IoBroker",
-      "uk": "Підключіть Wolf cloud до IoBroker"
-    },
-    "authors": [
-      "MeisterTR <meistertr.smarthome@gmail.com>",
-      "flingo64 <github@messmer-online.de>"
+    "encryptedNative": [
+        "password",
+        "expertPassword"
     ],
-    "keywords": [
-      "wolf",
-      "heating",
-      "cloud"
+    "protectedNative": [
+        "password",
+        "expertPassword"
     ],
-    "licenseInformation": {
-      "license": "MIT",
-      "type": "free"
+    "native": {
+        "username": "",
+        "password": "",
+        "device": "",
+        "deviceName": "No device selected",
+        "pollIntervalShort": 120,
+        "pollIntervalLong": 60,
+        "doExpertLogin": false,
+        "expertPassword": "",
+        "doPubIpCheck": true,
+        "doApiProfile": false,
+        "doPollAllParams": true,
+        "bundleIdRequestedShort": "Default",
+        "bundleIdRequestedLong": "Default",
+        "bundleIdTable": [
+            {
+                "bundleIdName": "1000",
+                "bundleIdUseShort": true,
+                "bundleIdUseLong": false
+            },
+            {
+                "bundleIdName": "3100",
+                "bundleIdUseShort": true,
+                "bundleIdUseLong": false
+            },
+            {
+                "bundleIdName": "3500",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": true
+            },
+            {
+                "bundleIdName": "6300",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": true
+            },
+            {
+                "bundleIdName": "7100",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": true
+            },
+            {
+                "bundleIdName": "7600",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": false
+            },
+            {
+                "bundleIdName": "10000",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": false
+            },
+            {
+                "bundleIdName": "10700",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": false
+            },
+            {
+                "bundleIdName": "14000",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": false
+            },
+            {
+                "bundleIdName": "14700",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": false
+            },
+            {
+                "bundleIdName": "15600",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": false
+            },
+            {
+                "bundleIdName": "15700",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": false
+            },
+            {
+                "bundleIdName": "15800",
+                "bundleIdUseShort": false,
+                "bundleIdUseLong": false
+            }
+        ]
     },
-    "platform": "Javascript/Node.js",
-    "icon": "wolf-smartset.png",
-    "enabled": true,
-    "messagebox": true,
-    "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wolf-smartset/master/admin/wolf-smartset.png",
-    "readme": "https://github.com/iobroker-community-adapters/ioBroker.wolf-smartset/blob/master/README.md",
-    "loglevel": "info",
-    "tier": 2,
-    "mode": "daemon",
-    "type": "climate-control",
-    "compact": true,
-    "connectionType": "cloud",
-    "dataSource": "poll",
-    "adminUI": {
-      "config": "json"
-    },
-    "plugins": {
-      "sentry": {
-        "dsn": "https://a9218dbd5539461fae687736e804c590@sentry.iobroker.net/129"
-      }
-    },
-    "dependencies": [
-      {
-        "js-controller": ">=6.0.11"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=7.4.10"
-      }
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "If connected to device or service",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "info_api",
+            "type": "channel",
+            "common": {
+                "name": "API Profile Info"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info_api.poll_req_bundle_id",
+            "type": "state",
+            "common": {
+                "role": "value",
+                "name": "Polled BundleId",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "info_api.poll_req_num_params",
+            "type": "state",
+            "common": {
+                "role": "value",
+                "name": "Number of requested parameter values",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "info_api.poll_resp_num_params",
+            "type": "state",
+            "common": {
+                "role": "value",
+                "name": "Number of returned parameters",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "info_api.poll_resp_num_values",
+            "type": "state",
+            "common": {
+                "role": "value",
+                "name": "Number of returned parameters having a value",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        }
     ]
-  },
-  "encryptedNative": [
-    "password",
-    "expertPassword"
-  ],
-  "protectedNative": [
-    "password",
-    "expertPassword"
-  ],
-  "native": {
-    "username": "",
-    "password": "",
-    "device": "",
-    "deviceName": "No device selected",
-    "pollIntervalShort": 120,
-    "pollIntervalLong": 60,
-    "doExpertLogin": false,
-    "expertPassword": "",
-    "doPubIpCheck": true,
-    "doApiProfile": false,
-    "bundleIdRequestedShort": "Default",
-    "bundleIdRequestedLong": "Default",
-    "bundleIdTable": [
-      {
-        "bundleIdName": "1000",
-        "bundleIdUseShort": true,
-        "bundleIdUseLong": false
-      },
-      {
-        "bundleIdName": "3100",
-        "bundleIdUseShort": true,
-        "bundleIdUseLong": false
-      },
-      {
-        "bundleIdName": "3500",
-        "bundleIdUseShort": false,
-        "bundleIdUseLong": true
-      },
-      {
-        "bundleIdName": "6300",
-        "bundleIdUseShort": false,
-        "bundleIdUseLong": true
-      },
-      {
-        "bundleIdName": "7100",
-        "bundleIdUseShort": false,
-        "bundleIdUseLong": true
-      },
-      {
-        "bundleIdName": "7600",
-        "bundleIdUseShort": false,
-        "bundleIdUseLong": true
-      }
-    ]
-  },
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": "If connected to device or service",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    },
-    {
-      "_id": "info_api",
-      "type": "channel",
-      "common": {
-        "name": "API Profile Info"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info_api.poll_req_bundle_id",
-      "type": "state",
-      "common": {
-        "role": "value",
-        "name": "Polled BundleId",
-        "type": "number",
-        "read": true,
-        "write": false,
-        "def": 0
-      },
-      "native": {}
-    },
-    {
-      "_id": "info_api.poll_req_num_params",
-      "type": "state",
-      "common": {
-        "role": "value",
-        "name": "Number of requested parameter values",
-        "type": "number",
-        "read": true,
-        "write": false,
-        "def": 0
-      },
-      "native": {}
-    },
-    {
-      "_id": "info_api.poll_resp_num_params",
-      "type": "state",
-      "common": {
-        "role": "value",
-        "name": "Number of returned parameters",
-        "type": "number",
-        "read": true,
-        "write": false,
-        "def": 0
-      },
-      "native": {}
-    },
-    {
-      "_id": "info_api.poll_resp_num_values",
-      "type": "state",
-      "common": {
-        "role": "value",
-        "name": "Number of returned parameters having a value",
-        "type": "number",
-        "read": true,
-        "write": false,
-        "def": 0
-      },
-      "native": {}
-    }
-  ]
 }

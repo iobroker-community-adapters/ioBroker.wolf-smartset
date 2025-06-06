@@ -31,5 +31,7 @@
     "Expert Login is required to poll expert parameters": "La connexion des experts est nécessaire pour interroger les paramètres d'experts",
     "Parameters of Bundle": "Paramètres du faisceau",
     "Include in Short Poll Cycle": "Inclure dans le cycle de sondage court",
-    "Include in Long Poll Cycle": "Inclure dans le cycle de sondage long"
+    "Include in Long Poll Cycle": "Inclure dans le cycle de sondage long",
+    "Poll all Parameters": "Sonder tous les paramètres",
+    "This poll strategy is backward compatible with adpater version 1.x": "Cette stratégie de sondage est en arrière compatible avec ADPATAT Version 1.x"
 }
