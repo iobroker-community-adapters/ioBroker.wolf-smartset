@@ -10,7 +10,7 @@ const _GET_MY_PUBLIC_IP_URL = 'https://api.ipify.org?format=json';
 const timeoutHandler = [];
 
 const BUNDLEID_FULL = 0;
-const BUNDLEID_FULL_DEFAULT = 1000;
+const BUNDLEID_DEFAULT = 1000;
 
 let ParamObjList = [];
 //const objects = {};
@@ -380,9 +380,9 @@ class WolfSmartsetAdapter extends utils.Adapter {
      */
     async _CreateBundleValuesLists(WolfParamDescriptions) {
         let BundleValuesList = {};
-        let DefaultBundleIdShortCycle = 0;
+        let DefaultBundleIdShortCycle = BUNDLEID_DEFAULT;
         let ValueIdListShortCycle = [];
-        let DefaultBundleIdLongCycle = 0;
+        let DefaultBundleIdLongCycle = BUNDLEID_DEFAULT;
         let ValueIdListLongCycle = [];
 
         // Bundle BUNDLEID_FULL (0) --> full parameter list
@@ -404,12 +404,12 @@ class WolfSmartsetAdapter extends utils.Adapter {
         }
 
         if (this.config.doPollAllParams) {
-            // doPollAllParams: poll full params list with BundleId set to BUNDLEID_FULL_DEFAULT (1000)
+            // doPollAllParams: poll full params list with BundleId set to BUNDLEID_DEFAULT (1000)
             this.ValueIdListShortCycle = BundleValuesList[BUNDLEID_FULL];
-            this.BundleIdShortCycle = BUNDLEID_FULL_DEFAULT;
+            this.BundleIdShortCycle = BUNDLEID_DEFAULT;
 
             this.ValueIdListLongCycle = [];
-            this.BundleIdLongCycle = BUNDLEID_FULL_DEFAULT;
+            this.BundleIdLongCycle = BUNDLEID_DEFAULT;
         } else {
             for (const bundleId of this.config.bundleIdTable) {
                 if (bundleId.bundleIdUseShort && typeof BundleValuesList[bundleId.bundleIdName] != 'undefined') {
