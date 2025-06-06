@@ -126,7 +126,8 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-- (flingo64) Bugfix: set instance state to connected only if initialization went fine
+- (flingo64) Change: Log periodic message '_refreshAuthToken(): ERROR ...' with level info
+- (flingo64) Bugfix (#458): set instance state to connected only if initialization went fine
 - (flingo64) Bugfix: if configured BundleId for poll requests is not available on server, use default BundleId
 - (flingo64) Enhancement: option 'Poll all Parameters' implements backward compatible poll strategy
 - (flingo64) Enhancement: added more BundleIds (10000, 10700, 14000, 14700, 15600, 15700, 15800) for AdminUI as found on different Wolf device configurations
