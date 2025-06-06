@@ -8,6 +8,10 @@ const axios = require('axios').default;
 const _GET_MY_PUBLIC_IP_URL = 'https://api.ipify.org?format=json';
 
 const timeoutHandler = [];
+
+const BUNDLEID_FULL = 0;
+const BUNDLEID_FULL_DEFAULT = 1000;
+
 let ParamObjList = [];
 //const objects = {};
 
@@ -381,6 +385,9 @@ class WolfSmartsetAdapter extends utils.Adapter {
         let DefaultBundleIdLongCycle = 0;
         let ValueIdListLongCycle = [];
 
+        // Bundle BUNDLEID_FULL (0) --> full parameter list
+        BundleValuesList[BUNDLEID_FULL] = [];
+
         for (const WolfParamDescription of WolfParamDescriptions) {
             const bundleId = WolfParamDescription.BundleId;
             if (typeof BundleValuesList[bundleId] == 'undefined') {
@@ -388,39 +395,63 @@ class WolfSmartsetAdapter extends utils.Adapter {
             }
 
             // De-duplicate ParamterIds for bundleId: they might be at multiple locations in the tree
+            if (typeof BundleValuesList[BUNDLEID_FULL][WolfParamDescription.ParameterId] == 'undefined') {
+                BundleValuesList[BUNDLEID_FULL].push(WolfParamDescription.ParameterId);
+            }
             if (typeof BundleValuesList[bundleId][WolfParamDescription.ParameterId] == 'undefined') {
                 BundleValuesList[bundleId].push(WolfParamDescription.ParameterId);
             }
         }
 
-        for (const bundleId of this.config.bundleIdTable) {
-            if (bundleId.bundleIdUseShort && typeof BundleValuesList[bundleId.bundleIdName] != 'undefined') {
-                ValueIdListShortCycle = ValueIdListShortCycle.concat(BundleValuesList[bundleId.bundleIdName]);
-                DefaultBundleIdShortCycle =
-                    Number(bundleId.bundleIdName) > DefaultBundleIdShortCycle
-                        ? Number(bundleId.bundleIdName)
-                        : DefaultBundleIdShortCycle;
+        if (this.config.doPollAllParams) {
+            // doPollAllParams: poll full params list with BundleId set to BUNDLEID_FULL_DEFAULT (1000)
+            this.ValueIdListShortCycle = BundleValuesList[BUNDLEID_FULL];
+            this.BundleIdShortCycle = BUNDLEID_FULL_DEFAULT;
+
+            this.ValueIdListLongCycle = [];
+            this.BundleIdLongCycle = BUNDLEID_FULL_DEFAULT;
+        } else {
+            for (const bundleId of this.config.bundleIdTable) {
+                if (bundleId.bundleIdUseShort && typeof BundleValuesList[bundleId.bundleIdName] != 'undefined') {
+                    ValueIdListShortCycle = ValueIdListShortCycle.concat(BundleValuesList[bundleId.bundleIdName]);
+                    // BundleId - Default is the greatest BundleId
+                    DefaultBundleIdShortCycle =
+                        Number(bundleId.bundleIdName) > DefaultBundleIdShortCycle
+                            ? Number(bundleId.bundleIdName)
+                            : DefaultBundleIdShortCycle;
+                }
+                if (bundleId.bundleIdUseLong && typeof BundleValuesList[bundleId.bundleIdName] != 'undefined') {
+                    ValueIdListLongCycle = ValueIdListLongCycle.concat(BundleValuesList[bundleId.bundleIdName]);
+                    // BundleId - Default is the greatest BundleId
+                    DefaultBundleIdLongCycle =
+                        Number(bundleId.bundleIdName) > DefaultBundleIdLongCycle
+                            ? Number(bundleId.bundleIdName)
+                            : DefaultBundleIdLongCycle;
+                }
             }
-            if (bundleId.bundleIdUseLong && typeof BundleValuesList[bundleId.bundleIdName] != 'undefined') {
-                ValueIdListLongCycle = ValueIdListLongCycle.concat(BundleValuesList[bundleId.bundleIdName]);
-                DefaultBundleIdLongCycle =
-                    Number(bundleId.bundleIdName) > DefaultBundleIdLongCycle
-                        ? Number(bundleId.bundleIdName)
-                        : DefaultBundleIdLongCycle;
-            }
+
+            this.ValueIdListShortCycle = ValueIdListShortCycle;
+            this.ValueIdListLongCycle = ValueIdListLongCycle;
+
+            // Determine BundleId to use in GET PARAMS API:
+            // if configured BunddleId is 'Default'
+            // or configured BunddleId not available on server
+            // then
+            // 		use largest BundleId found in configured list
+            // else
+            // 		use configured BundleId
+            this.BundleIdShortCycle =
+                this.config.bundleIdRequestedShort == 'Default' ||
+                !(this.config.bundleIdRequestedShort in BundleValuesList)
+                    ? DefaultBundleIdShortCycle
+                    : this.config.bundleIdRequestedShort;
+
+            this.BundleIdLongCycle =
+                this.config.bundleIdRequestedLong == 'Default' ||
+                !(this.config.bundleIdRequestedLong in BundleValuesList)
+                    ? DefaultBundleIdLongCycle
+                    : this.config.bundleIdRequestedLong;
         }
-
-        this.BundleIdShortCycle =
-            this.config.bundleIdRequestedShort == 'Default'
-                ? DefaultBundleIdShortCycle
-                : this.config.bundleIdRequestedShort;
-        this.ValueIdListShortCycle = ValueIdListShortCycle;
-
-        this.BundleIdLongCycle =
-            this.config.bundleIdRequestedLong == 'Default'
-                ? DefaultBundleIdLongCycle
-                : this.config.bundleIdRequestedLong;
-        this.ValueIdListLongCycle = ValueIdListLongCycle;
     }
 
     async _setStatesWithDiffTypes(type, id, value) {
@@ -627,6 +658,10 @@ class WolfSmartsetAdapter extends utils.Adapter {
             } else {
                 throw new Error('Could not get GUIDescription (device might be down)');
             }
+
+            // set adapter to 'connected'
+            this.setState('info.connection', { val: true, ack: true });
+
             if (ParamObjList) {
                 await this._CreateObjects(ParamObjList);
                 // create a list of params for each BundleId as defined in the GUI Desc
@@ -636,9 +671,12 @@ class WolfSmartsetAdapter extends utils.Adapter {
             this.objects = await this.getForeignObjectsAsync(`${this.namespace}.*`);
             this.log.debug(JSON.stringify(this.objects));
 
-            await this._LongPollValueList();
+            if (this.ValueIdListLongCycle.length > 0) {
+                await this._LongPollValueList();
+            }
             await this._ShortPollValueList();
         } catch (error) {
+            this.setState('info.connection', { val: false, ack: true });
             this.log.warn(error);
             this.log.warn('Trying again in 60 sec...');
             timeoutHandler['restartTimeout'] = setTimeout(async () => {
@@ -785,10 +823,12 @@ class WolfSmartsetAdapter extends utils.Adapter {
                 await this._mainloop(myPublicIp);
             } else {
                 this.log.warn('Please configure username, password and device in adapter instance settings');
+                this.setState('info.connection', { val: false, ack: true });
             }
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             this.log.warn('Please configure username, password and device in adapter instance settings');
+            this.setState('info.connection', { val: false, ack: true });
         }
     }
 
