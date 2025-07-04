@@ -50,11 +50,11 @@ Advanced settings allow you to adapt the adpater's operation to your needs. Typi
 #### Poll Cycle Intervals and Parameter Lists
 
 The adapter will - after connecting to the Wolf Smartset server - periodically poll parameter values from the server.
-- `Poll all Parameters`: the adapter will poll all parameters found on the server. This poll strategy is backward compatible with adapter version 1.x
+- `Poll all Parameters`: the adapter will always poll all parameters found on the server. This poll strategy is backward compatible with adapter version 1.x
 
 The adapter also supports a more sophisticated poll strategy based on two independent poll cycles with different cycle intervals.
-- `Short Poll Cycle Interval`: enter the interval in seconds. The Wolf Smartset server defines an absolute minimum poll interval (currently 60 sec) which you should not undercut. If you configure a value below this minimum interval the server will not respond in the expected way or may even disconnect your session. The adapter requests the current minimum poll interval from the server periodically. If the configured poll interval is below the minimum poll interval indicated by the server, you will get a warning log from the adapter and you should adjust your poll interval accordingly.
-- `Long Poll Cycle Interval`: enter the interval in minutes for the second poll cycle.
+- `Short Poll Cycle Interval`: enter the interval in __seconds__. The Wolf Smartset server defines an absolute minimum poll interval (currently 60 sec) which you should not undercut. If you configure a value below this minimum interval the server will not respond in the expected way or may even disconnect your session. The adapter requests the current minimum poll interval from the server periodically. If the configured poll interval is below the minimum poll interval indicated by the server, you will get a warning log from the adapter and you should adjust your poll interval accordingly.
+- `Long Poll Cycle Interval`: enter the interval in __minutes__ for the second poll cycle.
 
 The Wolf Smartset server groups the various device parameters into different bundles, identified by a numeric BundleId. In the __ioBroker Admin__ UI  you will find the BundleIds for the different parameter groups in the __Object__ view below the __wolf-smartset__ instance at the channel level. 
 
@@ -130,7 +130,7 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
 - (flingo64) Bugfix (#458): set instance state to connected only if initialization went fine
 - (flingo64) Bugfix: if configured BundleId for poll requests is not available on server, use default BundleId
 - (flingo64) Enhancement: option 'Poll all Parameters' implements backward compatible poll strategy
-- (flingo64) Enhancement: added more BundleIds (10000, 10700, 14000, 14700, 15600, 15700, 15800) for AdminUI as found on different Wolf device configurations
+- (flingo64) Enhancement(#459, #465): added more BundleIds (4300, 10000, 10700, 14000, 14700, 15600, 15700, 15800) for AdminUI as found on different Wolf device configurations
 
 ### 2.0.1 (2025-04-18)
 - (flingo64) Bugfix: fixed various typos in Readme and translations
