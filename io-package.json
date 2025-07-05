@@ -207,24 +207,49 @@
             {
 				"bundleIdName": "4300",
 				"bundleIdUseShort": false,
-				"bundleIdUseLong": true
+				"bundleIdUseLong": false
 			},
 			{
                 "bundleIdName": "6300",
                 "bundleIdUseShort": false,
                 "bundleIdUseLong": true
             },
-            {
+			{
+				"bundleIdName": "6500",
+				"bundleIdUseShort": false,
+				"bundleIdUseLong": false
+			},
+			{
                 "bundleIdName": "7100",
                 "bundleIdUseShort": false,
                 "bundleIdUseLong": true
             },
             {
+				"bundleIdName": "7300",
+				"bundleIdUseShort": false,
+				"bundleIdUseLong": false
+			},
+			{
                 "bundleIdName": "7600",
                 "bundleIdUseShort": false,
                 "bundleIdUseLong": false
             },
             {
+				"bundleIdName": "8000",
+				"bundleIdUseShort": false,
+				"bundleIdUseLong": false
+			},
+			{
+				"bundleIdName": "8100",
+				"bundleIdUseShort": false,
+				"bundleIdUseLong": false
+			},
+			{
+				"bundleIdName": "8200",
+				"bundleIdUseShort": false,
+				"bundleIdUseLong": false
+			},
+			{
                 "bundleIdName": "10000",
                 "bundleIdUseShort": false,
                 "bundleIdUseLong": false
