@@ -31,5 +31,7 @@
     "Expert Login is required to poll expert parameters": "需要专家登录到民意调查专家参数",
     "Parameters of Bundle": "捆绑包的参数",
     "Include in Short Poll Cycle": "在简短的民意调查周期中包括",
-    "Include in Long Poll Cycle": "包括长期民意调查周期"
+    "Include in Long Poll Cycle": "包括长期民意调查周期",
+    "Poll all Parameters": "轮询所有参数",
+    "This poll strategy is backward compatible with adpater version 1.x": "此民意调查策略与Adpater版本1.X兼容"
 }

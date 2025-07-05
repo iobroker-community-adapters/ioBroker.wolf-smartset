@@ -31,5 +31,7 @@
     "Expert Login is required to poll expert parameters": "Expert Login is required to poll expert parameters",
     "Parameters of Bundle": "Parameters of Bundle",
     "Include in Short Poll Cycle": "Include in Short Poll Cycle",
-    "Include in Long Poll Cycle": "Include in Long Poll Cycle"
+    "Include in Long Poll Cycle": "Include in Long Poll Cycle",
+    "Poll all Parameters": "Poll all Parameters",
+    "This poll strategy is backward compatible with adpater version 1.x": "This poll strategy is backward compatible with adpater version 1.x"
 }

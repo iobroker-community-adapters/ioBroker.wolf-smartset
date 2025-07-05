@@ -31,5 +31,7 @@
     "Expert Login is required to poll expert parameters": "O login especialista é necessário para pesquisar parâmetros de especialistas",
     "Parameters of Bundle": "Parâmetros do pacote",
     "Include in Short Poll Cycle": "Inclua em curto ciclo de pesquisa",
-    "Include in Long Poll Cycle": "Inclua no ciclo de pesquisa longa"
+    "Include in Long Poll Cycle": "Inclua no ciclo de pesquisa longa",
+    "Poll all Parameters": "Enquete todos os parâmetros",
+    "This poll strategy is backward compatible with adpater version 1.x": "Esta estratégia de pesquisa é compatível com versões anteriores com a versão 1.x do Adpater"
 }

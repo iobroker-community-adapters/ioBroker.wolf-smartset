@@ -31,5 +31,7 @@
     "Expert Login is required to poll expert parameters": "Inloggen in deskundigen is vereist om deskundige parameters te bestrijden",
     "Parameters of Bundle": "Parameters van bundel",
     "Include in Short Poll Cycle": "Neem in korte peilcyclus op",
-    "Include in Long Poll Cycle": "Inclusief in een lange pollcyclus"
+    "Include in Long Poll Cycle": "Inclusief in een lange pollcyclus",
+    "Poll all Parameters": "Peil alle parameters",
+    "This poll strategy is backward compatible with adpater version 1.x": "Deze poll -strategie is achterwaarts compatibel met Adpater -versie 1.x"
 }
