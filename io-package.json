@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "wolf-smartset",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "news": {
+      "2.1.1": {
+        "en": "Dependencies have been updated.",
+        "de": "Abhängigkeiten wurden aktualisiert.",
+        "ru": "Зависимости были обновлены.",
+        "pt": "As dependências foram atualizadas.",
+        "nl": "Afhankelijkheden zijn bijgewerkt.",
+        "fr": "Les dépendances ont été actualisées.",
+        "it": "Le dipendenze sono state aggiornate.",
+        "es": "Se han actualizado las dependencias.",
+        "pl": "Zaktualizowano zależność.",
+        "uk": "Оновлено залежність.",
+        "zh-cn": "附属关系已经更新."
+      },
       "2.1.0": {
         "en": "Change: Log periodic message '_refreshAuthToken(): ERROR ...' with level info\nBugfix (#458): set instance state to connected only if initialization went fine\nBugfix: if configured BundleId for poll requests is not available on server, use default BundleId\nEnhancement: option 'Poll all Parameters' implements backward compatible poll strategy\nEnhancement(#459, #465): added more BundleIds (4300, 10000, 10700, 14000, 14700, 15600, 15700, 15800) for AdminUI as found on different Wolf device configurations",
         "de": "Änderung: Log Periodische Meldung '_refreshAuthToken(): ERROR ...' mit Level-Info\nBugfix (#458): Instanzzustand wird nur gesetzt, wenn die Initialisierung in Ordnung ging\nBugfix: Falls die konfigurierte Bundle Id für Umfrageanfragen nicht auf dem Server verfügbar ist, wird die Standard BundleId verwendet\nEnhancement: Option 'Poll all Parameters' implementiert für rückwärtskompatible Umfragestrategie\nEnhancement(#459, #465): mehr BundleIds (4300, 10000, 10700, 14000, 14700, 15600, 15700, 15800) für AdminUI implementiert die auf verschiedenen Wolf-Gerätekonfigurationen gefunden wurden",
@@ -80,19 +93,6 @@
         "pl": "Katastrofa podczas ponownego uwierzytelniania została naprawiona. OpenIdInit będzie wywoływany tylko raz, aby uniknąć niekończącej się pętli podczas ponownego uwierzytelniania.",
         "uk": "Зафіксовано аварійну аварію під час переобладнання. OpenIdInit буде називатися тільки один раз, щоб уникнути нескінченної петлі під час реабілітації.",
         "zh-cn": "重新校验时的坠机已被修复 。 OpenIdInit只会被调用一次,以避免在重新验证时出现无尽的循环."
-      },
-      "1.2.1": {
-        "en": "Initialization added to openId. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "de": "Initialisierung zu openId hinzugefügt. Dies behebt GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "ru": "Инициализация добавлена к открытию Ид. Это исправляет GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "pt": "Inicialização adicionada para abrir Id. Isso corrige GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "nl": "Initialisatie toegevoegd aan openen Id. Dit lost GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "fr": "Initialisation ajoutée à ouverte Id. Cela corrige GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "it": "Inizializzazione aggiunta ad aprire Id. Questo risolve GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "es": "Iniciación agregada para abrir Id. This fixes GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "pl": "Inicjalizacja dodana do otwartego Id. To naprawia GET _ AUTH _ TOKEN _ ERROR [# 304, # 330]",
-        "uk": "Початкова обробка додано до відкриття Id. Це фіксує GET_AUTH_TOKEN_ERROR [#304, #330]",
-        "zh-cn": "初始化添加到打开 Id. 此修正 [# 304, # 330]"
       }
     },
     "titleLang": {
