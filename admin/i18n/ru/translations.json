@@ -31,5 +31,7 @@
     "Expert Login is required to poll expert parameters": "Экспертный вход требуется для опроса экспертных параметров",
     "Parameters of Bundle": "Параметры пакета",
     "Include in Short Poll Cycle": "Включите в короткий цикл опроса",
-    "Include in Long Poll Cycle": "Включите в длительный цикл опроса"
+    "Include in Long Poll Cycle": "Включите в длительный цикл опроса",
+    "Poll all Parameters": "Опрос всех параметров",
+    "This poll strategy is backward compatible with adpater version 1.x": "Эта стратегия опроса обратно совместима с версией ADPATER 1.X"
 }
