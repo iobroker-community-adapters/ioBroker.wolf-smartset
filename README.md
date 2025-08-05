@@ -125,6 +125,9 @@ API Profiling allows you to track the Wolf Smartset API usage of the adapter. if
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (mcm1957) Dependencies have been updated.
+
 ### 2.1.0 (2025-08-05)
 - (flingo64) Change: Log periodic message '_refreshAuthToken(): ERROR ...' with level info
 - (flingo64) Bugfix (#458): set instance state to connected only if initialization went fine
