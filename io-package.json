@@ -123,7 +123,8 @@
     },
     "authors": [
       "MeisterTR <meistertr.smarthome@gmail.com>",
-      "flingo64 <github@messmer-online.de>"
+      "flingo64 <github@messmer-online.de>",
+      "iobroker-community-adapters <iobroker-community-adapters@gmx.de>"
     ],
     "keywords": [
       "wolf",
